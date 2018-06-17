@@ -12,9 +12,8 @@ let fabricateOptions = function (url, method) {
     return options;
 };
 
-// NEED to use a promise to handle to resolve the responsehandler being done
 
-let fabricateRequest = function (path, method, queryParams) {
+let performRequest = function (path, method, queryParams) {
     let url = new URL('path', this.configuration.baseUrl);
     if (queryParams) {
         const searchParams = new URLSearchParams(queryParams)
@@ -23,48 +22,34 @@ let fabricateRequest = function (path, method, queryParams) {
         }
     }
     const options = fabricateOptions(url, method);
-
-    let responseHandler = function (response) {
-        let me = this;
-        let data = '';
-
-        me.statusCode = response.statusCode;
-        me.statusMessage = response.statusMessage;
-        me.headers = response.headers;
-
-        response.on('data', (chunk) => {
-            data += chunk;
-        });
-
-        response.on('end', () => {
-            me.data = data;
-        })
-
-        me.dataJSON  = () => {
-            if(me.data){
-               return JSON.parse(me.data);
-            }
-            return '';
-        }
-    };
-
-    https.request(options, responseHandler)
-    return responseHandler; //this will eventually have all the data
-};
-
-
-/**
-
- let resultHandler = function(incomingMessage){
     return new Promise(function(resolve, reject){
-        if(incomingMessage.status == 200){
-            resolve(incomingMessage);
-        }else{
-            reject(incomingMessage);
-        }
+        let responseHandler = function(response){
+            let me = this;
+            let data = '';
+            me.statusCode = response.statusCode;
+            me.statusMessage = response.statusMessage;
+            if(response.statusCode >299 || response.statusCode < 200){
+                reject(me);
+            }
+
+            response.on('data', (chunk) => {
+                me.data += chunk;
+            });
+
+            response.on('error', (err) => {
+                me.error = err;
+                reject(me);
+            });
+
+            response.on('end', () => {
+                resolve(me);
+            })
+        };
+
+        request = https.request(options, responseHandler);
+        request.end();
     });
-}
- */
+};
 
 
 /**
@@ -86,7 +71,7 @@ let client = function (configuration) {
  * @param queryParams a javascript key/value object with all query params needed for the get
  */
 client.doGet = function (path, queryParams) {
-    let request = fabricateRequest(path, queryParams, 'GET');
-    request.end()
+    let requestPromise = performRequest(path, queryParams, 'GET');
+    return requestPromise;
 };
 module.exports = client;

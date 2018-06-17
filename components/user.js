@@ -10,8 +10,6 @@ user.delete = function(reason){
         reason: reason
     };
     const path = "users"
-    const request = () => {this.client.doDelete(path, body)};
-    return resultHandler(request);
 }
 /* Commented out pending proper understanding of what the function call should look like
 user.invite = function(marketId, email, ideaSharesQuantity){
@@ -28,9 +26,9 @@ user.invite = function(marketId, email, ideaSharesQuantity){
 
 user.get = function(userId){
     const path = "users/" + userId;
-    const success = (message) => {
-
-    }
-}
+    const getPromise = client.doGet(path);
+    getPromise.then((response) => {return JSON.parse(response.data)});
+    return getPromise;
+};
 
 module.exports = user;
