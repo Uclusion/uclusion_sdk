@@ -58,16 +58,6 @@ let performRequest = function (path, method, queryParams) {
 
 
 /**
- * Configures the client with proper configuration.
- * Configuration should have the following parameters:
- * baseUrl: the url prefix for the rest api
- * headers: javascript object with all request headers required for the connection
- * @param configuration
- */
-
-/** I'm assuming sync callback here. This is not technically correct */
-
-/**
  * Performs an HTTP get request at the url formed from client.configuration.baseUrl + path
  * @param the path, relative to the client's base URL we want to perform a get on
  * @param queryParams a javascript key/value object with all query params needed for the get
@@ -76,7 +66,14 @@ client.doGet = function (path, queryParams) {
     let requestPromise = performRequest(path, 'GET', queryParams);
     return requestPromise;
 };
-//console.log(client);
+
+/**
+ * Configures the client with proper configuration.
+ * Configuration should have the following parameters:
+ * baseUrl: the url prefix for the rest api
+ * headers: javascript object with all request headers required for the connection
+ * @param configuration
+ */
 module.exports = function(configuration){
     client.configuration = configuration;
     return client;
