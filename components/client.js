@@ -1,8 +1,11 @@
 const https = require('https');
-const url = require('url');
+const URL = require('url').URL;
+const URLSearchParams = require('url').URLSearchParams;
+
 
 let fabricateOptions = function (url, method) {
 // Not going to allow non standard ports or any proto but HTTPS for the url
+   // console.log(url);
     let options = {
         host: url.host,
         method: method,
@@ -12,40 +15,42 @@ let fabricateOptions = function (url, method) {
     return options;
 };
 
+let client = () => {};
+
 
 let performRequest = function (path, method, queryParams) {
-    let url = new URL('path', this.configuration.baseUrl);
+    let url = new URL(path, client.configuration.baseUrl);
     if (queryParams) {
         const searchParams = new URLSearchParams(queryParams)
         for (key in queryParams) {
             searchParams.set(key, queryParams[key])
         }
+        url.search = searchParams;
     }
     const options = fabricateOptions(url, method);
     return new Promise(function(resolve, reject){
         let responseHandler = function(response){
-            let me = this;
-            let data = '';
-            me.statusCode = response.statusCode;
-            me.statusMessage = response.statusMessage;
+            responseHandler.data = '';
+            responseHandler.statusCode = response.statusCode;
+            responseHandler.statusMessage = response.statusMessage;
             if(response.statusCode >299 || response.statusCode < 200){
-                reject(me);
+                reject(responseHandler);
             }
 
             response.on('data', (chunk) => {
-                me.data += chunk;
+                responseHandler.data += chunk;
             });
 
             response.on('error', (err) => {
-                me.error = err;
-                reject(me);
+                responseHandler.error = err;
+                reject(responseHandler);
             });
 
             response.on('end', () => {
-                resolve(me);
+                resolve(responseHandler);
             })
         };
-
+        //console.log(options);
         request = https.request(options, responseHandler);
         request.end();
     });
@@ -59,9 +64,6 @@ let performRequest = function (path, method, queryParams) {
  * headers: javascript object with all request headers required for the connection
  * @param configuration
  */
-let client = function (configuration) {
-    this.configuration = configuration;
-};
 
 /** I'm assuming sync callback here. This is not technically correct */
 
@@ -71,7 +73,12 @@ let client = function (configuration) {
  * @param queryParams a javascript key/value object with all query params needed for the get
  */
 client.doGet = function (path, queryParams) {
-    let requestPromise = performRequest(path, queryParams, 'GET');
+    let requestPromise = performRequest(path, 'GET', queryParams);
     return requestPromise;
 };
-module.exports = client;
+//console.log(client);
+module.exports = function(configuration){
+    client.configuration = configuration;
+    return client;
+};
+//console.log(module.exports);
