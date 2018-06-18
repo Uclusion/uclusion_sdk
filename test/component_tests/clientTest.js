@@ -1,12 +1,14 @@
 let assert = require('assert');
 
 let testConfig = {
-    baseUrl: 'http://www.google.com',
+    baseUrl: 'https://www.google.com',
     headers: {}
 };
 
 let client = require('../../components/client.js')(testConfig);
 //console.log(client);
+
+
 
 describe('Client', () => {
     describe('#doGet', () =>{

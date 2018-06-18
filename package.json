@@ -2,7 +2,8 @@
   "name": "javascript_sdk",
   "version": "0.0.1",
   "dependencies": {
-    "mocha": "latest"
+    "mocha": "latest",
+    "node-testing-server": "latest"
   },
   "scripts": "test"
 }
