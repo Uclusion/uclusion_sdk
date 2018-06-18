@@ -10,13 +10,19 @@ function AxiosClient(configuration) {
     }
     let actualHeaders = Object.assign(defaultHeaders, configuration.headers);
     configuration.headers = actualHeaders;
-    console.log(configuration);
+    //console.log(configuration);
     const instance = axios.create(configuration);
-    console.log(instance);
+    //console.log(instance);
+    // Public API portionn
+
     this.doGet = function (path, queryParams) {
         let promise = instance.get(path, {params: queryParams});
         return promise;
     };
+
+    this.setAuthorization = function(token) {
+        instance.defaults.headers.common['Authorization'] = token;
+    }
 }
 
 module.exports = function (configuration) {

@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "mocha": "latest",
-    "node-testing-server": "latest"
+    "node-testing-server": "latest",
+    "webpack": "latest",
+    "json-loader": "latest",
+    "amazon-cognito-identity-js": "latest"
   },
   "scripts": "test"
 }

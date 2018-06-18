@@ -8,8 +8,6 @@ let testConfig = {
 let client = require('../../components/axiosClient.js')(testConfig);
 //console.log(client);
 
-
-
 describe('Client', () => {
     describe('#doGet', () =>{
         it('should fetch google without error', () => {
@@ -19,7 +17,5 @@ describe('Client', () => {
                 assert(result.status == 200, "Google Should have responded OK");
             });
         })
-    })
+    });
 });
-
-
