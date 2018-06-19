@@ -11,24 +11,74 @@ function Uclusion() {
      * @param clientId your client id for the pool
      * @returns {AmazonCognitoIdentity.CognitoUserPool} a configured cognito user pool
      */
-    this.initializeCognito = (poolId, clientId) => {
+    let initializeCognito = (poolId, clientId) => {
         const poolData = {UserPoolId: poolId, ClientId: clientId};
         let userPool = new CognitoUserPool(poolData);
         return userPool;
     };
 
+
     /**
      * Constructs an api client from a given base endpoint url and a user token gotten from cognito
      * @param apiBaseUrl the base url of the API endpoint
      * @param userToken the user's JWT token obtained from cognito
+     * @returns an instantiated api client.
      */
-    this.constructClient = (apiBaseUrl, userToken) => {
+    let setupClient = (apiBaseUrl, userToken) => {
         let apiClient = () => {
             let transportClient = require('components/client.js')({baseURL: apiBaseUrl});
             transportClient.setAuthorization(userToken);
             apiClient.user = require('components/user.js')(transportClient);
         }
+        return apiClient;
     };
+
+    /**
+     * Given a pool, username and password, attempts to log the user in
+     * to the pool, with the username and password
+     * @param cognitoPool the pool we are connecting to
+     * @param username the username of the user we're authenticating
+     * @param password the password of the user we're authenticating
+     * @returns A Promise that will pass in the authentication result to resolve or reject
+     */
+    let authenticateUser = (cognitoPool, username, password) => {
+        return new Promise((resolve, reject) =>
+        {
+            const authenticationData = {
+                Username: username,
+                Password: password
+            };
+            const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+            const userData = {
+                Username: username,
+                Pool: cognitoPool
+            };
+            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+            cognitoUser.authenticateUser(authenticationDetails, {
+                onSuccess: (result) => { resolve(result) },
+                onFailure: (error) => { reject(error) }
+            });
+        });
+    };
+
+    /**
+     * Constructs the client according to the configuration passed in.
+     * @param configuration, an object with teh poolId, clientId, username, password, and baseURL set
+     * @returns {PromiseLike<an> | Promise<an>} A promise that when resolved will return a fully instantiated client
+     */
+
+    this.constructClient = (configuration) => {
+        const cognitoPool = initializeCognito(configuration.poolId, configuration.clientId);
+        const promise = authenticateUser(cognitoPool, configuration.username, configuration.password);
+        return promise.then((result) => {
+            const currentUser = cognitoPool.getCurrentUser();
+            const token = session.getIdToken().getJwtToken();
+            return setupClient(configuration.baseURL, token);
+        });
+    }
+
+
+
 }
 
 module.export = new Uclusion();
