@@ -1,3 +1,4 @@
+global.fetch = require('node-fetch') // dirty hack to fix node bug
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 
@@ -25,11 +26,12 @@ function Uclusion() {
      * @returns an instantiated api client.
      */
     let setupClient = (apiBaseUrl, userToken) => {
-        let apiClient = () => {
-            let transportClient = require('components/client.js')({baseURL: apiBaseUrl});
-            transportClient.setAuthorization(userToken);
-            apiClient.user = require('components/user.js')(transportClient);
-        }
+        let transportClient = require('./components/axiosClient.js')({baseURL: apiBaseUrl});
+        transportClient.setAuthorization(userToken);
+        let apiClient = {
+            user: require('./components/user.js')(transportClient)
+        };
+        console.log(apiClient.user);
         return apiClient;
     };
 
@@ -66,19 +68,26 @@ function Uclusion() {
      * @param configuration, an object with teh poolId, clientId, username, password, and baseURL set
      * @returns {PromiseLike<an> | Promise<an>} A promise that when resolved will return a fully instantiated client
      */
-
     this.constructClient = (configuration) => {
         const cognitoPool = initializeCognito(configuration.poolId, configuration.clientId);
         const promise = authenticateUser(cognitoPool, configuration.username, configuration.password);
         return promise.then((result) => {
             const currentUser = cognitoPool.getCurrentUser();
-            const token = session.getIdToken().getJwtToken();
-            return setupClient(configuration.baseURL, token);
-        });
-    }
+            const sessionPromise = new Promise((resolve, reject) => {
+              currentUser.getSession((err, session) => {
+                if(err){
+                  reject(err);
+                }
+                resolve(session);
+              });
+            });
+            return sessionPromise;
+          }).then((session) => {
+              const token = session.getIdToken().getJwtToken();
+              return setupClient(configuration.baseURL, token);
+            });
 
-
-
+    };
 }
 
-module.export = new Uclusion();
+module.exports = new Uclusion();

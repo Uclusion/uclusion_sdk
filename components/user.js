@@ -26,7 +26,7 @@ function User(client) {
     this.get = function (userId) {
         const path = "users/" + userId;
         const getPromise = client.doGet(path);
-        return getPromise;
+        return getPromise.then((result) => { return result.data});
     };
 }
 
