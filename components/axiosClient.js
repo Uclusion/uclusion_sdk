@@ -20,6 +20,11 @@ function AxiosClient(configuration) {
         return promise;
     };
 
+    this.doDelete = function(path, queryParams, body) {
+        let promise = instance.delete(path, {params: queryParams, data: body});
+        return promise;
+    }
+
     this.setAuthorization = function(token) {
         instance.defaults.headers.common['Authorization'] = token;
     }

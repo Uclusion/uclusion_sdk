@@ -27,6 +27,7 @@ describe('User', () => {
     after(() => {
         nodeTestingServer.stop();
     });
+
     describe('#doGet', () =>{
         it('should fetch user without error', () => {
             let promise = user.get('1234.html');
@@ -36,7 +37,13 @@ describe('User', () => {
             }).catch((error) => {
                 console.error(error);
             });
-        })
-    })
+        });
+    });
+
+  /*  describe('#doDelete', ()=>{
+        it('should delete without error', () => {
+          user.delete()
+        }
+    }); */
 
 });

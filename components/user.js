@@ -26,8 +26,13 @@ function User(client) {
     this.get = function (userId) {
         const path = "users/" + userId;
         const getPromise = client.doGet(path);
-        return getPromise.then((result) => { return result.data});
+        return getPromise.then((result) => { return result.data });
     };
+
+    this.delete = function () {
+        const path = "users";
+        const getPromise.then((result) => { return result.data });
+    }
 }
 
 module.exports = (client) => {

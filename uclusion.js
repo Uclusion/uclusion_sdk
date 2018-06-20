@@ -29,7 +29,7 @@ function Uclusion() {
         let transportClient = require('./components/axiosClient.js')({baseURL: apiBaseUrl});
         transportClient.setAuthorization(userToken);
         let apiClient = {
-            user: require('./components/user.js')(transportClient)
+            user: require('components/user.js')(transportClient)
         };
         console.log(apiClient.user);
         return apiClient;
@@ -58,7 +58,8 @@ function Uclusion() {
             const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
             cognitoUser.authenticateUser(authenticationDetails, {
                 onSuccess: (result) => { resolve(result) },
-                onFailure: (error) => { reject(error) }
+                onFailure: (error) => { reject(error) },
+                newPasswordRequired: (userAttribute, requiredAttributes) => { reject({ newPasswordRequired: true, userAttribute: userAttribute, requiredAttributes: requiredAttributes }) }
             });
         });
     };
