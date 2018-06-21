@@ -1,5 +1,6 @@
 function Markets(client){
 
+    const dataResolver = (result) => { return result.data };
     /**
      * Invites a user, identified by email, to the given market, and assigns them a quantity of idea shares
      * @param marketId the market to invite the user to
@@ -12,10 +13,26 @@ function Markets(client){
             email: email,
             quantity: ideaSharesQuantity
         };
-        const path = "markets/" + marketId + "/invite";
+        const path = 'markets/' + marketId + '/invite';
         const invitePromise = client.doPost(path, undefined, body);
-        return invitePromise.then((result) => { return result.data });
+        return invitePromise.then(dataResolver);
     };
+
+    /**
+     * Grants the given number of idea shares in the given market to the given user
+     * @param marketId the market to grant the idea shares in
+     * @param userId the user to grant them to
+     * @param ideaSharesQuantity the quantity of idea shares to grant
+     * @returns {PromiseLike<T> | Promise<T>} the result of the grant
+     */
+    this.grant = function(marketId, userId, ideaSharesQuantity){
+        const body = {
+            quantity: ideaSharesQuantity
+        };
+        const path = 'markets/' + marketId + '/users/' + userId + '/grant';
+        const grantPromise = client.doPost(path, undefined, body);
+        return grantPromise.then(dataResolver);
+    }
 
 }
 

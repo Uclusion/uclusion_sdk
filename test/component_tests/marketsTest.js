@@ -20,6 +20,10 @@ app.post('/markets/h3x3n/invite', (request, response) => {
     response.json({success_message: 'User invitation being processed', test_body: request.body});
 });
 
+app.post('/markets/n3wbie/users/myUser/grant', (request, response) => {
+    response.json({quantity: request.body.quantity});
+});
+
 
 
 describe('Market', () => {
@@ -39,6 +43,18 @@ describe('Market', () => {
                 assert(result.success_message == 'User invitation being processed', 'Should have succeded in invite');
                 assert(result.test_body.email == 'me@example.com', 'Did not pass the correct email in body');
                 assert(result.test_body.quantity == 100, 'Did not pass the correct quantity in body');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doGrant', () => {
+        it('should grant user shares without error', () => {
+            let promise = markets.grant('n3wbie', 'myUser', 1090);
+            promise.then((result) => {
+                //console.log(result);
+                assert(result.quantity == 1090, 'Should have granted the proper amount');
             }).catch((error) => {
                 console.error(error);
             });

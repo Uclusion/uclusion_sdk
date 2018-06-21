@@ -9,7 +9,7 @@ function Users(client) {
         const body = {
             name: name
         };
-        const path = "users";
+        const path = 'users';
         const updatePromise = client.doPatch(path, undefined, body);
         return updatePromise.then((result) => { return result.data });
     };
@@ -20,7 +20,7 @@ function Users(client) {
      * @returns {PromiseLike<T> | Promise<T>} the user's information
      */
     this.get = function (userId) {
-        const path = "users/" + userId;
+        const path = 'users/' + userId;
         const getPromise = client.doGet(path);
         return getPromise.then((result) => { return result.data });
     };
@@ -31,7 +31,7 @@ function Users(client) {
      * @returns {PromiseLike<T> | Promise<T>} the result of the delete
      */
     this.delete = function (reason) {
-        const path = "users";
+        const path = 'users';
         const body = {
             reason: reason
         };
