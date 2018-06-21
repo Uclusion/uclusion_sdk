@@ -2,15 +2,16 @@
   "name": "javascript_sdk",
   "version": "0.0.1",
   "dependencies": {
-    "amazon-cognito-identity-js": "^2.0.9",
-    "axios": "^0.18.0",
-    "json-loader": "^0.5.7",
-    "mocha": "^5.2.0",
-    "node-fetch": "^2.1.2",
-    "node-testing-server": "^1.2.2",
-    "polyfill": "^0.1.0",
-    "webdriver-manager": "^12.0.6",
-    "webpack": "^4.12.0"
+    "node-fetch": "latest",
+    "amazon-cognito-identity-js": "latest",
+    "axios": "latest",
+    "json-loader": "latest",
+    "polyfill": "latest",
+    "webpack": "latest",
+
+
+    "mocha": "latest",
+    "express": "latest"
   },
   "scripts": "test"
 }

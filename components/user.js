@@ -2,26 +2,24 @@
 
 function User(client) {
 
-    this.delete = function (reason) {
+    /**
+     * Updates the current user with the given name
+     * @param name the new name of the user
+     * @returns {PromiseLike<T> | Promise<T>} the result of the update
+     */
+    this.update = function(name) {
         const body = {
-            reason: reason
+            name: name
         };
-        const path = "users"
-    }
-    /* Commented out pending proper understanding of what the function call should look like
-    user.invite = function(marketId, email, ideaSharesQuantity){
-        let body = {
-            email: email,
-            quantity: ideaSharesQuantity
-        }
-        let path = "users"
-        this.client.doPost(path, body);
-    }
-    */
+        const path = "users";
+        const updatePromise = client.doPatch(path, undefined, body);
+        return updatePromise.then((result) => { return result.data });
+    };
 
     /**
      * Gets a user's definition given it's ID
      * @param userId
+     * @returns {PromiseLike<T> | Promise<T>} the user's information
      */
     this.get = function (userId) {
         const path = "users/" + userId;
@@ -29,9 +27,18 @@ function User(client) {
         return getPromise.then((result) => { return result.data });
     };
 
-    this.delete = function () {
+    /**
+     * Deletes the current user from uclusion
+     * @param reason why the user is deleting themselves
+     * @returns {PromiseLike<T> | Promise<T>} the result of the delete
+     */
+    this.delete = function (reason) {
         const path = "users";
-        const getPromise.then((result) => { return result.data });
+        const body = {
+            reason: reason
+        };
+        const deletePromise = client.doDelete(path, undefined, body);
+        return deletePromise.then((result) => { return result.data });
     }
 }
 
