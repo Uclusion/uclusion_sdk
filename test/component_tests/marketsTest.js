@@ -16,7 +16,7 @@ const server = require('http').createServer(app);
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-app.post('/market/h3x3n/invite', (request, response) => {
+app.post('/markets/h3x3n/invite', (request, response) => {
     response.json({success_message: 'User invitation being processed', test_body: request.body});
 });
 
