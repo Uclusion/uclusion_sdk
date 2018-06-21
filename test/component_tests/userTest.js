@@ -42,7 +42,7 @@ describe('User', () => {
             let promise = user.get('1234');
             promise.then((result) => {
                 //console.log(result);
-                assert(result.id = '1234', "Client should have returned 1234 as it's ID");
+                assert(result.id == '1234', "Client should have returned 1234 as it's ID");
             }).catch((error) => {
                 console.error(error);
             });
@@ -53,7 +53,7 @@ describe('User', () => {
         it('should delete without error', () => {
             user.delete('I hate uclusion so I\'m deleting myself')
                 .then((result) => {
-                    assert(result.success_message = 'User deleted');
+                    assert(result.success_message == 'User deleted');
                 }).catch((error) => {
                 console.error(error);
             });
