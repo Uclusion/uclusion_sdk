@@ -1,6 +1,4 @@
-
-
-function User(client) {
+function Users(client) {
 
     /**
      * Updates the current user with the given name
@@ -43,6 +41,6 @@ function User(client) {
 }
 
 module.exports = (client) => {
-    let myUser = new User(client);
-    return myUser;
+    let myUsers = new Users(client);
+    return myUsers;
 };

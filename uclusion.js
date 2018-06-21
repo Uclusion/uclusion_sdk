@@ -29,9 +29,10 @@ function Uclusion() {
         let transportClient = require('./components/axiosClient.js')({baseURL: apiBaseUrl});
         transportClient.setAuthorization(userToken);
         let apiClient = {
-            user: require('components/user.js')(transportClient)
+            user: require('components/users.js')(transportClient),
+            market: require('components/markets.js')(transportClient)
         };
-        console.log(apiClient.user);
+       // console.log(apiClient.user);
         return apiClient;
     };
 

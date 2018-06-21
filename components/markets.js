@@ -1,4 +1,4 @@
-function Market(client){
+function Markets(client){
 
     /**
      * Invites a user, identified by email, to the given market, and assigns them a quantity of idea shares
@@ -12,10 +12,14 @@ function Market(client){
             email: email,
             quantity: ideaSharesQuantity
         };
-        const path = "users";
+        const path = "markets/" + marketId + "/invite";
         const invitePromise = client.doPost(path, undefined, body);
         return invitePromise.then((result) => { return result.data });
     };
 
-
 }
+
+module.exports = (client) => {
+    let myMarkets = new Markets(client);
+    return myMarkets;
+};

@@ -6,7 +6,7 @@ let testConfig = {
 };
 
 let client = require('../../components/axiosClient')(testConfig);
-let user = require('../../components/user.js')(client);
+let users = require('../../components/users.js')(client);
 
 //set up a simple http server for our tests
 const express = require('express');
@@ -28,7 +28,7 @@ app.patch('/users', (request, response) => {
     response.json({success_message: 'User updated', test_body: request.body});
 });
 
-describe('User', () => {
+describe('Users', () => {
     before(() => {
         server.listen(port);
     });
@@ -39,7 +39,7 @@ describe('User', () => {
 
     describe('#doGet', () => {
         it('should fetch user without error', () => {
-            let promise = user.get('1234');
+            let promise = users.get('1234');
             promise.then((result) => {
                 //console.log(result);
                 assert(result.id == '1234', "Client should have returned 1234 as it's ID");
@@ -51,7 +51,7 @@ describe('User', () => {
 
     describe('#doDelete', () => {
         it('should delete without error', () => {
-            user.delete('I hate uclusion so I\'m deleting myself')
+            users.delete('I hate uclusion so I\'m deleting myself')
                 .then((result) => {
                     assert(result.success_message == 'User deleted');
                 }).catch((error) => {
@@ -62,7 +62,7 @@ describe('User', () => {
 
     describe('#doPatch', () => {
         it('should update without error', () => {
-            user.update('New Name')
+            users.update('New Name')
                 .then((result) => {
                     assert(result.success_message = 'User updated');
                     assert(result.test_body.name  == 'New Name', 'Body passed to server did not match expected');
