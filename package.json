@@ -2,16 +2,14 @@
   "name": "javascript_sdk",
   "version": "0.0.1",
   "dependencies": {
-    "node-fetch": "latest",
     "amazon-cognito-identity-js": "latest",
-    "axios": "latest",
+    "axios": "^0.18.0",
+    "express": "^4.16.3",
     "json-loader": "latest",
+    "mocha": "^5.2.0",
+    "node-fetch": "latest",
     "polyfill": "latest",
-    "webpack": "latest",
-
-
-    "mocha": "latest",
-    "express": "latest"
+    "webpack": "latest"
   },
   "scripts": "test"
 }

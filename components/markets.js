@@ -34,6 +34,24 @@ function Markets(client){
         return grantPromise.then(dataResolver);
     }
 
+    /**
+      * Creates an investment in the given investible and market with the specified number
+      * of idea ideaShares
+      * @param marketId the id of the market to make the investment inspect
+      * @param investibleId the id of the investible to invest inspect
+      * @param ideaSharesQuantity the number of idea shares to investible
+      * @returns {PromiseLike<T> | Promise<T>} the result of the investment
+     */
+    this.createInvestment = function(marketId, investibleId, ideaSharesQuantity){
+        const body = {
+            quantity: ideaSharesQuantity,
+            investible_id: investibleId
+        };
+        const path = 'markets/' + marketId + '/investments';
+        const createPromise = client.doPost(path, undefined, body);
+        return createPromise.then(dataResolver);
+    }
+
 }
 
 module.exports = (client) => {

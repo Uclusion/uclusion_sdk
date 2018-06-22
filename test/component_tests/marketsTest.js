@@ -24,6 +24,10 @@ app.post('/markets/n3wbie/users/myUser/grant', (request, response) => {
     response.json({quantity: request.body.quantity});
 });
 
+app.post('/markets/DanielsMarket/investments', (request, response) => {
+    response.json({ userid: 'myUser' , test_body: request.body})
+})
+
 
 
 describe('Market', () => {
@@ -40,9 +44,9 @@ describe('Market', () => {
             let promise = markets.invite('h3x3n', 'me@example.com', 100);
             promise.then((result) => {
                 //console.log(result);
-                assert(result.success_message == 'User invitation being processed', 'Should have succeded in invite');
-                assert(result.test_body.email == 'me@example.com', 'Did not pass the correct email in body');
-                assert(result.test_body.quantity == 100, 'Did not pass the correct quantity in body');
+                assert(result.success_message === 'User invitation being processed', 'Should have succeded in invite');
+                assert(result.test_body.email === 'me@example.com', 'Did not pass the correct email in body');
+                assert(result.test_body.quantity === 100, 'Did not pass the correct quantity in body');
             }).catch((error) => {
                 console.error(error);
             });
@@ -54,10 +58,21 @@ describe('Market', () => {
             let promise = markets.grant('n3wbie', 'myUser', 1090);
             promise.then((result) => {
                 //console.log(result);
-                assert(result.quantity == 1090, 'Should have granted the proper amount');
+                assert(result.quantity === 1090, 'Should have granted the proper amount');
             }).catch((error) => {
                 console.error(error);
             });
+        });
+    });
+
+    describe('#doCreateInvestment', () => {
+      it('should create an investment', () => {
+          let promise = markets.createInvestment('DanielsMarket', 'NewInvestment', 500);
+          promise.then((result) => {
+            assert(result.userid === 'myUser', 'Did not return the proper user id from the result');
+            assert(result.test_body.quantity === 500, 'Did not pass the proper quantity in the body');
+            assert(result.test_body.investible_id === 'NewInvestment', 'Did not pass the proper investment id in the body');
+          });
         });
     });
 
