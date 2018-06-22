@@ -51,6 +51,17 @@ function Markets(client){
         const createPromise = client.doPost(path, undefined, body);
         return createPromise.then(dataResolver);
     }
+    /**
+      * Deletes an investment in the given investible and market
+      * @param marketId the id of the market to make the investment inspect
+      * @param investibleId the id of the investible to invest inspect
+      * @returns {PromiseLike<T> | Promise<T>} the result of the delete
+      */
+    this.deleteInvestment = function(marketId, investmentId){
+        const path = 'markets/' + marketId + '/investments/' + investmentId;
+        const deletePromise = client.doDelete(path, undefined, undefined);
+        return deletePromise.then(dataResolver);
+    }
 
 }
 

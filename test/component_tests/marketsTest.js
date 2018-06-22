@@ -28,6 +28,10 @@ app.post('/markets/DanielsMarket/investments', (request, response) => {
     response.json({ userid: 'myUser' , test_body: request.body})
 })
 
+app.delete('/markets/foobar/investments/dead', (rquest, response) => {
+    response.json({success_message: 'Idea shares returned'})
+})
+
 
 
 describe('Market', () => {
@@ -76,5 +80,17 @@ describe('Market', () => {
         });
     });
 
+
+    describe('#doGrant', () => {
+        it('should delete the investment without error', () => {
+            let promise = markets.deleteInvestment('foobar', 'dead');
+            promise.then((result) => {
+                //console.log(result);
+                assert(result.success_message === 'Idea shares returned', 'Should have returned the proper success message');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
 
 });
