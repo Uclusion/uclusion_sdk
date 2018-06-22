@@ -16,7 +16,7 @@ describe('uclusion', () => {
             let userId = '6636f2b2-d1a0-4ed7-ad98-0427a6e7e483';
             let promise = uclusion.constructClient(configuration);
             promise.then((client) => {
-                return client.user.get(userId);
+                return client.users.get(userId);
             }).then((user) => {
       //        console.log(user);
               assert(userId == user.id, 'Fetched user did not match me');

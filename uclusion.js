@@ -30,7 +30,8 @@ function Uclusion() {
         transportClient.setAuthorization(userToken);
         let apiClient = {
             users: require('components/users.js')(transportClient),
-            markets: require('components/markets.js')(transportClient)
+            markets: require('components/markets.js')(transportClient),
+            investibles: require('components/investibles.js')(transportClient)
         };
        // console.log(apiClient.user);
         return apiClient;

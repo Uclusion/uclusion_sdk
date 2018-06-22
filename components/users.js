@@ -1,5 +1,6 @@
 function Users(client) {
 
+    const dataResolver = (result) => { return result.data };
     /**
      * Updates the current user with the given name
      * @param name the new name of the user
@@ -11,7 +12,7 @@ function Users(client) {
         };
         const path = 'users';
         const updatePromise = client.doPatch(path, undefined, body);
-        return updatePromise.then((result) => { return result.data });
+        return updatePromise.then(dataResolver);
     };
 
     /**
@@ -22,7 +23,7 @@ function Users(client) {
     this.get = function (userId) {
         const path = 'users/' + userId;
         const getPromise = client.doGet(path);
-        return getPromise.then((result) => { return result.data });
+        return getPromise.then(dataResolver);
     };
 
     /**
@@ -36,7 +37,7 @@ function Users(client) {
             reason: reason
         };
         const deletePromise = client.doDelete(path, undefined, body);
-        return deletePromise.then((result) => { return result.data });
+        return deletePromise.then(dataResolver);
     }
 }
 

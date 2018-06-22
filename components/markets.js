@@ -41,7 +41,7 @@ function Markets(client){
       * @param investibleId the id of the investible to invest inspect
       * @param ideaSharesQuantity the number of idea shares to investible
       * @returns {PromiseLike<T> | Promise<T>} the result of the investment
-     */
+      */
     this.createInvestment = function(marketId, investibleId, ideaSharesQuantity){
         const body = {
             quantity: ideaSharesQuantity,
