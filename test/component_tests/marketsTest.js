@@ -64,6 +64,10 @@ app.patch('/markets/meat/investibles/pork', (request, response) => {
     response.json({success_message: 'updated', test_body: request.body});
 });
 
+app.get('/markets/meat/investibles/chicken', (request, response) => {
+    response.json({id: 'chicken'});
+});
+
 
 describe('Market', () => {
     before(() => {
@@ -195,12 +199,21 @@ describe('Market', () => {
     });
 
     describe('#doUpdateMarketInvestible', () => {
-        it('should follow the investible without error', () =>{
+        it('should update the investible without error', () =>{
             let promise = markets.updateMarketInvestible('meat', 'pork', {name: 'foo', categoryList: ['a'], description:'chop'});
             promise.then((result) => {
                 assert(result.success_message === 'updated', 'Should have returned the proper success message');
                 assert(result.test_body.name === 'foo', 'Should have put the name in the body');
                 assert(result.test_body.categoryList[0] === 'a', 'Should have put the category in the body');
+            });
+        });
+    });
+
+    describe('#doGetMarketInvestible', () => {
+        it('should get  the investible without error', () =>{
+            let promise = markets.getMarketInvestible('meat', 'chicken');
+            promise.then((result) => {
+                assert(result.id === 'chicken', 'Should have returned proper id');
             });
         });
     });

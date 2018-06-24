@@ -188,6 +188,18 @@ function Markets(client){
         const updatePromise = client.doPatch(path, undefined, body);
         return updatePromise.then(dataResolver);
     };
+
+    /**
+     * Fetches the given market investible from the given market
+     * @param marketId the id of the market to retrieve the investible in
+     * @param investibleId the id of the investible to retrieve
+     * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
+     */
+    this.getMarketInvestible = function(marketId, investibleId){
+        const path = 'markets/' + marketId + '/investibles/' + investibleId;
+        const getPromise = client.doGet(path);
+        return getPromise.then(dataResolver);
+    };
 }
 
 module.exports = (client) => {
