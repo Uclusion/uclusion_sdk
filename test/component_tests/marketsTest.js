@@ -44,6 +44,14 @@ app.patch('/markets/fish', (request, response) => {
     response.json({id: 'fish', test_body: request.body});
 });
 
+app.patch('/markets/oil/resolve', (request, response) => {
+    response.json({success_message: 'Category being resolved', test_body: request.body});
+});
+
+app.patch('/markets/oil/investibles/EXXXOONN/resolve', (request, response) => {
+    response.json({success_message: 'Investible resolved'});
+});
+
 
 describe('Market', () => {
     before(() => {
@@ -111,7 +119,7 @@ describe('Market', () => {
             promise.then((result) => {
                 assert(result.id === 'ARG');
                 assert(result.test_body.name === marketOptions.name, 'Market Options should match request body');
-            })
+            });
         });
     });
 
@@ -120,7 +128,7 @@ describe('Market', () => {
             let promise = markets.getMarket('futures');
             promise.then((result) => {
                 assert(result.id === 'futures');
-            })
+            });
         });
     });
 
@@ -131,7 +139,26 @@ describe('Market', () => {
             promise.then((result) => {
                 assert(result.id === 'fish');
                 assert(result.test_body.description === marketUpdateOptions.description, 'Market Update Options should match request body');
-            })
+            });
+        });
+    });
+
+    describe('#doResolveCategory', () => {
+        it('should resolve the market category without error', () =>{
+            let promise = markets.resolveCategory('oil', 'brent crude');
+            promise.then((result) => {
+                assert(result.success_message === 'Category being resolved');
+                assert(result.test_body.category === 'brent crude', 'Category to resolve should have been in the body');
+            });
+        });
+    });
+
+    describe('#doResolveInvestible', () => {
+        it('should resolve the market categry without error', () =>{
+            let promise = markets.resolveInvestible('oil', 'EXXXOONN');
+            promise.then((result) => {
+                assert(result.success_message === 'Investible resolved', 'Should have returned the proper success message');
+            });
         });
     });
 });

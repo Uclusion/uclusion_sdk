@@ -110,6 +110,31 @@ function Markets(client){
         const updatePromise = client.doPatch(path, undefined, body);
         return updatePromise.then(dataResolver);
     };
+
+    /**
+     * Resolves the given category in the market.
+     * @param marketId the id of the market the category resides in
+     * @param category the category to resolve
+     * @returns {PromiseLike<T> | Promise<T>} the result of the resolve
+     */
+    this.resolveCategory = function(marketId, category){
+        const path = 'markets/' + marketId + '/resolve';
+        const body = {category: category};
+        const resolvePromise = client.doPatch(path, undefined, body);
+        return resolvePromise.then(dataResolver);
+    };
+
+    /**
+     * Resolves the given investible within the given market
+     * @param marketId the id of the market to resolve the investible in
+     * @param investibleId the id of the investible to resolve
+     * @returns {PromiseLike<T> | Promise<T>} the result of the resolve
+     */
+    this.resolveInvestible = function(marketId, investibleId){
+        const path = 'markets/' + marketId + '/investibles/' + investibleId + '/resolve';
+        const resolvePromise = client.doPatch(path);
+        return resolvePromise.then(dataResolver);
+    }
 }
 
 module.exports = (client) => {
