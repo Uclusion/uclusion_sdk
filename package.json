@@ -1,5 +1,5 @@
 {
-  "name": "javascript_sdk",
+  "name": "uclusion_javascript_sdk",
   "version": "0.0.1",
   "dependencies": {
     "amazon-cognito-identity-js": "latest",
