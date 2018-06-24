@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "main" : "uclusion.js",
   "dependencies": {
-    "amazon-cognito-identity-js": "latest",
+    "amazon-cognito-identity-js": "^2.0.11",
     "axios": "^0.18.0",
     "json-loader": "latest",
     "node-fetch": "latest"
