@@ -134,6 +134,24 @@ function Markets(client){
         const path = 'markets/' + marketId + '/investibles/' + investibleId + '/resolve';
         const resolvePromise = client.doPatch(path);
         return resolvePromise.then(dataResolver);
+    };
+
+    /**
+     * Follows or unfollows the given investible in the given market
+     * @param marketId the market id to follow/unfollow the investible in
+     * @param investibleId the id of the investible to follow/unfollow
+     * @param remove whether or not to STOP following the investible.
+     * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
+     */
+    this.followInvestible = function(marketId, investibleId, remove){
+        let body = {};
+        if(remove){
+            body.remove = true;
+        }
+
+        const path = 'markets/' + marketId + '/investibles/' + investibleId + '/follow';
+        const followPromise = client.doPatch(path, undefined, body);
+        return followPromise.then(dataResolver);
     }
 }
 
