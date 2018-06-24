@@ -1,4 +1,4 @@
-global.fetch = require('node-fetch') // dirty hack to fix node bug
+global.fetch = require('node-fetch') // dirty hack to fix AWS Cognito bug
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 
