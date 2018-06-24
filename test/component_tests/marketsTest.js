@@ -26,12 +26,23 @@ app.post('/markets/n3wbie/users/myUser/grant', (request, response) => {
 
 app.post('/markets/DanielsMarket/investments', (request, response) => {
     response.json({ userid: 'myUser' , test_body: request.body})
-})
+});
 
-app.delete('/markets/foobar/investments/dead', (rquest, response) => {
+app.delete('/markets/foobar/investments/dead', (request, response) => {
     response.json({success_message: 'Idea shares returned'})
-})
+});
 
+app.post('/markets', (request, response) => {
+    response.json({id: 'ARG', test_body: request.body});
+});
+
+app.get('/markets/futures', (request, response) => {
+    response.json({id: 'futures'});
+});
+
+app.patch('/markets/fish', (request, response) => {
+    response.json({id: 'fish', test_body: request.body});
+});
 
 
 describe('Market', () => {
@@ -93,4 +104,34 @@ describe('Market', () => {
         });
     });
 
+    describe('#doCreate', () => {
+        it('should create the market without error', () =>{
+            const marketOptions = { name: 'Foo', description: 'FakeMarket', quantity: 100};
+            let promise = markets.createMarket(marketOptions);
+            promise.then((result) => {
+                assert(result.id === 'ARG');
+                assert(result.test_body.name === marketOptions.name, 'Market Options should match request body');
+            })
+        });
+    });
+
+    describe('#doGet', () => {
+        it('should get the market without error', () =>{
+            let promise = markets.getMarket('futures');
+            promise.then((result) => {
+                assert(result.id === 'futures');
+            })
+        });
+    });
+
+    describe('#doUpdate', () => {
+        it('should update the market without error', () =>{
+            const marketUpdateOptions = { name: 'Foo', description: 'FakeMarket', trendingWindow: 180};
+            let promise = markets.updateMarket('fish', marketUpdateOptions);
+            promise.then((result) => {
+                assert(result.id === 'fish');
+                assert(result.test_body.description === marketUpdateOptions.description, 'Market Update Options should match request body');
+            })
+        });
+    });
 });

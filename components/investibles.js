@@ -1,4 +1,4 @@
-function Ivestibles(client){
+function Investibles(client){
 
     const dataResolver = (result) => { return result.data };
 

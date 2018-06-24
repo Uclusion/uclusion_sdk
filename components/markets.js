@@ -32,7 +32,7 @@ function Markets(client){
         const path = 'markets/' + marketId + '/users/' + userId + '/grant';
         const grantPromise = client.doPost(path, undefined, body);
         return grantPromise.then(dataResolver);
-    }
+    };
 
     /**
       * Creates an investment in the given investible and market with the specified number
@@ -50,7 +50,7 @@ function Markets(client){
         const path = 'markets/' + marketId + '/investments';
         const createPromise = client.doPost(path, undefined, body);
         return createPromise.then(dataResolver);
-    }
+    };
     /**
       * Deletes an investment in the given investible and market
       * @param marketId the id of the market to make the investment inspect
@@ -61,8 +61,55 @@ function Markets(client){
         const path = 'markets/' + marketId + '/investments/' + investmentId;
         const deletePromise = client.doDelete(path, undefined, undefined);
         return deletePromise.then(dataResolver);
-    }
+    };
 
+    /**
+     * Creates a market with the given options. Options is an object with the following form
+     * <ul>
+     *  <li>name : string, <b>required</b></li>
+     *  <li>description: string, <b>required</b></li>
+     *  <li>follow_default: boolean</li>
+     *  <li>trending_window: number</li>
+     *  <li>manual_roi: boolean</li>
+     *  <li>quantity: boolean</li>
+     * </ul>
+     * @param marketOptions the options for the market
+     * @returns {PromiseLike<T> | Promise<T>} the result of the create
+     */
+    this.createMarket = function(marketOptions){
+        const path = 'markets';
+        const body = marketOptions;
+        const createPromise = client.doPost(path, undefined, body);
+        return createPromise.then(dataResolver);
+    };
+
+    /**
+     * Retrieves the market with the given Id.
+     * @param marketId the id of the market to return
+     * @returns {PromiseLike<T> | Promise<T>} the result of the retrieval
+     */
+    this.getMarket = function(marketId){
+        const path = 'markets/' + marketId;
+        const getPromise = client.doGet(path);
+        return getPromise.then(dataResolver);
+    };
+
+    /**
+     * Updates a market with the given options. Options is an object with the following form
+     * <ul>
+     *  <li>name : string, <b>required</b></li>
+     *  <li>description: string, <b>required</b></li>
+     *  <li>trending_window: number, <b>required</b></li>
+     * </ul>
+     * @param marketOptions the options for the market
+     * @returns {PromiseLike<T> | Promise<T>} the result of the update
+     */
+    this.updateMarket = function(marketId, marketUpdateOptions){
+        const path = 'markets/' + marketId;
+        const body = marketUpdateOptions;
+        const updatePromise = client.doPatch(path, undefined, body);
+        return updatePromise.then(dataResolver);
+    };
 }
 
 module.exports = (client) => {
