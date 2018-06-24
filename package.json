@@ -2,7 +2,7 @@
   "name": "javascript_sdk",
   "version": "0.0.1",
   "dependencies": {
-    "amazon-cognito-identity-js": "latest",
+    "amazon-cognito-identity-js": "^2.0.11",
     "axios": "^0.18.0",
     "express": "^4.16.3",
     "json-loader": "latest",
