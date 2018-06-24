@@ -169,6 +169,25 @@ function Markets(client){
         const followPromise = client.doPatch(path, undefined, body);
         return followPromise.then(dataResolver);
     };
+
+    /**
+     * Updates the given investible in the given market according to the options
+     * @param marketId
+     * @param investibleId
+     * @param investibleUpdateOptions a javascript object of the form
+     * <ul>
+     *  <li>name: string, <b>required</b></li>
+     *  <li>description: string, <b>required</b></li>
+     *  <li>categoryList: Array[string], <b>required</b></li>
+     *  </ul>
+     * @returns {PromiseLike<T> | Promise<T>} the result of the update
+     */
+    this.updateMarketInvestible = function(marketId, investibleId, investibleUpdateOptions){
+        const body = investibleUpdateOptions;
+        const path = 'markets/' + marketId + '/investibles/' + investibleId;
+        const updatePromise = client.doPatch(path, undefined, body);
+        return updatePromise.then(dataResolver);
+    };
 }
 
 module.exports = (client) => {

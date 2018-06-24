@@ -60,6 +60,10 @@ app.patch('/markets/meat/follow', (request, response) => {
     response.json({success_message: 'unfollowed', test_body: request.body});
 });
 
+app.patch('/markets/meat/investibles/pork', (request, response) => {
+    response.json({success_message: 'updated', test_body: request.body});
+});
+
 
 describe('Market', () => {
     before(() => {
@@ -186,6 +190,17 @@ describe('Market', () => {
             promise.then((result) => {
                 assert(result.success_message === 'unfollowed', 'Should have returned the proper success message');
                 assert(result.test_body.remove, 'Should have put the remove request in the body');
+            });
+        });
+    });
+
+    describe('#doUpdateMarketInvestible', () => {
+        it('should follow the investible without error', () =>{
+            let promise = markets.updateMarketInvestible('meat', 'pork', {name: 'foo', categoryList: ['a'], description:'chop'});
+            promise.then((result) => {
+                assert(result.success_message === 'updated', 'Should have returned the proper success message');
+                assert(result.test_body.name === 'foo', 'Should have put the name in the body');
+                assert(result.test_body.categoryList[0] === 'a', 'Should have put the category in the body');
             });
         });
     });
