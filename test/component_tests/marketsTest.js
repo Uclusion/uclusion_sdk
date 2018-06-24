@@ -56,6 +56,10 @@ app.patch('/markets/meat/investibles/steak/follow', (request, response) => {
     response.json({success_message: 'unfollowed', test_body: request.body});
 });
 
+app.patch('/markets/meat/follow', (request, response) => {
+    response.json({success_message: 'unfollowed', test_body: request.body});
+});
+
 
 describe('Market', () => {
     before(() => {
@@ -162,6 +166,16 @@ describe('Market', () => {
             let promise = markets.resolveInvestible('oil', 'EXXXOONN');
             promise.then((result) => {
                 assert(result.success_message === 'Investible resolved', 'Should have returned the proper success message');
+            });
+        });
+    });
+
+    describe('#doUnfollowMarket', () => {
+        it('should follow the investible without error', () =>{
+            let promise = markets.followMarket('meat', true);
+            promise.then((result) => {
+                assert(result.success_message === 'unfollowed', 'Should have returned the proper success message');
+                assert(result.test_body.remove, 'Should have put the remove request in the body');
             });
         });
     });

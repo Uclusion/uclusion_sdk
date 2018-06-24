@@ -137,22 +137,38 @@ function Markets(client){
     };
 
     /**
+     * Follows or unfollows the given market
+     * @param marketId the market id to follow/unfollow
+     * @param stopFollowing whether or not to STOP following the market.
+     * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
+     */
+    this.followMarket = function(marketId, stopFollowing){
+        let body = {};
+        if(stopFollowing){
+            body.remove = true;
+        }
+        const path = 'markets/' + marketId + '/follow';
+        const followPromise = client.doPatch(path, undefined, body);
+        return followPromise.then(dataResolver);
+    };
+
+    /**
      * Follows or unfollows the given investible in the given market
      * @param marketId the market id to follow/unfollow the investible in
      * @param investibleId the id of the investible to follow/unfollow
-     * @param remove whether or not to STOP following the investible.
+     * @param stopFollowing whether or not to STOP following the investible.
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
-    this.followInvestible = function(marketId, investibleId, remove){
+    this.followInvestible = function(marketId, investibleId, stopFollowing){
         let body = {};
-        if(remove){
+        if(stopFollowing){
             body.remove = true;
         }
 
         const path = 'markets/' + marketId + '/investibles/' + investibleId + '/follow';
         const followPromise = client.doPatch(path, undefined, body);
         return followPromise.then(dataResolver);
-    }
+    };
 }
 
 module.exports = (client) => {
