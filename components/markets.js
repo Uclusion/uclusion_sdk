@@ -4,8 +4,7 @@ function Markets(client){
     /**
      * Invites a user, identified by email, to the given market, and assigns them a quantity of idea shares
      * @param marketId the market to invite the user to
-     * @param email the email of the user to invite
-     * @param ideaSharesQuantity the quantity of the shares
+     * @param email the email of the user to invitere
      * @returns the result of inviting the user
      */
     this.invite = function(marketId, email, ideaSharesQuantity){
