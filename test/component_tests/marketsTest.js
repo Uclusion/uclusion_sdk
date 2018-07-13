@@ -68,6 +68,13 @@ app.get('/markets/meat/investibles/chicken', (request, response) => {
     response.json({id: 'chicken'});
 });
 
+app.get('/markets/meat/list', (request, response) => {
+    response.json({category: 'fake'});
+});
+
+app.get('/markets/stocknasdaq/list', (request, response) => {
+    response.json({type: 'categoryInvestibles', test_query: request.query});
+});
 
 describe('Market', () => {
     before(() => {
@@ -217,4 +224,28 @@ describe('Market', () => {
             });
         });
     });
+
+    describe('#doListCategories', () => {
+        it('should get  the investible without error', () =>{
+            let promise = markets.listCategories('meat');
+            promise.then((result) => {
+                assert(result.category === 'fake', 'Should have returned proper category');
+            });
+        });
+    });
+
+    describe('#doListCategoriesInvestibles', () => {
+        it('should get  the investible without error', () =>{
+            let promise = markets.listCategoriesInvestibles('stocknasdaq', 3, 20);
+            promise.then((result) => {
+                assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
+                assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+
+
 });

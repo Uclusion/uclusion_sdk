@@ -199,6 +199,60 @@ function Markets(client){
         const getPromise = client.doGet(path);
         return getPromise.then(dataResolver);
     };
+    
+    this.listCategories = function (marketId) {
+        const path = 'markets/' + marketId + '/list';
+        const getPromise = client.doGet(path, {type: 'categories'});
+        return getPromise.then(dataResolver)
+    };
+
+    this.listCategoriesInvestibles = function (marketId, pageNumber, pageSize) {
+        const path = 'markets/' + marketId + '/list';
+        const getPromise = client.doGet(path, {type: 'categoryInvestibles', currentPage: pageNumber, pageSize: pageSize});
+        return getPromise.then(dataResolver)
+    };
+
+    this.listInvestibleInvestments = function (marketId, investibleId, currentPage, pageSize) {
+        const path = 'markets/' + marketId + '/list';
+        const getPromise = client.doGet(path, {type: 'investibleInvestments', investibleId: investibleId, currentPage: pageNumber, pageSize: pageSize});
+        return getPromise.then(dataResolver)
+    };
+
+    this.listInvestiblePresences = function (marketId) {
+        const path = 'markets/' + marketId + '/list';
+        const getPromise = client.doGet(path, {type: 'investiblePresences'});
+        return getPromise.then(dataResolver)
+    };
+
+    this.listInvestibles = function (marketId, searchString, currentPage, pageSize) {
+        const path = 'markets/' + marketId + '/list';
+        const getPromise = client.doGet(path, {type: 'investibles', searchString: searchString, currentPage: currentPage, pageSize: pageSize});
+        return getPromise.then(dataResolver)
+    };
+
+    this.listinvestibles = function (marketId) {
+        const path = 'markets/' + marketId + '/list';
+        const getPromise = client.doGet(path, {type: 'investibleTemplates'});
+        return getPromise.then(dataResolver)
+    };
+
+    this.listInvestibleTemplates = function (marketId) {
+        const path = 'markets/' + marketId + '/list';
+        const getPromise = client.doGet(path, {type: 'investibleTemplates'});
+        return getPromise.then(dataResolver)
+    };
+
+    this.listTrending = function (marketId, trendingWindowDate) {
+        const path = 'markets/' + marketId + '/list';
+        const getPromise = client.doGet(path, {type: 'trending', trendingWindowDate: trendingWindowDate});
+        return getPromise.then(dataResolver)
+    };
+
+    this.listTrending = function (marketId, userId, currentPage, pageSize) {
+        const path = 'markets/' + marketId + '/list';
+        const getPromise = client.doGet(path, {type: 'userInvestments', userId: userId, currentPage: currentPage, pageSize: pageSize});
+        return getPromise.then(dataResolver)
+    };
 }
 
 module.exports = (client) => {
