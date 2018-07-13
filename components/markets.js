@@ -212,7 +212,7 @@ function Markets(client){
         return getPromise.then(dataResolver)
     };
 
-    this.listInvestibleInvestments = function (marketId, investibleId, currentPage, pageSize) {
+    this.listInvestibleInvestments = function (marketId, investibleId, pageNumber, pageSize) {
         const path = 'markets/' + marketId + '/list';
         const getPromise = client.doGet(path, {type: 'investibleInvestments', investibleId: investibleId, currentPage: pageNumber, pageSize: pageSize});
         return getPromise.then(dataResolver)
@@ -230,12 +230,6 @@ function Markets(client){
         return getPromise.then(dataResolver)
     };
 
-    this.listinvestibles = function (marketId) {
-        const path = 'markets/' + marketId + '/list';
-        const getPromise = client.doGet(path, {type: 'investibleTemplates'});
-        return getPromise.then(dataResolver)
-    };
-
     this.listInvestibleTemplates = function (marketId) {
         const path = 'markets/' + marketId + '/list';
         const getPromise = client.doGet(path, {type: 'investibleTemplates'});
@@ -248,7 +242,7 @@ function Markets(client){
         return getPromise.then(dataResolver)
     };
 
-    this.listTrending = function (marketId, userId, currentPage, pageSize) {
+    this.listUserInvestments = function (marketId, userId, currentPage, pageSize) {
         const path = 'markets/' + marketId + '/list';
         const getPromise = client.doGet(path, {type: 'userInvestments', userId: userId, currentPage: currentPage, pageSize: pageSize});
         return getPromise.then(dataResolver)

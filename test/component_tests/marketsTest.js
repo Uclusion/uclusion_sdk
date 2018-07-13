@@ -76,6 +76,30 @@ app.get('/markets/stocknasdaq/list', (request, response) => {
     response.json({type: 'categoryInvestibles', test_query: request.query});
 });
 
+app.get('/markets/dow/list', (request, response) => {
+    response.json({type: 'investibleInvestments', test_query: request.query});
+});
+
+app.get('/markets/s&p/list', (request, response) => {
+    response.json({investiblePresences: 'notreal'});
+});
+
+app.get('/markets/russel/list', (request, response) => {
+    response.json({type: 'investibles', test_query: request.query});
+});
+
+app.get('/markets/fortune/list', (request, response) => {
+    response.json({investibleTemplates: 'fiction'});
+});
+
+app.get('/markets/wilshire/list', (request, response) => {
+    response.json({type: 'trending', test_query: request.query});
+});
+
+app.get('/markets/barron/list', (request, response) => {
+    response.json({type: 'userInvestments', test_query: request.query});
+});
+
 describe('Market', () => {
     before(() => {
         server.listen(port);
@@ -238,6 +262,78 @@ describe('Market', () => {
         it('should get  the investible without error', () =>{
             let promise = markets.listCategoriesInvestibles('stocknasdaq', 3, 20);
             promise.then((result) => {
+                assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
+                assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doListInvestiblesInvestment', () => {
+        it('should get  the investible without error', () =>{
+            let promise = markets.listInvestibleInvestments('dow', 'company', 3, 20);
+            promise.then((result) => {
+                assert(result.test_query.investibleId === 'company', 'Should have returned proper investible id');
+                assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
+                assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doListInvestiblePresences', () => {
+        it('should get  the investible without error', () =>{
+            let promise = markets.listInvestiblePresences('s&p');
+            promise.then((result) => {
+                assert(result.investiblePresences === 'notreal', 'Should have returned proper investible presences');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doListInvestibles', () => {
+        it('should get  the investible without error', () =>{
+            let promise = markets.listInvestibles('russel', 'search', 3, 20);
+            promise.then((result) => {
+                assert(result.test_query.searchString === 'search', 'Should have returned proper search string');
+                assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
+                assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doListInvestibleTemplates', () => {
+        it('should get  the investible without error', () =>{
+            let promise = markets.listInvestibleTemplates('fortune');
+            promise.then((result) => {
+                assert(result.investibleTemplates === 'fiction', 'Should have returned proper investible templates');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doListTrending', () => {
+        it('should get  the investible without error', () =>{
+            let promise = markets.listTrending('wilshire', '10/10/10');
+            promise.then((result) => {
+                assert(result.test_query.trendingWindowDate === '10/10/10', 'Should have returned proper trending window date');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doListUserInvestments', () => {
+        it('should get  the investible without error', () =>{
+            let promise = markets.listUserInvestments('barron', 'daniel', 3, 20);
+            promise.then((result) => {
+                assert(result.test_query.userId === 'daniel', 'Should have returned proper user id');
                 assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
                 assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
             }).catch((error) => {
