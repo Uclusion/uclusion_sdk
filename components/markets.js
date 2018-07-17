@@ -70,7 +70,7 @@ function Markets(client){
      *  <li>follow_default: boolean</li>
      *  <li>trending_window: number</li>
      *  <li>manual_roi: boolean</li>
-     *  <li>quantity: boolean</li>
+     *  <li>quantity: number</li>
      * </ul>
      * @param marketOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
@@ -117,6 +117,7 @@ function Markets(client){
      * @returns {PromiseLike<T> | Promise<T>} the result of the resolve
      */
     this.resolveCategory = function(marketId, category){
+        //TODO needs quantity
         const path = 'markets/' + marketId + '/resolve';
         const body = {category: category};
         const resolvePromise = client.doPatch(path, undefined, body);
