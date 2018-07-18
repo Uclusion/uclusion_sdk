@@ -20,7 +20,7 @@ app.post('/markets/h3x3n/invite', (request, response) => {
     response.json({success_message: 'User invitation being processed', test_body: request.body});
 });
 
-app.post('/markets/n3wbie/users/myUser/grant', (request, response) => {
+app.patch('/markets/n3wbie/users/myUser/grant', (request, response) => {
     response.json({quantity: request.body.quantity});
 });
 

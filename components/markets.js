@@ -29,7 +29,7 @@ function Markets(client){
             quantity: ideaSharesQuantity
         };
         const path = 'markets/' + marketId + '/users/' + userId + '/grant';
-        const grantPromise = client.doPost(path, undefined, body);
+        const grantPromise = client.doPatch(path, undefined, body);
         return grantPromise.then(dataResolver);
     };
 
