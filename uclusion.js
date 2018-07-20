@@ -67,8 +67,8 @@ function Uclusion() {
     };
 
     /**
-     * Constructs the client according to the configuration passed in.
-     * @param configuration, an object with teh poolId, clientId, username, password, and baseURL set
+     * Constructs a cognito client according to the configuration passed in.
+     * @param configuration, an object with a poolId, clientId, username, password, and baseURL set
      * @returns {PromiseLike<an> | Promise<an>} A promise that when resolved will return a fully instantiated client
      */
     this.constructClient = (configuration) => {
@@ -90,6 +90,17 @@ function Uclusion() {
               return setupClient(configuration.baseURL, token);
             });
 
+    };
+
+    /**
+     * Constructs a client that has been pre-authorized by an identity provider the configuration.baseURL endpoint will accept, and contains the authorization thereof
+     * @param configuration an object with a baseURL and authorizationToken parameter set.
+     * @returns A promise that when resolved will be a fully instantiated client
+     */
+    this.constructPreAuthenticatedClient = (configuration) => {
+        return new Promise((resolve, reject) => {
+            resolve(setupClient(configuration.baseURL, configuration.authorizationToken));
+        });
     };
 }
 

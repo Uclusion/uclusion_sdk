@@ -200,7 +200,7 @@ function Markets(client){
         const getPromise = client.doGet(path);
         return getPromise.then(dataResolver);
     };
-    
+
     this.listCategories = function (marketId) {
         const path = 'markets/' + marketId + '/list';
         const getPromise = client.doGet(path, {type: 'categories'});
