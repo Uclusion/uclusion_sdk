@@ -14,7 +14,7 @@ function Investibles(client){
         const body = {
             name: investibleName,
             description: investibleDescription,
-            categoryList: categoryList
+            category_list: categoryList
         };
         const path = 'investibles';
         const createPromise = client.doPost(path, undefined, body);
@@ -34,7 +34,7 @@ function Investibles(client){
         const body = {
             name: investibleName,
             description: investibleDescription,
-            categoryList: categoryList
+            category_list: categoryList
         };
         const path = 'investibles/' + investibleId;
         const updatePromise = client.doPatch(path, undefined, body);
