@@ -1,9 +1,9 @@
 {
   "name": "uclusion_sdk",
   "description": "SDK for the uclusion idea market system. All methods are supported, and each method closely corresponds the given api endpoints",
-  "keywords": "uclusion",
+  "keywords": ["uclusion"],
   "version": "0.0.1",
-  "main" : "uclusion.js",
+  "main": "uclusion.js",
   "dependencies": {
     "amazon-cognito-identity-js": "^2.0.11",
     "axios": "^0.18.0",
