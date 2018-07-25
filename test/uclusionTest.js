@@ -22,6 +22,15 @@ const updateOptions = {
     description: 'this is a fish market',
     trending_window: 5
 };
+const fishOptions = {
+    name : 'fish',
+    description: 'this is a fish market',
+    follow_default: false,
+    trending_window: 5,
+    manual_roi: false,
+    quantity: 10000
+};
+
 
 
 describe('uclusion', () => {
@@ -87,52 +96,75 @@ describe('uclusion', () => {
     //         });
     //     });
     // });
-    describe('#doCreateInvestible, ', () => {
-        it('should create investible without error', () => {
-            let userId = '6636f2b2-d1a0-4ed7-ad98-0427a6e7e483';
-            let promise = uclusion.constructClient(configuration);
-            let globalClient;
-            let globalInvestibleId;
-            promise.then((client) => {
-                console.log('1');
-                globalClient = client;
-                return client.investibles.create('salmon', 'good on bagels', ['fish', 'water']);
-            }).then((response) => {
-                console.log('2');
-                globalInvestibleId = response.investible_id;
-                assert(response.name === 'salmon', 'name not passed on correctly');
-                assert(response.description === 'good on bagels', 'description not passed on correctly');
-                assert(JSON.stringify(response.category_list) === JSON.stringify(['fish', 'water']), 'category list not passed on correctly');
-                return globalClient.investibles.update(globalInvestibleId, 'tuna', 'good for sandwich', ['can', 'sandwich']);
-            }).then((response) => {
-                console.log('3');
-                assert(response.name === 'tuna', 'name not passed on correctly');
-                assert(response.description === 'good for sandwich', 'description not passed on correctly');
-                assert(JSON.stringify(response.category_list) === JSON.stringify(['can', 'sandwich']), 'category list not passed on correctly');
-                return globalClient.investibles.get(globalInvestibleId);
-            }).return((investible) => {
-                console.log(investible);
-                assert(response.name === 'tuna', 'name not passed on correctly');
-                assert(response.description === 'good for sandwich', 'description not passed on correctly');
-                assert(JSON.stringify(response.category_list) === JSON.stringify(['can', 'sandwich']), 'category list not passed on correctly');
-            });
-        });
-    });
-    // describe('#doCreate, investible, ', () => {
-    //     it('should create market without error', () => {
+    // describe('#doCreateInvestible, ', () => {
+    //     it('should create investible without error', () => {
     //         let userId = '6636f2b2-d1a0-4ed7-ad98-0427a6e7e483';
     //         let promise = uclusion.constructClient(configuration);
     //         let globalClient;
-    //         let globalMarketId;
+    //         let globalInvestibleId;
     //         promise.then((client) => {
     //             globalClient = client;
-    //             return client.markets.createMarket(updateOptions);
+    //             return client.investibles.create('salmon', 'good on bagels', ['fish', 'water']);
     //         }).then((response) => {
-    //             globalMarketId = response.market_id;
-    //             return globalClient.investibles.createInves;
+    //             //console.log(response);
+    //             globalInvestibleId = response.id;
+    //             assert(response.name === 'salmon', 'name not passed on correctly');
+    //             assert(response.description === 'good on bagels', 'description not passed on correctly');
+    //             assert(_arrayEquals(response.category_list, ['fish', 'water']), 'category list not passed on correctly');
+    //             return globalClient.investibles.update(globalInvestibleId, 'tuna', 'good for sandwich', ['can', 'sandwich']);
+    //         }).then((response) => {
+    //             //console.log(response);
+    //             assert(response.name === 'tuna', 'name not passed on correctly');
+    //             assert(response.description === 'good for sandwich', 'description not passed on correctly');
+    //             assert(_arrayEquals(response.category_list, ['can', 'sandwich']), 'update category list not correct');
+    //             return globalClient.investibles.get(globalInvestibleId);
+    //         }).then((investible) => {
+    //             //console.log(investible);
+    //             assert(investible.name === 'tuna', 'name not passed on correctly');
+    //             assert(investible.description === 'good for sandwich', 'description not passed on correctly');
+    //             assert(_arrayEquals(investible.category_list, ['can', 'sandwich']), 'category list not passed on correctly');
     //         });
     //     });
     // });
+    describe('#doInvestment', () => {
+        it('should create investment without error', () => {
+            let userId = '6636f2b2-d1a0-4ed7-ad98-0427a6e7e483';
+            let promise = uclusion.constructClient(configuration);
+            let globalClient;
+            let globalMarketId;
+            let globalInvestibleId;
+            let marketInvestibleId;
+            promise.then((client) => {
+                globalClient = client;
+                return client.markets.createMarket(fishOptions);
+            }).then((response) => {
+                globalMarketId = response.market_id;
+                return globalClient.investibles.create('salmon', 'good on bagels', ['fish', 'water']);
+            }).then((response) => {
+                globalInvestibleId = response.id;
+                return globalClient.markets.createInvestment(globalMarketId, globalInvestibleId, 1000);
+            }).then((response) => {
+                marketInvestibleId = response.investible_id;
+                assert(response.quantity === 1000, 'investment quantity should be 1000');
+                return globalClient.markets.followInvestible(globalMarketId, marketInvestibleId, false);
+            }).then((response) => {
+                assert(response.following === true, 'follow should return true');
+                return globalClient.markets.getMarketInvestible(globalMarketId, marketInvestibleId);
+            }).then((response) => {
+                console.log(response);
+                assert(response.quantity === 1000, 'get investible quantity should return 1000');
+                assert(response.following === true, 'get investible following should be true');
+                return globalClient.users.get(userId);
+            }).then((user) => {
+                //console.log(response);
+                let userPresence = _getPresenceFromPresences(globalMarketId,user.market_presences);
+                //console.log(userPresence);
+                assert(userPresence.following === true, 'Following should be true');
+                assert(userPresence.quantity === 9000, 'Quantity should be 9000');
+                //return globalClient.markets.deleteInvestment()
+            });
+        });
+    });
 });
 
 let _getPresenceFromPresences = (market_id, market_presences) => {
@@ -143,4 +175,16 @@ let _getPresenceFromPresences = (market_id, market_presences) => {
         return presences[0];
     }
 };
+
+let _arrayEquals = (arr1, arr2) => {
+    if(arr1.length !== arr2.length)
+        return false;
+    arr1.forEach(function (e) {
+        if (arr2.indexOf(e) < 0)
+            return false;
+    });
+    return true;
+};
+
+
 
