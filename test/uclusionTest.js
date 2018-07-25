@@ -30,7 +30,11 @@ const fishOptions = {
     manual_roi: false,
     quantity: 10000
 };
-
+const updateFish = {
+    name : 'pufferfish',
+    description: 'possibly poisonous',
+    category_list: ['poison', 'chef']
+};
 
 
 describe('uclusion', () => {
@@ -134,6 +138,7 @@ describe('uclusion', () => {
             let globalMarketId;
             let globalInvestibleId;
             let marketInvestibleId;
+            let investmentId;
             promise.then((client) => {
                 globalClient = client;
                 return client.markets.createMarket(fishOptions);
@@ -144,24 +149,43 @@ describe('uclusion', () => {
                 globalInvestibleId = response.id;
                 return globalClient.markets.createInvestment(globalMarketId, globalInvestibleId, 1000);
             }).then((response) => {
+                investmentId = response.id;
                 marketInvestibleId = response.investible_id;
                 assert(response.quantity === 1000, 'investment quantity should be 1000');
                 return globalClient.markets.followInvestible(globalMarketId, marketInvestibleId, false);
             }).then((response) => {
                 assert(response.following === true, 'follow should return true');
                 return globalClient.markets.getMarketInvestible(globalMarketId, marketInvestibleId);
-            }).then((response) => {
-                console.log(response);
-                assert(response.quantity === 1000, 'get investible quantity should return 1000');
-                assert(response.following === true, 'get investible following should be true');
+            }).then((investible) => {
+                //console.log(response);
+                assert(investible.quantity === 1000, 'get investible quantity should return 1000');
+                assert(investible.following === true, 'get investible following should be true');
                 return globalClient.users.get(userId);
             }).then((user) => {
-                //console.log(response);
                 let userPresence = _getPresenceFromPresences(globalMarketId,user.market_presences);
-                //console.log(userPresence);
-                assert(userPresence.following === true, 'Following should be true');
                 assert(userPresence.quantity === 9000, 'Quantity should be 9000');
-                //return globalClient.markets.deleteInvestment()
+                return globalClient.markets.deleteInvestment(globalMarketId, investmentId);
+            }).then((response) => {
+                return globalClient.users.get(userId);
+            }).then((user) => {
+                let userPresence = _getPresenceFromPresences(globalMarketId,user.market_presences);
+                console.log(userPresence);
+                assert(userPresence.quantity === 10000, 'Quantity should be 10000');
+                return globalClient.markets.updateMarketInvestible(globalMarketId, marketInvestibleId, updateFish);
+            }).then((response) => {
+                assert(response.name === 'pufferfish', 'update market investible name not passed on correctly');
+                assert(response.description === 'possibly poisonous', 'update market investible description not passed on correctly');
+                assert(_arrayEquals(response.category_list, ['poison', 'chef']), 'update market investible category list not passed on correctly');
+                return globalClient.markets.getMarketInvestible(globalMarketId, marketInvestibleId);
+            }).then((investible) => {
+                console.log(investible);
+                assert(investible.name === 'pufferfish', 'get market investible name incorrect');
+                assert(investible.description === 'possibly poisonous', 'get market investible description incorrect');
+                assert(_arrayEquals(investible.category_list, ['poison', 'chef']), 'get market investible category list incorrect');
+                assert(investible.quantity === 0, 'get market investible quantity incorrect');
+            //     return globalClient.markets.getMarket(globalMarketId);
+            // }).then((market) => {
+            //     console.log(market);
             });
         });
     });
