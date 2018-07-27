@@ -207,15 +207,15 @@ function Markets(client){
         return getPromise.then(dataResolver)
     };
 
-    this.listCategoriesInvestibles = function (marketId, pageNumber, pageSize) {
+    this.listCategoriesInvestibles = function (marketId, category, pageNumber, pageSize) {
         const path = 'markets/' + marketId + '/list';
-        const getPromise = client.doGet(path, {type: 'categoryInvestibles', currentPage: pageNumber, pageSize: pageSize});
+        const getPromise = client.doGet(path, {type: 'categoryInvestibles', category: category, currentPage: pageNumber, pageSize: pageSize});
         return getPromise.then(dataResolver)
     };
 
-    this.listInvestibleInvestments = function (marketId, investibleId, pageNumber, pageSize) {
+    this.listInvestibleInvestments = function (marketId, investibleId, pageNumber, pageSize, trendingWindowDate) {
         const path = 'markets/' + marketId + '/list';
-        const getPromise = client.doGet(path, {type: 'investibleInvestments', investibleId: investibleId, currentPage: pageNumber, pageSize: pageSize});
+        const getPromise = client.doGet(path, {type: 'investibleInvestments', investibleId: investibleId, currentPage: pageNumber, pageSize: pageSize, trendingWindowDate: trendingWindowDate});
         return getPromise.then(dataResolver)
     };
 

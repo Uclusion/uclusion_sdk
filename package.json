@@ -1,7 +1,9 @@
 {
   "name": "uclusion_sdk",
   "description": "SDK for the uclusion idea market system. All methods are supported, and each method closely corresponds the given api endpoints",
-  "keywords": ["uclusion"],
+  "keywords": [
+    "uclusion"
+  ],
   "version": "0.0.1",
   "main": "uclusion.js",
   "dependencies": {

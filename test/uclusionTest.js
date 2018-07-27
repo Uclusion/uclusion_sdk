@@ -1,6 +1,6 @@
 let assert = require('assert');
 
-let uclusion = require('../uclusion.js')
+let uclusion = require('../uclusion.js');
 console.log(uclusion);
 const configuration = {
     baseURL: 'https://rhilzl244c.execute-api.us-west-2.amazonaws.com/dev',
@@ -35,8 +35,6 @@ const updateFish = {
     description: 'possibly poisonous',
     category_list: ['poison', 'chef']
 };
-
-
 describe('uclusion', () => {
     describe('#doLogin and update user', () => {
         it('should login and pull without error', () => {
@@ -54,6 +52,8 @@ describe('uclusion', () => {
                 assert(userId === user.id, 'Fetched user did not match me');
                 assert(user.name === 'Daniel', 'Name not updated properly');
                 return globalClient.users.update('Default');
+            }).catch(function(error) {
+                console.log(error);
             });
         });
     });
@@ -97,6 +97,8 @@ describe('uclusion', () => {
                 let userPresence = _getPresenceFromPresences(globalMarketId,user.market_presences);
                 assert(userPresence.following === true, 'Following should be true');
                 assert(userPresence.quantity === 11000, 'Quantity should be 11000')
+            }).catch(function(error) {
+                console.log(error);
             });
         });
     });
@@ -127,6 +129,8 @@ describe('uclusion', () => {
                 assert(investible.name === 'tuna', 'name not passed on correctly');
                 assert(investible.description === 'good for sandwich', 'description not passed on correctly');
                 assert(_arrayEquals(investible.category_list, ['can', 'sandwich']), 'category list not passed on correctly');
+            }).catch(function(error) {
+                console.log(error);
             });
         });
     });
@@ -188,6 +192,56 @@ describe('uclusion', () => {
                 //console.log(market);
                 assert(market.open_investments === 0, 'open investments should be 0');
                 assert(market.unspent === 10000, 'unspent should be 10000');
+                return globalClient.markets.resolveInvestible(globalMarketId, marketInvestibleId);
+            }).then((result) => globalClient.markets.getMarketInvestible(globalMarketId, marketInvestibleId)
+            ).then((investible) => {
+                //console.log(investible);
+                assert(investible.closed === true, 'investible should be closed');
+                assert(investible.marked_resolved_by === userId, 'resolved by user id is incorrect');
+            }).catch(function(error) {
+                console.log(error);
+            });
+        });
+        describe('#doList', () => {
+            it('should list without error', () => {
+                let userId = '6636f2b2-d1a0-4ed7-ad98-0427a6e7e483';
+                let promise = uclusion.constructClient(configuration);
+                let globalClient;
+                let globalMarketId;
+                let globalInvestibleId;
+                let marketInvestibleId;
+                let investmentId;
+                promise.then((client) => {
+                    globalClient = client;
+                    return client.markets.createMarket(fishOptions);
+                }).then((response) => {
+                    globalMarketId = response.market_id;
+                    return globalClient.investibles.create('salmon', 'good on bagels', ['fish', 'water']);
+                }).then((response) => {
+                    globalInvestibleId = response.id;
+                    return globalClient.markets.createInvestment(globalMarketId, globalInvestibleId, 1000);
+                }).then((response) => {
+                    investmentId = response.id;
+                    marketInvestibleId = response.investible_id;
+                    assert(response.quantity === 1000, 'investment quantity should be 1000');
+                    return globalClient.markets.listCategories(globalMarketId);
+                }).then((result) => {
+                    return globalClient.markets.listInvestibleTemplates(globalMarketId);
+                }).then((result) => {
+                    return globalClient.markets.listInvestiblePresences(globalMarketId);
+                }).then((result) => {
+                    return globalClient.markets.listTrending(globalMarketId, '2015-01-22T03:23:26Z');
+                }).then((result) => {
+                    return globalClient.markets.listUserInvestments(globalMarketId, userId, 5, 20);
+                }).then((result) => {
+                    return globalClient.markets.listInvestibles(globalMarketId, 'hello', 5, 20);
+                }).then((result) => {
+                    return globalClient.markets.listCategoriesInvestibles(globalMarketId, 'fish', 5, 20);
+                }).then((result) => {
+                    return globalClient.markets.listInvestibleInvestments(globalMarketId, marketInvestibleId, 5, 20, '2015-01-22T03:23:26Z');
+                }).catch(function (error) {
+                    console.log(error);
+                });
             });
         });
     });
@@ -211,6 +265,3 @@ let _arrayEquals = (arr1, arr2) => {
     });
     return true;
 };
-
-
-
