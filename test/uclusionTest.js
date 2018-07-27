@@ -202,7 +202,7 @@ describe('uclusion', () => {
                 console.log(error);
             });
         });
-        describe('#doList', () => {
+        describe('#doList and resolve category', () => {
             it('should list without error', () => {
                 let userId = '6636f2b2-d1a0-4ed7-ad98-0427a6e7e483';
                 let promise = uclusion.constructClient(configuration);
@@ -239,6 +239,11 @@ describe('uclusion', () => {
                     return globalClient.markets.listCategoriesInvestibles(globalMarketId, 'fish', 5, 20);
                 }).then((result) => {
                     return globalClient.markets.listInvestibleInvestments(globalMarketId, marketInvestibleId, 5, 20, '2015-01-22T03:23:26Z');
+                }).then((response) => {
+                    return globalClient.markets.resolveCategory(globalMarketId, 'fish', 1000);
+                }).then((response) => {
+                    assert(response.success_message === 'Category being resolved');
+                    return globalClient.markets.getMarketInvestible(globalMarketId, marketInvestibleId);
                 }).catch(function (error) {
                     console.log(error);
                 });
