@@ -250,7 +250,9 @@ function Markets(client){
     };
 }
 
-module.exports = (client) => {
+let configuredMarkets = (client) => {
     let myMarkets = new Markets(client);
     return myMarkets;
 };
+
+export default configuredMarkets;

@@ -1,12 +1,14 @@
-let assert = require('assert');
+import assert from 'assert';
 
 let testConfig = {
     baseURL: 'http://localhost:3001',
     headers: {}
 };
 
-let client = require('../../components/axiosClient')(testConfig);
-let users = require('../../components/users.js')(client);
+import aclient from '../../components/axiosClient';
+let client = aclient(testConfig);
+import ausers from '../../components/users.js'
+let users = ausers(client);
 
 //set up a simple http server for our tests
 const express = require('express');

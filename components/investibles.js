@@ -55,7 +55,9 @@ function Investibles(client){
 
 }
 
-module.exports = (client) => {
+let configuredInvestibles = (client) => {
     let myInvestibles = new Investibles(client);
     return myInvestibles;
 };
+
+export default configuredInvestibles;

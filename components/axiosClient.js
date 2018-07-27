@@ -1,5 +1,4 @@
-let axios = require('axios');
-
+import axios from 'axios';
 
 function AxiosClient(configuration) {
     const defaultHeaders = {
@@ -67,7 +66,10 @@ function AxiosClient(configuration) {
     }
 }
 
-module.exports = function (configuration) {
+
+let configuredClient = function (configuration) {
     let myClient = new AxiosClient(configuration);
     return myClient;
 };
+
+export default configuredClient;

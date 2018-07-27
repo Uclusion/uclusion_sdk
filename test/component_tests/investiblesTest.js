@@ -5,8 +5,10 @@ let testConfig = {
     headers: {}
 };
 
-let client = require('../../components/axiosClient')(testConfig);
-let investibles = require('../../components/investibles.js')(client);
+import aclient from '../../components/axiosClient';
+let client = (testConfig);
+import inv from '../../components/investibles.js';
+let investibles = inv(client);
 
 //set up a simple http server for our tests
 const express = require('express');

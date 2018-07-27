@@ -41,7 +41,9 @@ function Users(client) {
     }
 }
 
-module.exports = (client) => {
+let configuredUsers = (client) => {
     let myUsers = new Users(client);
     return myUsers;
 };
+
+export default configuredUsers;

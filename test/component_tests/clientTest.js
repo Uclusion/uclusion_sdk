@@ -1,11 +1,12 @@
-let assert = require('assert');
+import assert from 'assert';
 
 let testConfig = {
     baseURL: 'https://www.google.com',
     headers: {}
 };
 
-let client = require('../../components/axiosClient.js')(testConfig);
+import aclient from '../../components/axiosClient.js';
+let client = aclient(testConfig);
 //console.log(client);
 
 describe('Client', () => {
