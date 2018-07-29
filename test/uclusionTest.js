@@ -1,8 +1,7 @@
-import assert from 'assert';
+let assert = require('assert');
 
-import uclusion from '../uclusion.js';
+let uclusion = require('../index.js');
 
-console.log(uclusion);
 const configuration = {
     baseURL: 'https://rhilzl244c.execute-api.us-west-2.amazonaws.com/dev',
     username: 'testeruclusion@gmail.com',

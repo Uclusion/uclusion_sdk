@@ -1,6 +1,15 @@
-global.fetch = require('node-fetch') // dirty hack to fix AWS Cognito bug
+//hack around amazon not having fetch, and running in node and EC6 env
+import fetch from 'node-fetch';
+if(global){
+    global.fetch = fetch;
+}
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
+
+import a_users from './components/users.js';
+import a_markets from './components/markets.js';
+import a_investibles from './components/investibles.js';
+import a_client from './components/axiosClient.js';
 
 function Uclusion() {
 
@@ -26,12 +35,12 @@ function Uclusion() {
      * @returns an instantiated api client.
      */
     let setupClient = (apiBaseUrl, userToken) => {
-        let transportClient = require('./components/axiosClient.js')({baseURL: apiBaseUrl});
+        let transportClient = a_client({baseURL: apiBaseUrl});
         transportClient.setAuthorization(userToken);
         let apiClient = {
-            users: require('./components/users.js')(transportClient),
-            markets: require('./components/markets.js')(transportClient),
-            investibles: require('./components/investibles.js')(transportClient)
+            users: a_users(transportClient),
+            markets: a_markets(transportClient),
+            investibles: a_investibles(transportClient)
         };
        // console.log(apiClient.user);
         return apiClient;
@@ -87,6 +96,7 @@ function Uclusion() {
             return sessionPromise;
           }).then((session) => {
               const token = session.getIdToken().getJwtToken();
+//	      console.log("My token:" + token);
               return setupClient(configuration.baseURL, token);
             });
 
