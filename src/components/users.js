@@ -45,5 +45,5 @@ let configuredUsers = (client) => {
     let myUsers = new Users(client);
     return myUsers;
 };
-
+//module.exports = configuredUsers;
 export default configuredUsers;

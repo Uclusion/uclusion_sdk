@@ -9,7 +9,7 @@ const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 import a_users from './components/users.js';
 import a_markets from './components/markets.js';
 import a_investibles from './components/investibles.js';
-import a_client from './components/axiosClient.js';
+import a_client from './components/fetchClient.js';
 
 function Uclusion() {
 
@@ -96,7 +96,7 @@ function Uclusion() {
             return sessionPromise;
           }).then((session) => {
               const token = session.getIdToken().getJwtToken();
-//	      console.log("My token:" + token);
+              //console.log("My token:" + token);
               return setupClient(configuration.baseURL, token);
             });
 

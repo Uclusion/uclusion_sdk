@@ -1,4 +1,4 @@
-import axios from 'axios/dist/axios.js';
+import axios from 'axios';
 
 function AxiosClient(configuration) {
     const defaultHeaders = {

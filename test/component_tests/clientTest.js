@@ -5,7 +5,7 @@ let testConfig = {
     headers: {}
 };
 
-import aclient from '../../components/axiosClient.js';
+import aclient from '../../components/fetchClient.js';
 let client = aclient(testConfig);
 //console.log(client);
 

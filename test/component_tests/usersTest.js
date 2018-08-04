@@ -1,13 +1,18 @@
-import assert from 'assert';
+let fetch = require('node-fetch');
+if(global){
+    global.fetch = fetch;
+}
+
+let assert = require('assert');
 
 let testConfig = {
     baseURL: 'http://localhost:3001',
     headers: {}
 };
 
-import aclient from '../../components/axiosClient';
+let aclient = require('../../src/components/fetchClient.js');
 let client = aclient(testConfig);
-import ausers from '../../components/users.js'
+let ausers = require('../../src/components/users.js');
 let users = ausers(client);
 
 //set up a simple http server for our tests
@@ -43,7 +48,6 @@ describe('Users', () => {
         it('should fetch user without error', () => {
             let promise = users.get('1234');
             promise.then((result) => {
-                //console.log(result);
                 assert(result.id == '1234', "Client should have returned 1234 as it's ID");
             }).catch((error) => {
                 console.error(error);
