@@ -1,10 +1,11 @@
 //hack around amazon not having fetch, and running in node and EC6 env
-import fetch from 'node-fetch';
+/*import fetch from 'node-fetch';
 if(global){
     global.fetch = fetch;
-}
-const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
-const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
+}*/
+//const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
+//const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 
 import a_users from './components/users.js';
 import a_markets from './components/markets.js';
@@ -114,4 +115,5 @@ function Uclusion() {
     };
 }
 
-module.exports = new Uclusion();
+let uclusion = new Uclusion();
+export {uclusion};
