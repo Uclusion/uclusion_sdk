@@ -110,6 +110,12 @@ function Markets(client){
         return updatePromise.then(dataResolver);
     };
 
+    this.deleteMarket = function(marketId){
+        const path = 'markets/' + marketId;
+        const getPromise = client.doDelete(path, undefined, undefined);
+        return getPromise.then(dataResolver);
+    };
+
     /**
      * Resolves the given category in the market.
      * @param marketId the id of the market the category resides in

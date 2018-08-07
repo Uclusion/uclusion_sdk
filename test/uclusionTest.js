@@ -250,6 +250,30 @@ describe('uclusion', () => {
             });
         });
     });
+    // describe('#doDelete market', () => {
+    //     it('should create market without error', () => {
+    //         let userId = '6636f2b2-d1a0-4ed7-ad98-0427a6e7e483';
+    //         let promise = uclusion.constructClient(configuration);
+    //         let globalClient;
+    //         let globalMarketId;
+    //         promise.then((client) => {
+    //             globalClient = client;
+    //             return client.markets.createMarket(marketOptions);
+    //         }).then((response) => {
+    //             globalMarketId = response.market_id;
+    //             console.log(globalMarketId);
+    //             return globalClient.markets.deleteMarket(globalMarketId);
+    //         }).then(_delayPromise(30000)
+    //         ).then((response) => {
+    //             console.log(response);
+    //             return globalClient.markets.getMarket(globalMarketId);
+    //         }).then((market) => {
+    //             console.log(market);
+    //         }).catch(function (error) {
+    //             console.log(error);
+    //         });
+    //     });
+    // });
 });
 
 let _getPresenceFromPresences = (market_id, market_presences) => {
@@ -269,4 +293,14 @@ let _arrayEquals = (arr1, arr2) => {
             return false;
     });
     return true;
+};
+
+let _delayPromise = function(duration) {
+    return function(){
+        return new Promise(function(resolve, reject){
+            setTimeout(function(){
+                resolve();
+            }, duration)
+        });
+    };
 };

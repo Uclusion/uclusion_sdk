@@ -21,7 +21,8 @@
     "ghooks": "latest",
     "mocha": "^5.2.0",
     "polyfill": "latest",
-    "webpack": "latest"
+    "webpack": "latest",
+    "esm": "latest"
   },
   "scripts": {
     "test": "mocha test/component_tests"
