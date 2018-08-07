@@ -1,18 +1,19 @@
+
 let fetch = require('node-fetch');
 if(global){
     global.fetch = fetch;
 }
 
-let assert = require('assert');
+import assert from 'assert';
 
 let testConfig = {
     baseURL: 'http://localhost:3001',
     headers: {}
 };
 
-let aclient = require('../../src/components/fetchClient.js');
+import aclient from '../../src/components/fetchClient.js';
 let client = aclient(testConfig);
-let ausers = require('../../src/components/users.js');
+import ausers from '../../src/components/users.js';
 let users = ausers(client);
 
 //set up a simple http server for our tests

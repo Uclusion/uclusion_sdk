@@ -11,14 +11,30 @@ function FetchClient(configuration){
 
     let actualHeaders = Object.assign(defaultHeaders, configuration.headers);
     configuration.headers = actualHeaders;
+
+    let isJson = (response) => {
+        for (var pair of response.headers.entries()){
+            let key = pair[0];
+            let value = pair[1];
+            if (key.toLowerCase() == 'content-type' && value.toLowerCase().indexOf("json") != -1){
+                return true;
+            }
+        }
+        return false;
+    };
     let responseHandler = (response) => {
         if(!response.ok){
             throw response; //give the response to upstream code
         }
-        //massage things to be same standard as other clients
-        let json = response.json().then((json) => {return {data: json}});
-
-        return json;
+        if(isJson(response)) {
+            //massage things to be same standard as other clients
+            let json = response.json().then((json) => {
+                return {status: response.status, data: json}
+            });
+            return json;
+        }
+        //todo make sure it's actually text
+        return response.text().then((text) => {return {status: response.status, body:text}});
     };
 
     let urlConstructor = (path, queryParams) => {
@@ -110,5 +126,4 @@ let configuredClient = function (configuration) {
     return myClient;
 };
 
-//module.exports = configuredClient;
 export default configuredClient;

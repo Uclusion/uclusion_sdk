@@ -1,3 +1,4 @@
+
 import assert from 'assert';
 
 let testConfig = {
@@ -5,9 +6,9 @@ let testConfig = {
     headers: {}
 };
 
-import aclient from '../../components/axiosClient';
-let clinet = aclient(testConfig);
-import amarkets from '../../components/markets.js';
+import aclient from '../../src/components/fetchClient.js';
+let client = aclient(testConfig);
+import amarkets from '../../src/components/markets.js';
 let markets = amarkets(client);
 
 //set up a simple http server for our tests
@@ -262,10 +263,11 @@ describe('Market', () => {
 
     describe('#doListCategoriesInvestibles', () => {
         it('should get  the investible without error', () =>{
-            let promise = markets.listCategoriesInvestibles('stocknasdaq', 3, 20);
+            let promise = markets.listCategoriesInvestibles('stocknasdaq', 3, 20, 25);
             promise.then((result) => {
-                assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
-                assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+                assert(result.test_query.category == 3, 'Should have returned proper category');
+                assert(result.test_query.currentPage == 20, 'Should have returned proper page number');
+                assert(result.test_query.pageSize == 25, 'Should have returned proper page size');
             }).catch((error) => {
                 console.error(error);
             });

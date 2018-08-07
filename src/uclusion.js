@@ -4,7 +4,7 @@ if(global){
     global.fetch = fetch;
 }*/
 //const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
-import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 //const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 
 import a_users from './components/users.js';
@@ -62,12 +62,12 @@ function Uclusion() {
                 Username: username,
                 Password: password
             };
-            const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+            const authenticationDetails = new AuthenticationDetails(authenticationData);
             const userData = {
                 Username: username,
                 Pool: cognitoPool
             };
-            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+            const cognitoUser = new CognitoUser(userData);
             cognitoUser.authenticateUser(authenticationDetails, {
                 onSuccess: (result) => { resolve(result) },
                 onFailure: (error) => { reject(error) },
@@ -116,4 +116,4 @@ function Uclusion() {
 }
 
 let uclusion = new Uclusion();
-export {uclusion};
+export default uclusion;

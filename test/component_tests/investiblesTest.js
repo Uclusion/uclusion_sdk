@@ -1,3 +1,4 @@
+
 let assert = require('assert');
 
 let testConfig = {
@@ -5,9 +6,9 @@ let testConfig = {
     headers: {}
 };
 
-import aclient from '../../components/axiosClient';
-let client = (testConfig);
-import inv from '../../components/investibles.js';
+import aclient from '../../src/components/fetchClient.js';
+let client = aclient(testConfig);
+import inv from '../../src/components/investibles.js';
 let investibles = inv(client);
 
 //set up a simple http server for our tests
@@ -45,10 +46,9 @@ describe('Investibles', () => {
         it('should create investible without error', () => {
             let promise = investibles.create('investiblesName', 'this is description', ['foo', 'bar']);
             promise.then((result) => {
-                //console.log(result);
                 assert(result.test_body.name === 'investiblesName', 'Did not pass the correct name in body');
                 assert(result.test_body.description === 'this is description', 'Did not pass the correct description in body');
-                assert(JSON.stringify(result.test_body.categoryList) === JSON.stringify(['foo', 'bar']), 'Did not pass the correct category list in body');
+                assert(JSON.stringify(result.test_body.category_list) === JSON.stringify(['foo', 'bar']), 'Did not pass the correct category list in body');
             }).catch((error) => {
                 console.error(error);
             });
@@ -62,7 +62,7 @@ describe('Investibles', () => {
                 //console.log(result);
                 assert(result.test_body.name === 'investiblesName', 'Did not pass the correct name in body');
                 assert(result.test_body.description === 'this is description', 'Did not pass the correct description in body');
-                assert(JSON.stringify(result.test_body.categoryList) === JSON.stringify(['foo', 'bar']), 'Did not pass the correct category list in body');
+                assert(JSON.stringify(result.test_body.category_list) === JSON.stringify(['foo', 'bar']), 'Did not pass the correct category list in body');
             }).catch((error) => {
                 console.error(error);
             });
