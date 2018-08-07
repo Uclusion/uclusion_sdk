@@ -8,7 +8,7 @@
   "main": "uclusion.js",
   "dependencies": {
     "amazon-cognito-identity-js": "^2.0.11",
-    "axios": "^0.18.0",
+    "esm": "^3.0.74",
     "json-loader": "latest",
     "node-fetch": "latest"
   },
@@ -25,6 +25,6 @@
     "esm": "latest"
   },
   "scripts": {
-    "test": "mocha test/component_tests"
+    "test": "mocha -r esm --recursive test"
   }
 }

@@ -1,3 +1,4 @@
+
 import assert from 'assert';
 
 let testConfig = {
@@ -5,7 +6,7 @@ let testConfig = {
     headers: {}
 };
 
-import aclient from '../../components/axiosClient.js';
+import aclient from '../../src/components/fetchClient.js';
 let client = aclient(testConfig);
 //console.log(client);
 

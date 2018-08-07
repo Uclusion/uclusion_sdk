@@ -63,7 +63,7 @@ function AxiosClient(configuration) {
 
     this.setAuthorization = function(token) {
         instance.defaults.headers.common['Authorization'] = token;
-    }
+    };
 }
 
 
