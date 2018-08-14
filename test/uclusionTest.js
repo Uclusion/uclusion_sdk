@@ -3,7 +3,7 @@ import assert from 'assert'
 import uclusion from '../src/uclusion.js';
 
 const configuration = {
-    baseURL:  'https://dev.api.uclusion.com',
+    baseURL:  'https://dev.api.uclusion.com/v1',
     username: 'testeruclusion@gmail.com',
     password: 'Uclusi0n_test',
     poolId: 'us-west-2_Z3vZuhzd2',
