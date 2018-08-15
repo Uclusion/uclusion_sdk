@@ -53,6 +53,18 @@ function Investibles(client){
         return getPromise.then(dataResolver);
     };
 
+    /**
+     * Deletes investible with given id
+     * @param investibleId id of the investible
+     * @returns {*|PromiseLike<T>|Promise<T>} result of deleting investible
+     */
+    this.delete = function(investibleId)
+    {
+        const path = 'investibles/' + investibleId;
+        const getPromise = client.doDelete(path);
+        return getPromise.then(dataResolver);
+    };
+
 }
 
 let configuredInvestibles = (client) => {

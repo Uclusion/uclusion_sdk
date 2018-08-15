@@ -3,7 +3,7 @@ import assert from 'assert'
 import uclusion from '../src/uclusion.js';
 
 const configuration = {
-    baseURL:  'https://rhilzl244c.execute-api.us-west-2.amazonaws.com/dev',//'http://localhost:8081',
+    baseURL:  'https://dev.api.uclusion.com/v1',
     username: 'testeruclusion@gmail.com',
     password: 'Uclusi0n_test',
     poolId: 'us-west-2_Z3vZuhzd2',
@@ -35,6 +35,7 @@ const updateFish = {
     description: 'possibly poisonous',
     category_list: ['poison', 'chef']
 };
+let marketIdList = [];
 describe('uclusion', () => {
     describe('#doLogin and update user', () => {
         it('should login and pull without error', () => {
@@ -97,6 +98,8 @@ describe('uclusion', () => {
                 let userPresence = _getPresenceFromPresences(globalMarketId,user.market_presences);
                 assert(userPresence.following === true, 'Following should be true');
                 assert(userPresence.quantity === 11000, 'Quantity should be 11000')
+            }).then((response) => {
+                return globalClient.markets.deleteMarket(globalMarketId);
             }).catch(function(error) {
                 console.log(error);
             });
@@ -129,6 +132,7 @@ describe('uclusion', () => {
                 assert(investible.name === 'tuna', 'name not passed on correctly');
                 assert(investible.description === 'good for sandwich', 'description not passed on correctly');
                 assert(_arrayEquals(investible.category_list, ['can', 'sandwich']), 'category list not passed on correctly');
+                return globalClient.investibles.delete(globalInvestibleId);
             }).catch(function(error) {
                 console.log(error);
             });
@@ -198,6 +202,9 @@ describe('uclusion', () => {
                 //console.log(investible);
                 assert(investible.closed === true, 'investible should be closed');
                 assert(investible.marked_resolved_by === userId, 'resolved by user id is incorrect');
+                return globalClient.investibles.delete(globalInvestibleId);
+            }).then((response) => {
+                return globalClient.markets.deleteMarket(globalMarketId);
             }).catch(function(error) {
                 console.log(error);
             });
@@ -244,6 +251,10 @@ describe('uclusion', () => {
                 }).then((response) => {
                     assert(response.success_message === 'Category being resolved');
                     return globalClient.markets.getMarketInvestible(globalMarketId, marketInvestibleId);
+                }).then((response) => {
+                    return globalClient.investibles.delete(globalInvestibleId);
+                }).then((response) => {
+                    return globalClient.markets.deleteMarket(globalMarketId);
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -269,4 +280,14 @@ let _arrayEquals = (arr1, arr2) => {
             return false;
     });
     return true;
+};
+
+let _delayPromise = function(duration) {
+    return function(){
+        return new Promise(function(resolve, reject){
+            setTimeout(function(){
+                resolve();
+            }, duration)
+        });
+    };
 };
