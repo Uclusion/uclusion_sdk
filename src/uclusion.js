@@ -1,6 +1,6 @@
 //hack around amazon not having fetch, and running in node and EC6 env
-/*import fetch from 'node-fetch';
-if(global){
+/*if(global){
+    import fetch from 'node-fetch';
     global.fetch = fetch;
 }*/
 //const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
@@ -32,19 +32,21 @@ function Uclusion() {
     /**
      * Constructs an api client from a given base endpoint url and a user token gotten from cognito
      * @param apiBaseUrl the base url of the API endpoint
-     * @param userToken the user's JWT token obtained from cognito
+     * @param authorizer an object that when authorizer.authorize() is called returns the authorization toen
      * @returns an instantiated api client.
      */
-    let setupClient = (apiBaseUrl, userToken) => {
+    this.setupClient = (apiBaseUrl, authorizer) => {
         let transportClient = a_client({baseURL: apiBaseUrl});
-        transportClient.setAuthorization(userToken);
-        let apiClient = {
-            users: a_users(transportClient),
-            markets: a_markets(transportClient),
-            investibles: a_investibles(transportClient)
-        };
-       // console.log(apiClient.user);
-        return apiClient;
+        return authorizer.authorize((result) => {
+            transportClient.setAuthorization(userToken);
+            let apiClient = {
+                users: a_users(transportClient),
+                markets: a_markets(transportClient),
+                investibles: a_investibles(transportClient)
+            };
+            // console.log(apiClient.user);
+            return apiClient;
+        }));
     };
 
     /**
@@ -80,7 +82,7 @@ function Uclusion() {
      * Constructs a cognito client according to the configuration passed in.
      * @param configuration, an object with a poolId, clientId, username, password, and baseURL set
      * @returns {PromiseLike<an> | Promise<an>} A promise that when resolved will return a fully instantiated client
-     */
+
     this.constructClient = (configuration) => {
         const cognitoPool = initializeCognito(configuration.poolId, configuration.clientId);
         const promise = authenticateUser(cognitoPool, configuration.username, configuration.password);
@@ -102,16 +104,14 @@ function Uclusion() {
             });
 
     };
-
+     */
     /**
-     * Constructs a client that has been pre-authorized by an identity provider the configuration.baseURL endpoint will accept, and contains the authorization thereof
+     * Constructs a client that has been pre-authorized by an identity provider the configuration.baseURL endpoint will accept, and contains an authorizer that can authorize the client
      * @param configuration an object with a baseURL and authorizationToken parameter set.
      * @returns A promise that when resolved will be a fully instantiated client
      */
-    this.constructPreAuthenticatedClient = (configuration) => {
-        return new Promise((resolve, reject) => {
-            resolve(setupClient(configuration.baseURL, configuration.authorizationToken));
-        });
+    this.constructClient = (configuration) => {
+        return setupClient(configuration);
     };
 }
 

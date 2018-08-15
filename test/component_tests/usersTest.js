@@ -1,9 +1,3 @@
-
-let fetch = require('node-fetch');
-if(global){
-    global.fetch = fetch;
-}
-
 import assert from 'assert';
 
 let testConfig = {
