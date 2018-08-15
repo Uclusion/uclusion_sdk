@@ -65,3 +65,6 @@ typings/
 
 #no package log
 package-lock.json
+
+#no dist
+dist/
