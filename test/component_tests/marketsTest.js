@@ -1,4 +1,4 @@
-
+;
 import assert from 'assert';
 
 let testConfig = {

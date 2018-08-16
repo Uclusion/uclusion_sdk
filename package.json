@@ -6,14 +6,14 @@
   ],
   "version": "0.0.1",
   "main": "./src/uclusion.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "esm": "^3.0.74",
     "express": "^4.16.3",
     "ghooks": "latest",
     "mocha": "^5.2.0",
-    "webpack": "latest"
+    "webpack": "latest",
+    "node-fetch": "latest"
   },
   "scripts": {
     "test": "mocha -r esm --recursive test",

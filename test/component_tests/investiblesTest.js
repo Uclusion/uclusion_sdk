@@ -1,4 +1,3 @@
-
 let assert = require('assert');
 
 let testConfig = {
