@@ -1,7 +1,10 @@
-import fetch from 'node-fetch';
+//npm stuff for node test env
+let fetch = require('node-fetch');
+global.fetch = fetch;
+
 import assert from 'assert';
 
-let testConfig = {
+let testConfig  = {
     baseURL: 'http://localhost:3001',
     headers: {}
 };
