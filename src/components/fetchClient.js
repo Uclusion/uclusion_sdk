@@ -3,9 +3,10 @@ function FetchClient(configuration){
 
     const defaultHeaders = {
         'Content-Type': 'application/json;charset=UTF-8',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        // If use these then need to do CORs pre-flight and anyway api gateway should not cache
+        // 'Pragma': 'no-cache',
+        // 'Cache-Control': 'no-cache, no-store, must-revalidate',
+        // 'Expires': '0',
         'Accept' : 'application/json, text/plain, */*'
     };
 
