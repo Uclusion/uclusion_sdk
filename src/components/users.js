@@ -16,12 +16,15 @@ function Users(client) {
     };
 
     /**
-     * Gets a user's definition given it's ID
-     * @param userId
+     * Gets a user's definition given it's ID or null for invoking user
+     * @param userId which can be null to get yourself
      * @returns {PromiseLike<T> | Promise<T>} the user's information
      */
     this.get = function (userId) {
-        const path = 'users/' + userId;
+        let path = 'users/';
+        if (userId) {
+            path += userId;
+        }
         const getPromise = client.doGet(path);
         return getPromise.then(dataResolver);
     };
