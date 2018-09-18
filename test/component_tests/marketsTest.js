@@ -106,6 +106,10 @@ app.get('/markets/barron/list', (request, response) => {
     response.json({type: 'userInvestments', test_query: request.query});
 });
 
+app.get('/markets/fx/list', (request, response) => {
+    response.json({type: 'teams', test_query: request.query});
+});
+
 describe('Market', () => {
     before(() => {
         server.listen(port);
@@ -343,6 +347,18 @@ describe('Market', () => {
                 assert(result.test_query.userId === 'daniel', 'Should have returned proper user id');
                 assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
                 assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+
+    describe('#doListUserInvestments', () => {
+        it('should get teams', () =>{
+            let promise = markets.listTeams('fx');
+            promise.then((result) => {
+                assert(result.test_query.type === 'teams');
             }).catch((error) => {
                 console.error(error);
             });
