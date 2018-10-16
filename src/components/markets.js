@@ -70,7 +70,6 @@ function Markets(client){
      *  <li>follow_default: boolean</li>
      *  <li>trending_window: number</li>
      *  <li>manual_roi: boolean</li>
-     *  <li>quantity: number</li>
      * </ul>
      * @param marketOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
