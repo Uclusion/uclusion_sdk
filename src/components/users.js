@@ -27,7 +27,7 @@ function Users(client) {
         if (userId) {
             path += userId;
         }
-        queryParams = {};
+        let queryParams = {};
         if (marketId) {
             queryParams.marketId = marketId;
         }
@@ -54,8 +54,7 @@ function Users(client) {
 }
 
 let configuredUsers = (client) => {
-    let myUsers = new Users(client);
-    return myUsers;
+    return new Users(client);
 };
 //module.exports = configuredUsers;
 export default configuredUsers;
