@@ -37,23 +37,24 @@ function Markets(client){
       * Creates an investment in the given investible and market with the specified number
       * of idea ideaShares
       * @param marketId the id of the market to make the investment inspect
+      * @param teamId the id of the team making the investment
       * @param investibleId the id of the investible to invest inspect
       * @param ideaSharesQuantity the number of idea shares to investible
       * @returns {PromiseLike<T> | Promise<T>} the result of the investment
       */
-    this.createInvestment = function(marketId, investibleId, ideaSharesQuantity){
+    this.createInvestment = function(marketId, teamId, investibleId, ideaSharesQuantity){
         const body = {
             quantity: ideaSharesQuantity,
             investible_id: investibleId
         };
-        const path = 'markets/' + marketId + '/investments';
+        const path = 'markets/' + marketId + 'teams/' + teamId + '/invest';
         const createPromise = client.doPost(path, undefined, body);
         return createPromise.then(dataResolver);
     };
     /**
       * Deletes an investment in the given investible and market
       * @param marketId the id of the market to make the investment inspect
-      * @param investibleId the id of the investible to invest inspect
+      * @param investmentId the id of the investible to invest inspect
       * @returns {PromiseLike<T> | Promise<T>} the result of the delete
       */
     this.deleteInvestment = function(marketId, investmentId){
