@@ -116,20 +116,6 @@ function Markets(client){
     };
 
     /**
-     * Resolves the given category in the market.
-     * @param marketId the id of the market the category resides in
-     * @param category the category to resolve
-     * @param quantity above quantity resolved, below will close
-     * @returns {PromiseLike<T> | Promise<T>} the result of the resolve
-     */
-    this.resolveCategory = function(marketId, category, quantity){
-        const path = 'markets/' + marketId + '/resolve';
-        const body = {category: category, quantity: quantity};
-        const resolvePromise = client.doPatch(path, undefined, body);
-        return resolvePromise.then(dataResolver);
-    };
-
-    /**
      * Resolves the given investible within the given market
      * @param marketId the id of the market to resolve the investible in
      * @param investibleId the id of the investible to resolve
