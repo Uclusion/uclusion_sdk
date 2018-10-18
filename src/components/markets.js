@@ -34,6 +34,22 @@ function Markets(client){
     };
 
     /**
+     * Allows a team to make investments in a market
+     * @param marketId the id of the market to make the investment inspect
+     * @param teamId the id of the team making the investment
+     * @param sharedResources whether or not a team spends from a common pool of idea shares
+     * @returns {PromiseLike<T> | Promise<T>} the result of the bind
+     */
+    this.bindTeam = function(marketId, teamId, sharedResources){
+        const body = {
+            shared_resources: sharedResources
+        };
+        const path = 'markets/' + marketId + 'teams/' + teamId + '/bind';
+        const createPromise = client.doPost(path, undefined, body);
+        return createPromise.then(dataResolver);
+    };
+
+    /**
       * Creates an investment in the given investible and market with the specified number
       * of idea ideaShares
       * @param marketId the id of the market to make the investment inspect
