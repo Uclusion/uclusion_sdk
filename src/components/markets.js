@@ -64,7 +64,7 @@ function Markets(client){
         const body = {
             shared_resources: sharedResources
         };
-        const path = 'markets/' + marketId + 'teams/' + teamId + '/bind';
+        const path = 'markets/' + marketId + '/teams/' + teamId + '/bind';
         const createPromise = client.doPost(path, undefined, body);
         return createPromise.then(dataResolver);
     };
@@ -83,7 +83,7 @@ function Markets(client){
             quantity: ideaSharesQuantity,
             investible_id: investibleId
         };
-        const path = 'markets/' + marketId + 'teams/' + teamId + '/invest';
+        const path = 'markets/' + marketId + '/teams/' + teamId + '/invest';
         const createPromise = client.doPost(path, undefined, body);
         return createPromise.then(dataResolver);
     };
