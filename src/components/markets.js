@@ -34,6 +34,24 @@ function Markets(client){
     };
 
     /**
+     * Grants an existing user and adds user to the market. If not existing or need email sent then use invite method
+     * @param marketId the market to grant the idea shares in
+     * @param teamId Team to use in defining the users market capability
+     * @param userId the user to grant them to - must be existing already for this method
+     * @param ideaSharesQuantity the quantity of idea shares to grant
+     * @returns {PromiseLike<T> | Promise<T>} the result of the grant
+     */
+    this.grantAddExistingUserToMarket = function(marketId, teamId, userId, ideaSharesQuantity){
+        const body = {
+            quantity: ideaSharesQuantity,
+            team_id: teamId
+        };
+        const path = 'markets/' + marketId + '/users/' + userId + '/grant';
+        const grantPromise = client.doPatch(path, undefined, body);
+        return grantPromise.then(dataResolver);
+    };
+
+    /**
      * Allows a team to make investments in a market
      * @param marketId the id of the market to make the investment inspect
      * @param teamId the id of the team making the investment
