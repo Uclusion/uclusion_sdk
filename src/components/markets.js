@@ -4,18 +4,19 @@ function Markets(client){
     /**
      * Invites a user, identified by email, to the given market, and assigns them a quantity of idea shares
      * @param marketId the market to invite the user to
+     * @param teamId Team to add user to
      * @param email the email of the user to inviter
      * @param ideaSharesQuantity How many idea shares to grant the user in marketId
      * @param isAdmin Whether or not the invited user should be made an admin
      * @returns the result of inviting the user
      */
-    this.invite = function(marketId, email, ideaSharesQuantity, isAdmin){
+    this.invite = function(marketId, teamId, email, ideaSharesQuantity, isAdmin){
         const body = {
             email: email,
             quantity: ideaSharesQuantity,
             is_admin: isAdmin
         };
-        const path = 'markets/' + marketId + '/invite';
+        const path = 'markets/' + marketId + '/teams/' + teamId + '/invite';
         const invitePromise = client.doPost(path, undefined, body);
         return invitePromise.then(dataResolver);
     };
