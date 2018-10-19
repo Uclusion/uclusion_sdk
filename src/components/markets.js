@@ -39,12 +39,14 @@ function Markets(client){
      * @param teamId Team to use in defining the users market capability
      * @param userId the user to grant them to - must be existing already for this method
      * @param ideaSharesQuantity the quantity of idea shares to grant
+     * @param isAdmin Whether to add the user to the market as an admin
      * @returns {PromiseLike<T> | Promise<T>} the result of the grant
      */
-    this.grantAddExistingUserToMarket = function(marketId, teamId, userId, ideaSharesQuantity){
+    this.grantAddExistingUserToMarket = function(marketId, teamId, userId, ideaSharesQuantity, isAdmin){
         const body = {
             quantity: ideaSharesQuantity,
-            team_id: teamId
+            team_id: teamId,
+            is_admin: isAdmin
         };
         const path = 'markets/' + marketId + '/users/' + userId + '/grant';
         const grantPromise = client.doPatch(path, undefined, body);
