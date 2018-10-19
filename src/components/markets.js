@@ -4,13 +4,16 @@ function Markets(client){
     /**
      * Invites a user, identified by email, to the given market, and assigns them a quantity of idea shares
      * @param marketId the market to invite the user to
-     * @param email the email of the user to invitere
+     * @param email the email of the user to inviter
+     * @param ideaSharesQuantity How many idea shares to grant the user in marketId
+     * @param isAdmin Whether or not the invited user should be made an admin
      * @returns the result of inviting the user
      */
-    this.invite = function(marketId, email, ideaSharesQuantity){
+    this.invite = function(marketId, email, ideaSharesQuantity, isAdmin){
         const body = {
             email: email,
-            quantity: ideaSharesQuantity
+            quantity: ideaSharesQuantity,
+            is_admin: isAdmin
         };
         const path = 'markets/' + marketId + '/invite';
         const invitePromise = client.doPost(path, undefined, body);
@@ -113,8 +116,7 @@ function Markets(client){
      */
     this.createMarket = function(marketOptions){
         const path = 'markets';
-        const body = marketOptions;
-        const createPromise = client.doPost(path, undefined, body);
+        const createPromise = client.doPost(path, undefined, marketOptions);
         return createPromise.then(dataResolver);
     };
 
@@ -136,13 +138,13 @@ function Markets(client){
      *  <li>description: string, <b>required</b></li>
      *  <li>trending_window: number, <b>required</b></li>
      * </ul>
-     * @param marketOptions the options for the market
+     * @param marketId Market to update
+     * @param marketUpdateOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the update
      */
     this.updateMarket = function(marketId, marketUpdateOptions){
         const path = 'markets/' + marketId;
-        const body = marketUpdateOptions;
-        const updatePromise = client.doPatch(path, undefined, body);
+        const updatePromise = client.doPatch(path, undefined, marketUpdateOptions);
         return updatePromise.then(dataResolver);
     };
 
@@ -285,8 +287,7 @@ function Markets(client){
 }
 
 let configuredMarkets = (client) => {
-    let myMarkets = new Markets(client);
-    return myMarkets;
+    return new Markets(client);
 };
 
 export default configuredMarkets;
