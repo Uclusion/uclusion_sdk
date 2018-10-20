@@ -19,6 +19,7 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const server = require('http').createServer(app);
+const server6 = require('http').createServer(app);
 const  bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
@@ -36,11 +37,13 @@ app.patch('/users', (request, response) => {
 
 describe('Users', () => {
     before(() => {
-        server.listen(port);
+        server.listen(port, '127.0.0.1');
+        server6.listen(port, '::1');
     });
 
     after(() => {
         server.close();
+        server6.close();
     });
 
     describe('#doGet', () => {

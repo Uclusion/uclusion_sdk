@@ -19,10 +19,11 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const server = require('http').createServer(app);
+const server6 = require('http').createServer(app);
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-app.post('/markets/h3x3n/invite', (request, response) => {
+app.post('/markets/h3x3n/teams/devil/invite', (request, response) => {
     response.json({success_message: 'User invitation being processed', test_body: request.body});
 });
 
@@ -112,16 +113,18 @@ app.get('/markets/fx/list', (request, response) => {
 
 describe('Market', () => {
     before(() => {
-        server.listen(port);
+        server.listen(port, '127.0.0.1');
+        server6.listen(port, '::1');
     });
 
     after(() => {
         server.close();
+        server6.close();
     });
 
     describe('#doInvite', () => {
         it('should invite user without error', () => {
-            let promise = markets.invite('h3x3n', 'me@example.com', 100);
+            let promise = markets.invite('h3x3n', 'devil', 'me@example.com', 100);
             promise.then((result) => {
                 //console.log(result);
                 assert(result.success_message === 'User invitation being processed', 'Should have succeded in invite');
@@ -196,16 +199,6 @@ describe('Market', () => {
             promise.then((result) => {
                 assert(result.id === 'fish');
                 assert(result.test_body.description === marketUpdateOptions.description, 'Market Update Options should match request body');
-            });
-        });
-    });
-
-    describe('#doResolveCategory', () => {
-        it('should resolve the market category without error', () =>{
-            let promise = markets.resolveCategory('oil', 'brent crude');
-            promise.then((result) => {
-                assert(result.success_message === 'Category being resolved');
-                assert(result.test_body.category === 'brent crude', 'Category to resolve should have been in the body');
             });
         });
     });

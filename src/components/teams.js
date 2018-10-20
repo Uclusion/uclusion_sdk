@@ -1,7 +1,5 @@
 function Users(client) {
 
-    const SUBDOMAIN = 'users';
-
     const dataResolver = (result) => { return result.data };
     /**
      * Updates the current user with the given name
@@ -13,7 +11,7 @@ function Users(client) {
             name: name
         };
         const path = 'users';
-        const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        const updatePromise = client.doPatch(path, undefined, body);
         return updatePromise.then(dataResolver);
     };
 
@@ -36,7 +34,7 @@ function Users(client) {
         if (teamId) {
             queryParams.teamId = teamId;
         }
-        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
+        const getPromise = client.doGet(path, queryParams);
         return getPromise.then(dataResolver);
     };
 
@@ -50,7 +48,7 @@ function Users(client) {
         const body = {
             reason: reason
         };
-        const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, body);
+        const deletePromise = client.doDelete(path, undefined, body);
         return deletePromise.then(dataResolver);
     }
 }

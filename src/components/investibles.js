@@ -1,5 +1,7 @@
 function Investibles(client){
 
+    const SUBDOMAIN = 'investibles';
+
     const dataResolver = (result) => { return result.data };
 
     /**
@@ -17,7 +19,7 @@ function Investibles(client){
             category_list: categoryList
         };
         const path = 'investibles';
-        const createPromise = client.doPost(path, undefined, body);
+        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return createPromise.then(dataResolver);
     };
 
@@ -37,7 +39,7 @@ function Investibles(client){
             category_list: categoryList
         };
         const path = 'investibles/' + investibleId;
-        const updatePromise = client.doPatch(path, undefined, body);
+        const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return updatePromise.then(dataResolver);
     };
 
@@ -49,7 +51,7 @@ function Investibles(client){
     this.get = function(investibleId)
     {
         const path = 'investibles/' + investibleId;
-        const getPromise = client.doGet(path);
+        const getPromise = client.doGet(SUBDOMAIN, path);
         return getPromise.then(dataResolver);
     };
 
@@ -61,7 +63,7 @@ function Investibles(client){
     this.delete = function(investibleId)
     {
         const path = 'investibles/' + investibleId;
-        const getPromise = client.doDelete(path);
+        const getPromise = client.doDelete(SUBDOMAIN, path);
         return getPromise.then(dataResolver);
     };
 

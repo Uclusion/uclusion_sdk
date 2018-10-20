@@ -38,8 +38,12 @@ function FetchClient(configuration){
         return response.text().then((text) => {return {status: response.status, body:text}});
     };
 
-    let urlConstructor = (path, queryParams) => {
+    let urlConstructor = (subdomain, path, queryParams) => {
         let url = new URL(configuration.baseURL + '/' + path);
+        //change the url to the subdomain to enable our endpoint endpoint stuff
+        if(subdomain){
+            url.host = subdomain + '.' + url.host;
+        }
         let search = url.searchParams;
         for(var key in queryParams){
             search.set(key, queryParams[key]);
@@ -60,7 +64,7 @@ function FetchClient(configuration){
      * @param queryParams a query params object representing the query portion of the url
      * @returns a promise which will resolve to the result of the get call
      */
-    this.doGet = function (path, queryParams) {
+    this.doGet = function (subdomain, path, queryParams) {
         let url = urlConstructor(path, queryParams);
         let headers = headersConstructor(configuration.headers);
         let args = {method: 'GET', headers: headers};
@@ -76,8 +80,8 @@ function FetchClient(configuration){
      * @param body any method body relevant to the call
      * @returns a promise which will resolve to the result of the DELETE call
      */
-    this.doDelete = function(path, queryParams) {
-        let url = urlConstructor(path, queryParams);
+    this.doDelete = function(subdomain, path, queryParams) {
+        let url = urlConstructor(subdomain, path, queryParams);
         let args = {method: 'DELETE', headers: configuration.headers};
         let promise = fetch(url, {method: 'DELETE', headers: configuration.headers})
             .then(responseHandler);
@@ -91,8 +95,8 @@ function FetchClient(configuration){
      * @param body any body relevant to the call as a js object
      * @returns a promise which will resolve to the result of the POST call
      */
-    this.doPost = function(path, queryParams, body) {
-        let url = urlConstructor(path, queryParams);
+    this.doPost = function(subdomain, path, queryParams, body) {
+        let url = urlConstructor(subdomain, path, queryParams);
         let headers = headersConstructor(configuration.headers);
         let args = {method: 'POST', headers: headers};
         let promise = fetch(url, {method: 'POST', body: JSON.stringify(body), headers: configuration.headers})
@@ -107,8 +111,8 @@ function FetchClient(configuration){
      * @param body any body relevant to the call
      * @returns a promise which will resolve to the result of the PATCH call
      */
-    this.doPatch = function(path, queryParams, body) {
-        let url = urlConstructor(path, queryParams);
+    this.doPatch = function(subdomain, path, queryParams, body) {
+        let url = urlConstructor(subdomain, path, queryParams);
         let args = {method: 'PATCH', headers: configuration.headers};
         let promise = fetch(url, {method: 'PATCH', body: JSON.stringify(body), headers: configuration.headers})
             .then(responseHandler);
