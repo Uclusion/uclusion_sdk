@@ -1,6 +1,7 @@
 import a_users from './components/users.js';
 import a_markets from './components/markets.js';
 import a_investibles from './components/investibles.js';
+import a_teams from './components/teams';
 import a_client from './components/fetchClient.js';
 
 function Uclusion() {
@@ -20,6 +21,7 @@ function Uclusion() {
                 users: a_users(transportClient),
                 markets: a_markets(transportClient),
                 investibles: a_investibles(transportClient)
+                teams: a_teams(transportClient);
             };
             //console.log(apiClient.user);
             return apiClient;
