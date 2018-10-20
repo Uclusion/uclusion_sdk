@@ -3,25 +3,7 @@ function Markets(client){
     const SUBDOMAIN = 'markets';
 
     const dataResolver = (result) => { return result.data };
-    /**
-     * Invites a user, identified by email, to the given market, and assigns them a quantity of idea shares
-     * @param marketId the market to invite the user to
-     * @param teamId Team to add user to
-     * @param email the email of the user to inviter
-     * @param ideaSharesQuantity How many idea shares to grant the user in marketId
-     * @param isAdmin Whether or not the invited user should be made an admin
-     * @returns the result of inviting the user
-     */
-    this.invite = function(marketId, teamId, email, ideaSharesQuantity, isAdmin){
-        const body = {
-            email: email,
-            quantity: ideaSharesQuantity,
-            is_admin: isAdmin
-        };
-        const path = 'markets/' + marketId + '/teams/' + teamId + '/invite';
-        const invitePromise = client.doPost(SUBDOMAIN, path, undefined, body);
-        return invitePromise.then(dataResolver);
-    };
+
 
     /**
      * Grants the given number of idea shares in the given market to the given user
@@ -59,21 +41,6 @@ function Markets(client){
         return grantPromise.then(dataResolver);
     };
 
-    /**
-     * Allows a team to make investments in a market
-     * @param marketId the id of the market to make the investment inspect
-     * @param teamId the id of the team making the investment
-     * @param sharedResources whether or not a team spends from a common pool of idea shares
-     * @returns {PromiseLike<T> | Promise<T>} the result of the bind
-     */
-    this.bindTeam = function(marketId, teamId, sharedResources){
-        const body = {
-            shared_resources: sharedResources
-        };
-        const path = 'markets/' + marketId + '/teams/' + teamId + '/bind';
-        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
-        return createPromise.then(dataResolver);
-    };
 
     /**
       * Creates an investment in the given investible and market with the specified number
