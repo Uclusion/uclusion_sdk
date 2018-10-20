@@ -18,7 +18,7 @@ function Teams(client) {
             quantity: ideaSharesQuantity,
             is_admin: isAdmin
         };
-        const path = 'teams/' + teamId + '/invite/' + marketId;
+        const path = teamId + '/invite/' + marketId;
         const invitePromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return invitePromise.then(dataResolver);
     };
@@ -35,10 +35,20 @@ function Teams(client) {
         const body = {
             shared_resources: sharedResources
         };
-        const path = 'teams/' + teamId + '/bind/' + marketId;
+        const path = teamId + '/bind/' + marketId;
         const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return createPromise.then(dataResolver);
     };
+
+    this.list = function(userId, marketId) {
+        const body = {};
+        if (marketId) {
+            body.market_id = marketId;
+        }
+        const path = 'list/' + userId;
+        const getPromise = client.doGet(SUBDOMAIN, path, body);
+        return getPromise.then(dataResolver);
+    }
 
 }
 

@@ -6,14 +6,21 @@ function Users(client) {
     /**
      * Updates the current user with the given name
      * @param name the new name of the user
+     * @param defaultMarketId Market ID to use for a user get when not specified
+     * @param defaultTeamId Team ID to use for a user get when not specified
      * @returns {PromiseLike<T> | Promise<T>} the result of the update
      */
-    this.update = function(name) {
+    this.update = function(name, defaultMarketId, defaultTeamId) {
         const body = {
             name: name
         };
-        const path = 'users';
-        const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        if (defaultMarketId) {
+            body.default_market_id = defaultMarketId;
+        }
+        if (defaultTeamId) {
+            body.default_team_id = defaultTeamId;
+        }
+        const updatePromise = client.doPatch(SUBDOMAIN, 'update', undefined, body);
         return updatePromise.then(dataResolver);
     };
 
@@ -25,7 +32,7 @@ function Users(client) {
      * @returns {PromiseLike<T> | Promise<T>} the user's information
      */
     this.get = function (userId, marketId, teamId) {
-        let path = 'users/';
+        let path = 'get/';
         if (userId) {
             path += userId;
         }
@@ -46,11 +53,10 @@ function Users(client) {
      * @returns {PromiseLike<T> | Promise<T>} the result of the delete
      */
     this.delete = function (reason) {
-        const path = 'users';
         const body = {
             reason: reason
         };
-        const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, body);
+        const deletePromise = client.doDelete(SUBDOMAIN, 'delete', undefined, body);
         return deletePromise.then(dataResolver);
     };
 
@@ -71,7 +77,7 @@ function Users(client) {
         if (teamId) {
             body.team_id = teamId;
         }
-        const path = 'users/' + userId + '/transfer/'+ marketId;
+        const path = userId + '/transfer/'+ marketId;
         const transferPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return transferPromise.then(dataResolver);
     };
@@ -87,7 +93,7 @@ function Users(client) {
         const body = {
             quantity: ideaSharesQuantity
         };
-        const path = 'users/' + userId + '/grant/'+ marketId;
+        const path = userId + '/grant/'+ marketId;
         const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return grantPromise.then(dataResolver);
     };
@@ -107,7 +113,7 @@ function Users(client) {
             team_id: teamId,
             is_admin: isAdmin
         };
-        const path = 'users/' + userId + '/grant/' + marketId;
+        const path = userId + '/grant/' + marketId;
         const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return grantPromise.then(dataResolver);
     };

@@ -18,8 +18,7 @@ function Investibles(client){
             description: investibleDescription,
             category_list: categoryList
         };
-        const path = 'investibles';
-        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+        const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
         return createPromise.then(dataResolver);
     };
 
@@ -38,8 +37,7 @@ function Investibles(client){
             description: investibleDescription,
             category_list: categoryList
         };
-        const path = 'investibles/' + investibleId;
-        const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
         return updatePromise.then(dataResolver);
     };
 
@@ -50,8 +48,7 @@ function Investibles(client){
      */
     this.get = function(investibleId)
     {
-        const path = 'investibles/' + investibleId;
-        const getPromise = client.doGet(SUBDOMAIN, path);
+        const getPromise = client.doGet(SUBDOMAIN, investibleId);
         return getPromise.then(dataResolver);
     };
 
@@ -62,8 +59,7 @@ function Investibles(client){
      */
     this.delete = function(investibleId)
     {
-        const path = 'investibles/' + investibleId;
-        const getPromise = client.doDelete(SUBDOMAIN, path);
+        const getPromise = client.doDelete(SUBDOMAIN, investibleId);
         return getPromise.then(dataResolver);
     };
 
@@ -80,7 +76,7 @@ function Investibles(client){
         if(stopFollowing){
             body.remove = true;
         }
-        const path = 'investibles/' + investibleId + '/follow/' + marketId;
+        const path = investibleId + '/follow/' + marketId;
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
     };
@@ -93,16 +89,26 @@ function Investibles(client){
      * @returns {PromiseLike<T> | Promise<T>} the result of the resolve
      */
     this.resolve = function(investibleId, marketId){
-        const path = 'investibles/' + investibleId + '/resolve/' + marketId ;
+        const path = investibleId + '/resolve/' + marketId ;
         const resolvePromise = client.doPatch(SUBDOMAIN, path);
         return resolvePromise.then(dataResolver);
+    };
+
+    /**
+     * Listed investibles that a user has which are not bound to a market (ie draft or template)
+     * @param userId User whose templates will be listed
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.listTemplates = function (userId) {
+        const path = 'list/' + userId;
+        const getPromise = client.doGet(SUBDOMAIN, path);
+        return getPromise.then(dataResolver);
     };
 
 }
 
 let configuredInvestibles = (client) => {
-    let myInvestibles = new Investibles(client);
-    return myInvestibles;
+    return new Investibles(client);
 };
 
 export default configuredInvestibles;

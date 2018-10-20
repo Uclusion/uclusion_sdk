@@ -18,7 +18,7 @@ function Markets(client){
             quantity: ideaSharesQuantity,
             investible_id: investibleId
         };
-        const path = 'markets/' + marketId + '/teams/' + teamId + '/invest';
+        const path = marketId + '/teams/' + teamId + '/invest';
         const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return createPromise.then(dataResolver);
     };
@@ -29,7 +29,7 @@ function Markets(client){
       * @returns {PromiseLike<T> | Promise<T>} the result of the delete
       */
     this.deleteInvestment = function(marketId, investmentId){
-        const path = 'markets/' + marketId + '/investments/' + investmentId;
+        const path = marketId + '/investments/' + investmentId;
         const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, undefined);
         return deletePromise.then(dataResolver);
     };
@@ -47,8 +47,7 @@ function Markets(client){
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
      */
     this.createMarket = function(marketOptions){
-        const path = 'markets';
-        const createPromise = client.doPost(SUBDOMAIN, path, undefined, marketOptions);
+        const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, marketOptions);
         return createPromise.then(dataResolver);
     };
 
@@ -58,8 +57,7 @@ function Markets(client){
      * @returns {PromiseLike<T> | Promise<T>} the result of the retrieval
      */
     this.getMarket = function(marketId){
-        const path = 'markets/' + marketId;
-        const getPromise = client.doGet(SUBDOMAIN, path);
+        const getPromise = client.doGet(SUBDOMAIN, marketId);
         return getPromise.then(dataResolver);
     };
 
@@ -75,14 +73,12 @@ function Markets(client){
      * @returns {PromiseLike<T> | Promise<T>} the result of the update
      */
     this.updateMarket = function(marketId, marketUpdateOptions){
-        const path = 'markets/' + marketId;
-        const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, marketUpdateOptions);
+        const updatePromise = client.doPatch(SUBDOMAIN, marketId, undefined, marketUpdateOptions);
         return updatePromise.then(dataResolver);
     };
 
     this.deleteMarket = function(marketId){
-        const path = 'markets/' + marketId;
-        const getPromise = client.doDelete(SUBDOMAIN, path, undefined, undefined);
+        const getPromise = client.doDelete(SUBDOMAIN, marketId, undefined, undefined);
         return getPromise.then(dataResolver);
     };
 
@@ -98,7 +94,7 @@ function Markets(client){
         if(stopFollowing){
             body.remove = true;
         }
-        const path = 'markets/' + marketId + '/follow';
+        const path = 'follow/' + marketId;
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
     };
@@ -117,7 +113,7 @@ function Markets(client){
      */
     this.updateMarketInvestible = function(marketId, investibleId, investibleUpdateOptions){
         const body = investibleUpdateOptions;
-        const path = 'markets/' + marketId + '/investibles/' + investibleId;
+        const path = marketId + '/investibles/' + investibleId;
         const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return updatePromise.then(dataResolver);
     };
@@ -129,64 +125,52 @@ function Markets(client){
      * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
      */
     this.getMarketInvestible = function(marketId, investibleId){
-        const path = 'markets/' + marketId + '/investibles/' + investibleId;
+        const path = marketId + '/investibles/' + investibleId;
         const getPromise = client.doGet(SUBDOMAIN, path);
         return getPromise.then(dataResolver);
     };
 
     this.listCategories = function (marketId) {
-        const path = 'markets/' + marketId + '/list';
+        const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'categories'});
         return getPromise.then(dataResolver)
     };
 
     this.listCategoriesInvestibles = function (marketId, category, pageNumber, pageSize) {
-        const path = 'markets/' + marketId + '/list';
+        const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'categoryInvestibles', category: category, currentPage: pageNumber, pageSize: pageSize});
         return getPromise.then(dataResolver);
     };
 
     this.listInvestibleInvestments = function (marketId, investibleId, pageNumber, pageSize, trendingWindowDate) {
-        const path = 'markets/' + marketId + '/list';
+        const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'investibleInvestments', investibleId: investibleId, currentPage: pageNumber, pageSize: pageSize, trendingWindowDate: trendingWindowDate});
         return getPromise.then(dataResolver);
     };
 
     this.listInvestiblePresences = function (marketId) {
-        const path = 'markets/' + marketId + '/list';
+        const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'investiblePresences'});
         return getPromise.then(dataResolver);
     };
 
     this.listInvestibles = function (marketId, searchString, currentPage, pageSize) {
-        const path = 'markets/' + marketId + '/list';
+        const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'investibles', searchString: searchString, currentPage: currentPage, pageSize: pageSize});
         return getPromise.then(dataResolver);
     };
 
-    this.listInvestibleTemplates = function (marketId) {
-        const path = 'markets/' + marketId + '/list';
-        const getPromise = client.doGet(SUBDOMAIN, path, {type: 'investibleTemplates'});
-        return getPromise.then(dataResolver);
-    };
-
     this.listTrending = function (marketId, trendingWindowDate) {
-        const path = 'markets/' + marketId + '/list';
+        const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'trending', trendingWindowDate: trendingWindowDate});
         return getPromise.then(dataResolver);
     };
 
     this.listUserInvestments = function (marketId, userId, currentPage, pageSize) {
-        const path = 'markets/' + marketId + '/list';
+        const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'userInvestments', userId: userId, currentPage: currentPage, pageSize: pageSize});
         return getPromise.then(dataResolver);
     };
-
-    this.listTeams = function(marketId) {
-        const path = 'markets/' + marketId + '/list';
-        const getPromise = client.doGet(SUBDOMAIN, path, {type: 'teams'});
-        return getPromise.then(dataResolver);
-    }
 }
 
 let configuredMarkets = (client) => {
