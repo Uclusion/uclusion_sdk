@@ -26,10 +26,6 @@ app.post('/markets/h3x3n/teams/devil/invite', (request, response) => {
     response.json({success_message: 'User invitation being processed', test_body: request.body});
 });
 
-app.patch('/markets/n3wbie/users/myUser/grant', (request, response) => {
-    response.json({quantity: request.body.quantity});
-});
-
 app.post('/markets/DanielsMarket/investments', (request, response) => {
     response.json({ userid: 'myUser' , test_body: request.body})
 });
@@ -133,17 +129,7 @@ describe('Market', () => {
         });
     });
 
-    describe('#doGrant', () => {
-        it('should grant user shares without error', () => {
-            let promise = markets.grant('n3wbie', 'myUser', 1090);
-            promise.then((result) => {
-                //console.log(result);
-                assert(result.quantity === 1090, 'Should have granted the proper amount');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
+
 
     describe('#doCreateInvestment', () => {
       it('should create an investment', () => {
@@ -157,7 +143,7 @@ describe('Market', () => {
     });
 
 
-    describe('#doGrant', () => {
+    describe('#doDeleteInvestment', () => {
         it('should delete the investment without error', () => {
             let promise = markets.deleteInvestment('foobar', 'dead');
             promise.then((result) => {

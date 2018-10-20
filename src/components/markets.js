@@ -4,44 +4,6 @@ function Markets(client){
 
     const dataResolver = (result) => { return result.data };
 
-
-    /**
-     * Grants the given number of idea shares in the given market to the given user
-     * @param marketId the market to grant the idea shares in
-     * @param userId the user to grant them to
-     * @param ideaSharesQuantity the quantity of idea shares to grant
-     * @returns {PromiseLike<T> | Promise<T>} the result of the grant
-     */
-    this.grant = function(marketId, userId, ideaSharesQuantity){
-        const body = {
-            quantity: ideaSharesQuantity
-        };
-        const path = 'markets/' + marketId + '/users/' + userId + '/grant';
-        const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-        return grantPromise.then(dataResolver);
-    };
-
-    /**
-     * Grants an existing user and adds user to the market. If not existing or need email sent then use invite method
-     * @param marketId the market to grant the idea shares in
-     * @param teamId Team to use in defining the users market capability
-     * @param userId the user to grant them to - must be existing already for this method
-     * @param ideaSharesQuantity the quantity of idea shares to grant
-     * @param isAdmin Whether to add the user to the market as an admin
-     * @returns {PromiseLike<T> | Promise<T>} the result of the grant
-     */
-    this.grantAddExistingUserToMarket = function(marketId, teamId, userId, ideaSharesQuantity, isAdmin){
-        const body = {
-            quantity: ideaSharesQuantity,
-            team_id: teamId,
-            is_admin: isAdmin
-        };
-        const path = 'markets/' + marketId + '/users/' + userId + '/grant';
-        const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-        return grantPromise.then(dataResolver);
-    };
-
-
     /**
       * Creates an investment in the given investible and market with the specified number
       * of idea ideaShares

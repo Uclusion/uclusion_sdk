@@ -53,6 +53,44 @@ function Users(client) {
         const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, body);
         return deletePromise.then(dataResolver);
     }
+
+    /**
+     * Grants the given number of idea shares in the given market to the given user
+     * @param userId the user to grant them to
+     * @param marketId the market to grant the idea shares in
+     * @param ideaSharesQuantity the quantity of idea shares to grant
+     * @returns {PromiseLike<T> | Promise<T>} the result of the grant
+     */
+    this.grant = function(userId, marketId, ideaSharesQuantity){
+        const body = {
+            quantity: ideaSharesQuantity
+        };
+        const path = 'users/' + userId + '/grant/'+ marketId;
+        const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        return grantPromise.then(dataResolver);
+    };
+
+    /**
+     * Grants an existing user and adds user to the market. If not existing or need email sent then use invite method
+     * @param userId the user to grant them to - must be existing already for this method
+     * @param marketId the market to grant the idea shares in
+     * @param teamId Team to use in defining the users market capability
+     * @param ideaSharesQuantity the quantity of idea shares to grant
+     * @param isAdmin Whether to add the user to the market as an admin
+     * @returns {PromiseLike<T> | Promise<T>} the result of the grant
+     */
+    this.grantAddExistingUserToMarket = function(userId, marketId, teamId, ideaSharesQuantity, isAdmin){
+        const body = {
+            quantity: ideaSharesQuantity,
+            team_id: teamId,
+            is_admin: isAdmin
+        };
+        const path = 'users/' + userId + '/grant/' + marketId;
+        const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        return grantPromise.then(dataResolver);
+    };
+
+
 }
 
 let configuredUsers = (client) => {

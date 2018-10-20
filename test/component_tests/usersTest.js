@@ -35,6 +35,14 @@ app.patch('/users', (request, response) => {
     response.json({success_message: 'User updated', test_body: request.body});
 });
 
+app.patch('/users/myUser/grant/n3wbie', (request, response) => {
+    response.json({success_message: 'Granted', test_body: request.body});
+});
+
+app.patch('/users/testUser/grant/testMarket', (request, response) => {
+    response.json({success_message: 'Granted Team', test_body: request.body});
+});
+
 describe('Users', () => {
     before(() => {
         server.listen(port);
@@ -66,6 +74,36 @@ describe('Users', () => {
         });
     });
 
+
+    describe('#doGrant', () => {
+        it('should grant user shares without error', () => {
+            let promise = users.grant('myUser', 'n3wbie', 1090);
+            promise.then((result) => {
+                //console.log(result);
+                assert(result.success_message == 'Granted');
+                assert(result.test_body.quantity === 1090, 'Should have granted the proper amount');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doGrantAddExistingUserToMarket', () => {
+        it('should grant user shares without error', () => {
+            let promise = users.grantAddExistingUserToMarket('testUser', 'testMarket', 'ateam', 10902, true);
+            promise.then((result) => {
+                //console.log(result);
+                assert(result.success_message == 'Granted Team');
+                assert(result.test_body.quantity === 10902, 'Should have granted the proper amount');
+                assert(result.test_body.team_id === 'ateam', 'Should have assigned the proper team');
+                assert(result.test_body.is_admin, 'Should have specified an admin');
+
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
     describe('#doPatch', () => {
         it('should update without error', () => {
             users.update('New Name')
@@ -77,5 +115,6 @@ describe('Users', () => {
             });
         });
     });
+
 
 });
