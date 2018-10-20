@@ -35,6 +35,15 @@ app.get('/investibles/asdf4', (request, response) => {
     response.json({id: 'asdf4'});
 });
 
+app.patch('/investibles/steak/follow/meat', (request, response) => {
+    response.json({success_message: 'unfollowed', test_body: request.body});
+});
+
+
+app.patch('/investibles/EXXXOONN/resolve/oil', (request, response) => {
+    response.json({success_message: 'Investible resolved'});
+})
+
 describe('Investibles', () => {
     before(() => {
         server.listen(port);
@@ -71,6 +80,29 @@ describe('Investibles', () => {
             });
         });
     });
+
+
+    describe('#doUnfollowInvestible', () => {
+        it('should follow the investible without error', () =>{
+            let promise = investibles.follow('steak', 'meat', true);
+            promise.then((result) => {
+                assert(result.success_message === 'unfollowed', 'Should have returned the proper success message');
+                assert(result.test_body.remove, 'Should have put the remove request in the body');
+            });
+        });
+    });
+
+
+    describe('#doResolveInvestible', () => {
+        it('should resolve the market category without error', () =>{
+            let promise = investibles.resolve('EXXXOONN', 'oil');
+            promise.then((result) => {
+                assert(result.success_message === 'Investible resolved', 'Should have returned the proper success message');
+            });
+        });
+    });
+
+
     describe('#doGet', () => {
         it('should get investible without error', () => {
             let promise = investibles.get('asdf4');

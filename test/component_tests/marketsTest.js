@@ -49,14 +49,7 @@ app.patch('/markets/fish', (request, response) => {
 app.patch('/markets/oil/resolve', (request, response) => {
     response.json({success_message: 'Category being resolved', test_body: request.body});
 });
-
-app.patch('/markets/oil/investibles/EXXXOONN/resolve', (request, response) => {
-    response.json({success_message: 'Investible resolved'});
-});
-
-app.patch('/markets/meat/investibles/steak/follow', (request, response) => {
-    response.json({success_message: 'unfollowed', test_body: request.body});
-});
+;
 
 app.patch('/markets/meat/follow', (request, response) => {
     response.json({success_message: 'unfollowed', test_body: request.body});
@@ -186,28 +179,9 @@ describe('Market', () => {
         });
     });
 
-    describe('#doResolveInvestible', () => {
-        it('should resolve the market category without error', () =>{
-            let promise = markets.resolveInvestible('oil', 'EXXXOONN');
-            promise.then((result) => {
-                assert(result.success_message === 'Investible resolved', 'Should have returned the proper success message');
-            });
-        });
-    });
-
     describe('#doUnfollowMarket', () => {
         it('should follow the investible without error', () =>{
             let promise = markets.followMarket('meat', true);
-            promise.then((result) => {
-                assert(result.success_message === 'unfollowed', 'Should have returned the proper success message');
-                assert(result.test_body.remove, 'Should have put the remove request in the body');
-            });
-        });
-    });
-
-    describe('#doUnfollowInvestible', () => {
-        it('should follow the investible without error', () =>{
-            let promise = markets.followInvestible('meat', 'steak', true);
             promise.then((result) => {
                 assert(result.success_message === 'unfollowed', 'Should have returned the proper success message');
                 assert(result.test_body.remove, 'Should have put the remove request in the body');
