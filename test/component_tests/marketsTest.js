@@ -19,7 +19,6 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const server = require('http').createServer(app);
-const server6 = require('http').createServer(app);
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
@@ -113,13 +112,11 @@ app.get('/markets/fx/list', (request, response) => {
 
 describe('Market', () => {
     before(() => {
-        server.listen(port, '127.0.0.1');
-        server6.listen(port, '::1');
+        server.listen(port);
     });
 
     after(() => {
         server.close();
-        server6.close();
     });
 
     describe('#doInvite', () => {
