@@ -42,7 +42,9 @@ function FetchClient(configuration){
         let url = new URL(configuration.baseURL + '/' + path);
         //change the url to the subdomain to enable our endpoint endpoint stuff
         if(subdomain){
-            url.host = subdomain + '.' + url.host;
+            let oldHostname = url.hostname;
+            const newHostname = subdomain + '.' + oldHostname;
+            url.hostname = newHostname;
         }
         let search = url.searchParams;
         for(var key in queryParams){
@@ -65,7 +67,7 @@ function FetchClient(configuration){
      * @returns a promise which will resolve to the result of the get call
      */
     this.doGet = function (subdomain, path, queryParams) {
-        let url = urlConstructor(path, queryParams);
+        let url = urlConstructor(subdomain, path, queryParams);
         let headers = headersConstructor(configuration.headers);
         let args = {method: 'GET', headers: headers};
         let promise = fetch(url, args)

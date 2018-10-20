@@ -31,8 +31,8 @@ app.patch('/investibles/asdf3', (request, response) => {
     response.json({test_body: request.body});
 });
 
-app.get('/investibles/asdf3', (request, response) => {
-    response.json({id: 'asdf3'});
+app.get('/investibles/asdf4', (request, response) => {
+    response.json({id: 'asdf4'});
 });
 
 describe('Investibles', () => {
@@ -73,10 +73,10 @@ describe('Investibles', () => {
     });
     describe('#doGet', () => {
         it('should get investible without error', () => {
-            let promise = investibles.get('asdf3');
+            let promise = investibles.get('asdf4');
             promise.then((result) => {
                 //console.log(result);
-                assert(result.id === 'asdf3', 'Should have returned asdf3 as id')
+                assert(result.id === 'asdf4', 'Should have returned asdf4 as id')
             }).catch((error) => {
                 console.error(error);
             });
