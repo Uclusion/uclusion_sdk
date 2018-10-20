@@ -37,7 +37,7 @@ app.patch('/users', (request, response) => {
 
 describe('Users', () => {
     before(() => {
-        server.listen(port, '127.0.0.1');
+        server.listen(port);
     });
 
     after(() => {
