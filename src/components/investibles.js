@@ -42,6 +42,27 @@ function Investibles(client){
     };
 
     /**
+     * Updates an investible with name, description, and categories
+     * @param marketId Market that owns this investible
+     * @param investibleId the id of the investible updated
+     * @param investibleName name of investible
+     * @param investibleDescription description of investible
+     * @param categoryList list of categories
+     * @returns {PromiseLike<T> | Promise<T>} result of updating investible
+     */
+    this.updateInMarket = function(investibleId, marketId, investibleName, investibleDescription, categoryList)
+    {
+        const body = {
+            market_id: marketId,
+            name: investibleName,
+            description: investibleDescription,
+            category_list: categoryList
+        };
+        const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
+        return updatePromise.then(dataResolver);
+    };
+
+    /**
      * Gets the investible with given id
      * @param investibleId the id of the investible
      * @returns {PromiseLike<T> | Promise<T>} result of getting investible

@@ -100,25 +100,6 @@ function Markets(client){
     };
 
     /**
-     * Updates the given investible in the given market according to the options
-     * @param marketId
-     * @param investibleId
-     * @param investibleUpdateOptions a javascript object of the form
-     * <ul>
-     *  <li>name: string, <b>required</b></li>
-     *  <li>description: string, <b>required</b></li>
-     *  <li>categoryList: Array[string], <b>required</b></li>
-     *  </ul>
-     * @returns {PromiseLike<T> | Promise<T>} the result of the update
-     */
-    this.updateMarketInvestible = function(marketId, investibleId, investibleUpdateOptions){
-        const body = investibleUpdateOptions;
-        const path = marketId + '/investibles/' + investibleId;
-        const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-        return updatePromise.then(dataResolver);
-    };
-
-    /**
      * Fetches the given market investible from the given market
      * @param marketId the id of the market to retrieve the investible in
      * @param investibleId the id of the investible to retrieve
