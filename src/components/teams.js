@@ -3,6 +3,7 @@ function Teams(client) {
     const SUBDOMAIN = 'teams';
 
     const dataResolver = (result) => { return result.data };
+
     /**
      * Invites a user for given team, identified by email, to the given market, and assigns them a quantity of idea shares
      * @param teamId Team to add user to
@@ -23,6 +24,20 @@ function Teams(client) {
         return invitePromise.then(dataResolver);
     };
 
+    /**
+     * Creates a team
+     * @param name name of the team
+     * @param description description of the team
+     * @returns {PromiseLike<T> | Promise<T>} the result of the investment
+     */
+    this.create = function(name, description){
+        const body = {
+            name: name,
+            description: description
+        };
+        const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
+        return createPromise.then(dataResolver);
+    };
 
     /**
      * Allows a team to make investments in a market
