@@ -20,8 +20,8 @@ function Uclusion() {
             let apiClient = {
                 users: a_users(transportClient),
                 markets: a_markets(transportClient),
-                investibles: a_investibles(transportClient)
-                teams: a_teams(transportClient);
+                investibles: a_investibles(transportClient),
+                teams: a_teams(transportClient)
             };
             //console.log(apiClient.user);
             return apiClient;
