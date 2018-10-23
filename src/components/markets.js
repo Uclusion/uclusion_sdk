@@ -9,7 +9,7 @@ function Markets(client){
       * of idea ideaShares
       * @param marketId the id of the market to make the investment inspect
       * @param teamId the id of the team making the investment
-      * @param investibleId the id of the investible to invest inspect
+      * @param investibleId the id of the investible to invest
       * @param ideaSharesQuantity the number of idea shares to investible
       * @returns {PromiseLike<T> | Promise<T>} the result of the investment
       */
