@@ -117,12 +117,10 @@ function Investibles(client){
 
     /**
      * Listed investibles that a user has which are not bound to a market (ie draft or template)
-     * @param userId User whose templates will be listed
      * @returns {PromiseLike<T> | Promise<T>}
      */
-    this.listTemplates = function (userId) {
-        const path = 'list/' + userId;
-        const getPromise = client.doGet(SUBDOMAIN, path);
+    this.listTemplates = function () {
+        const getPromise = client.doGet(SUBDOMAIN, 'list');
         return getPromise.then(dataResolver);
     };
 
