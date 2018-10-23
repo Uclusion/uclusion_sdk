@@ -55,16 +55,24 @@ function Teams(client) {
         return createPromise.then(dataResolver);
     };
 
-    this.list = function(userId, marketId) {
-        const body = {};
-        if (marketId) {
-            body.market_id = marketId;
-        }
-        const path = 'list/' + userId;
-        const getPromise = client.doGet(SUBDOMAIN, path, body);
+    /**
+     * Gets a team and a list of user IDs that belong to it
+     * @param teamId ID of the team to get
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.get = function(teamId) {
+        const getPromise = client.doGet(SUBDOMAIN, teamId, body);
+        return getPromise.then(dataResolver);
+    };
+
+    /**
+     * Lists all teams associated with the calling user's account
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.list = function() {
+        const getPromise = client.doGet(SUBDOMAIN, 'list', body);
         return getPromise.then(dataResolver);
     }
-
 }
 
 let configuredTeams = (client) => {
