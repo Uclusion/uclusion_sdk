@@ -23,24 +23,24 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
-app.post('/investibles', (request, response) => {
+app.post('/create', (request, response) => {
     response.json({test_body: request.body});
 });
 
-app.patch('/investibles/asdf3', (request, response) => {
+app.patch('/asdf3', (request, response) => {
     response.json({test_body: request.body});
 });
 
-app.get('/investibles/asdf4', (request, response) => {
+app.get('/asdf4', (request, response) => {
     response.json({id: 'asdf4'});
 });
 
-app.patch('/investibles/steak/follow/meat', (request, response) => {
+app.patch('/steak/follow/meat', (request, response) => {
     response.json({success_message: 'unfollowed', test_body: request.body});
 });
 
 
-app.patch('/investibles/EXXXOONN/resolve/oil', (request, response) => {
+app.patch('/EXXXOONN/resolve/oil', (request, response) => {
     response.json({success_message: 'Investible resolved'});
 })
 
