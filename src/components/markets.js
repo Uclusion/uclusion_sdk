@@ -56,7 +56,7 @@ function Markets(client){
      * @param marketId the id of the market to return
      * @returns {PromiseLike<T> | Promise<T>} the result of the retrieval
      */
-    this.getMarket = function(marketId){
+    this.get = function(marketId){
         const getPromise = client.doGet(SUBDOMAIN, marketId);
         return getPromise.then(dataResolver);
     };

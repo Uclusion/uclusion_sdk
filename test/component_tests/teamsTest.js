@@ -22,12 +22,16 @@ const server = require('http').createServer(app);
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-app.post('/teams/devil/invite/h3x3n', (request, response) => {
+app.post('/devil/invite/h3x3n', (request, response) => {
     response.json({success_message: 'User invitation being processed', test_body: request.body});
 });
 
-app.post('/teams/realmadrid/bind/fifa', (request, response) => {
+app.post('/realmadrid/bind/fifa', (request, response) => {
     response.json({success_message: 'Team bound', test_body: request.body});
+});
+
+app.get('/list', (request, response) => {
+    response.json({type: 'list', test_query: request.query});
 });
 
 
@@ -62,6 +66,18 @@ describe('Teams', () => {
                 //console.log(result);
                 assert(result.success_message === 'Team bound');
                 assert(result.test_body.shared_resources, 'Did not pass the correct shard resources in body');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+
+    describe('#doList', () => {
+        it('should get teams', () =>{
+            let promise = teams.list();
+            promise.then((result) => {
+                assert(result.type === 'list');
             }).catch((error) => {
                 console.error(error);
             });

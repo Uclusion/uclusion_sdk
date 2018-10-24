@@ -22,82 +22,69 @@ const server = require('http').createServer(app);
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-app.post('/markets/h3x3n/teams/devil/invite', (request, response) => {
-    response.json({success_message: 'User invitation being processed', test_body: request.body});
-});
 
-app.post('/markets/DanielsMarket/investments', (request, response) => {
+app.post('/DanielsMarket/teams/MyTeam/invest', (request, response) => {
     response.json({ userid: 'myUser' , test_body: request.body})
 });
 
-app.delete('/markets/foobar/investments/dead', (request, response) => {
+app.delete('/foobar/investments/dead', (request, response) => {
     response.json({success_message: 'Idea shares returned'})
 });
 
-app.post('/markets', (request, response) => {
+app.post('/create', (request, response) => {
     response.json({id: 'ARG', test_body: request.body});
 });
 
-app.get('/markets/futures', (request, response) => {
+app.get('/futures', (request, response) => {
     response.json({id: 'futures'});
 });
 
-app.patch('/markets/fish', (request, response) => {
+app.patch('/fish', (request, response) => {
     response.json({id: 'fish', test_body: request.body});
 });
 
-app.patch('/markets/oil/resolve', (request, response) => {
+app.patch('/oil/resolve', (request, response) => {
     response.json({success_message: 'Category being resolved', test_body: request.body});
 });
 ;
 
-app.patch('/markets/meat/follow', (request, response) => {
+app.patch('/meat/follow', (request, response) => {
     response.json({success_message: 'unfollowed', test_body: request.body});
 });
 
-app.patch('/markets/meat/investibles/pork', (request, response) => {
-    response.json({success_message: 'updated', test_body: request.body});
-});
 
-app.get('/markets/meat/investibles/chicken', (request, response) => {
+app.get('/meat/investibles/chicken', (request, response) => {
     response.json({id: 'chicken'});
 });
 
-app.get('/markets/meat/list', (request, response) => {
+app.get('/meat/list', (request, response) => {
     response.json({category: 'fake'});
 });
 
-app.get('/markets/stocknasdaq/list', (request, response) => {
+app.get('/list/stocknasdaq/', (request, response) => {
     response.json({type: 'categoryInvestibles', test_query: request.query});
 });
 
-app.get('/markets/dow/list', (request, response) => {
+app.get('/list/dow', (request, response) => {
     response.json({type: 'investibleInvestments', test_query: request.query});
 });
 
-app.get('/markets/s&p/list', (request, response) => {
+app.get('/list/s&p', (request, response) => {
     response.json({investiblePresences: 'notreal'});
 });
 
-app.get('/markets/russel/list', (request, response) => {
+app.get('/list/russel', (request, response) => {
     response.json({type: 'investibles', test_query: request.query});
 });
 
-app.get('/markets/fortune/list', (request, response) => {
-    response.json({investibleTemplates: 'fiction'});
-});
-
-app.get('/markets/wilshire/list', (request, response) => {
+app.get('/list/wilshire', (request, response) => {
     response.json({type: 'trending', test_query: request.query});
 });
 
-app.get('/markets/barron/list', (request, response) => {
+app.get('/list/barron', (request, response) => {
     response.json({type: 'userInvestments', test_query: request.query});
 });
 
-app.get('/markets/fx/list', (request, response) => {
-    response.json({type: 'teams', test_query: request.query});
-});
 
 describe('Market', () => {
     before(() => {
@@ -108,25 +95,10 @@ describe('Market', () => {
         server.close();
     });
 
-    describe('#doInvite', () => {
-        it('should invite user without error', () => {
-            let promise = markets.invite('h3x3n', 'devil', 'me@example.com', 100);
-            promise.then((result) => {
-                //console.log(result);
-                assert(result.success_message === 'User invitation being processed', 'Should have succeded in invite');
-                assert(result.test_body.email === 'me@example.com', 'Did not pass the correct email in body');
-                assert(result.test_body.quantity === 100, 'Did not pass the correct quantity in body');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
-
-
 
     describe('#doCreateInvestment', () => {
       it('should create an investment', () => {
-          let promise = markets.createInvestment('DanielsMarket', 'NewInvestment', 500);
+          let promise = markets.createInvestment('DanielsMarket', 'MyTeam', 'NewInvestment', 500);
           promise.then((result) => {
             assert(result.userid === 'myUser', 'Did not return the proper user id from the result');
             assert(result.test_body.quantity === 500, 'Did not pass the proper quantity in the body');
@@ -161,7 +133,7 @@ describe('Market', () => {
 
     describe('#doGet', () => {
         it('should get the market without error', () =>{
-            let promise = markets.getMarket('futures');
+            let promise = markets.get('futures');
             promise.then((result) => {
                 assert(result.id === 'futures');
             });
@@ -189,16 +161,7 @@ describe('Market', () => {
         });
     });
 
-    describe('#doUpdateMarketInvestible', () => {
-        it('should update the investible without error', () =>{
-            let promise = markets.updateMarketInvestible('meat', 'pork', {name: 'foo', categoryList: ['a'], description:'chop'});
-            promise.then((result) => {
-                assert(result.success_message === 'updated', 'Should have returned the proper success message');
-                assert(result.test_body.name === 'foo', 'Should have put the name in the body');
-                assert(result.test_body.categoryList[0] === 'a', 'Should have put the category in the body');
-            });
-        });
-    });
+
 
     describe('#doGetMarketInvestible', () => {
         it('should get  the investible without error', () =>{
@@ -268,17 +231,6 @@ describe('Market', () => {
         });
     });
 
-    describe('#doListInvestibleTemplates', () => {
-        it('should get  the investible without error', () =>{
-            let promise = markets.listInvestibleTemplates('fortune');
-            promise.then((result) => {
-                assert(result.investibleTemplates === 'fiction', 'Should have returned proper investible templates');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
-
     describe('#doListTrending', () => {
         it('should get  the investible without error', () =>{
             let promise = markets.listTrending('wilshire', '10/10/10');
@@ -304,16 +256,6 @@ describe('Market', () => {
     });
 
 
-    describe('#doListUserInvestments', () => {
-        it('should get teams', () =>{
-            let promise = markets.listTeams('fx');
-            promise.then((result) => {
-                assert(result.test_query.type === 'teams');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
 
 
 

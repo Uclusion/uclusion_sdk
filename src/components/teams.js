@@ -70,7 +70,7 @@ function Teams(client) {
      * @returns {PromiseLike<T> | Promise<T>}
      */
     this.list = function() {
-        const getPromise = client.doGet(SUBDOMAIN, 'list', body);
+        const getPromise = client.doGet(SUBDOMAIN, 'list');
         return getPromise.then(dataResolver);
     }
 }

@@ -39,10 +39,19 @@ app.patch('/steak/follow/meat', (request, response) => {
     response.json({success_message: 'unfollowed', test_body: request.body});
 });
 
+app.get('/list', (request, response) => {
+    response.json({investibleTemplates: 'fiction'});
+});
+
 
 app.patch('/EXXXOONN/resolve/oil', (request, response) => {
     response.json({success_message: 'Investible resolved'});
-})
+});
+
+app.patch('/meat', (request, response) => {
+    response.json({success_message: 'updated', test_body: request.body});
+});
+
 
 describe('Investibles', () => {
     before(() => {
@@ -115,5 +124,27 @@ describe('Investibles', () => {
         });
     });
 
+    describe('#doListInvestibleTemplates', () => {
+        it('should get  the investible without error', () =>{
+            let promise = investibles.listTemplates();
+            promise.then((result) => {
+                assert(result.investibleTemplates === 'fiction', 'Should have returned proper investible templates');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doUpdateMarketInvestible', () => {
+        it('should update the investible without error', () =>{
+            let promise = investibles.updateInMarket('meat', 'pork', 'foo', 'mydesc', ['a']);
+            promise.then((result) => {
+                assert(result.success_message === 'updated', 'Should have returned the proper success message');
+                assert(result.test_body.name === 'foo', 'Should have put the name in the body');
+                assert(result.test_body.market_id === 'pork', 'Should have put market id in the body');
+                assert(result.test_body.category_list[0]  === 'a', 'Should have put the category in the body');
+            });
+        });
+    });
 
 });
