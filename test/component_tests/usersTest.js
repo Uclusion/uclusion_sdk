@@ -23,23 +23,23 @@ const server = require('http').createServer(app);
 const  bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-app.get('/users/1234', (request, response) => {
+app.get('/get/1234', (request, response) => {
     response.json({id: 1234});
 });
 
-app.delete('/users', (request, response) => {
+app.delete('/delete', (request, response) => {
     response.json({success_message: 'User deleted'});
 });
 
-app.patch('/users', (request, response) => {
+app.patch('/update', (request, response) => {
     response.json({success_message: 'User updated', test_body: request.body});
 });
 
-app.patch('/users/myUser/grant/n3wbie', (request, response) => {
+app.patch('/myUser/grant/n3wbie', (request, response) => {
     response.json({success_message: 'Granted', test_body: request.body});
 });
 
-app.patch('/users/testUser/grant/testMarket', (request, response) => {
+app.patch('/testUser/grant/testMarket', (request, response) => {
     response.json({success_message: 'Granted Team', test_body: request.body});
 });
 
