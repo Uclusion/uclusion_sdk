@@ -35,7 +35,7 @@ app.get('/asdf4', (request, response) => {
     response.json({id: 'asdf4'});
 });
 
-app.patch('/steak/follow/meat', (request, response) => {
+app.patch('follow/steak/', (request, response) => {
     response.json({success_message: 'unfollowed', test_body: request.body});
 });
 
@@ -44,7 +44,7 @@ app.get('/list', (request, response) => {
 });
 
 
-app.patch('/EXXXOONN/resolve/oil', (request, response) => {
+app.patch('resolve/EXXXOONN', (request, response) => {
     response.json({success_message: 'Investible resolved'});
 });
 
@@ -93,7 +93,7 @@ describe('Investibles', () => {
 
     describe('#doUnfollowInvestible', () => {
         it('should follow the investible without error', () =>{
-            let promise = investibles.follow('steak', 'meat', true);
+            let promise = investibles.follow('steak', true);
             promise.then((result) => {
                 assert(result.success_message === 'unfollowed', 'Should have returned the proper success message');
                 assert(result.test_body.remove, 'Should have put the remove request in the body');
@@ -104,7 +104,7 @@ describe('Investibles', () => {
 
     describe('#doResolveInvestible', () => {
         it('should resolve the market category without error', () =>{
-            let promise = investibles.resolve('EXXXOONN', 'oil');
+            let promise = investibles.resolve('EXXXOONN');
             promise.then((result) => {
                 assert(result.success_message === 'Investible resolved', 'Should have returned the proper success message');
             });

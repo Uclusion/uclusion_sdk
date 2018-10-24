@@ -88,16 +88,15 @@ function Investibles(client){
     /**
      * Follows or unfollows the given investible in the given market
      * @param investibleId the id of the investible to follow/unfollow
-     * @param marketId the market id to follow/unfollow the investible in
      * @param stopFollowing whether or not to STOP following the investible.
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
-    this.follow = function(investibleId, marketId, stopFollowing){
+    this.follow = function(investibleId, stopFollowing){
         let body = {};
         if(stopFollowing){
             body.remove = true;
         }
-        const path = investibleId + '/follow/' + marketId;
+        const path = 'follow/' + investibleId;
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
     };
@@ -106,11 +105,10 @@ function Investibles(client){
     /**
      * Resolves the given investible within the given market
      * @param investibleId the id of the investible to resolve
-     * @param marketId the id of the market to resolve the investible in
      * @returns {PromiseLike<T> | Promise<T>} the result of the resolve
      */
-    this.resolve = function(investibleId, marketId){
-        const path = investibleId + '/resolve/' + marketId ;
+    this.resolve = function(investibleId){
+        const path = 'resolve/' + investibleId;
         const resolvePromise = client.doPatch(SUBDOMAIN, path);
         return resolvePromise.then(dataResolver);
     };
