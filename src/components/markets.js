@@ -39,7 +39,6 @@ function Markets(client){
      * <ul>
      *  <li>name : string, <b>required</b></li>
      *  <li>description: string, <b>required</b></li>
-     *  <li>follow_default: boolean</li>
      *  <li>trending_window: number</li>
      *  <li>manual_roi: boolean</li>
      * </ul>
