@@ -99,7 +99,7 @@ function Users(client) {
     };
 
     /**
-     * Grants an existing user and adds user to the market. If not existing or need email sent then use invite method
+     * Grants an existing user and/or adds user to the market. If not existing or need email sent then use invite method
      * @param userId the user to grant them to - must be existing already for this method
      * @param marketId the market to grant the idea shares in
      * @param teamId Team to use in defining the users market capability
@@ -109,10 +109,12 @@ function Users(client) {
      */
     this.grantAddExistingUserToMarket = function(userId, marketId, teamId, ideaSharesQuantity, isAdmin){
         const body = {
-            quantity: ideaSharesQuantity,
             team_id: teamId,
             is_admin: isAdmin
         };
+        if (ideaSharesQuantity) {
+            body.quantity = ideaSharesQuantity;
+        }
         const path = userId + '/grant/' + marketId;
         const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return grantPromise.then(dataResolver);
