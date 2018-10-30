@@ -138,9 +138,7 @@ function FetchClient(configuration){
             return nonReauthorizingResponseHandler(response);
         };
 
-        return new Promise((resolve, reject) => {
-            return fetch(url, options).then(reauthorizingResponseHandler)
-        });
+        return fetch(url, options).then(reauthorizingResponseHandler);
     }
 }
 

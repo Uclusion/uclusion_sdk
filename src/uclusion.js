@@ -23,7 +23,6 @@ function Uclusion() {
                 investibles: a_investibles(transportClient),
                 teams: a_teams(transportClient)
             };
-            //console.log(apiClient.user);
             return apiClient;
         });
     };
