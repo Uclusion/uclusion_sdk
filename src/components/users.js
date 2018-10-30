@@ -48,6 +48,20 @@ function Users(client) {
     };
 
     /**
+     * Gets a user's presences, team and market tree, given ID or empty for invoking user
+     * @param userId which can be empty to get yourself
+     * @returns {PromiseLike<T> | Promise<T>} the user's information
+     */
+    this.getPresences = function (userId) {
+        let path = 'presences/';
+        if (userId) {
+            path += userId;
+        }
+        const getPromise = client.doGet(SUBDOMAIN, path);
+        return getPromise.then(dataResolver);
+    };
+
+    /**
      * Deletes the current user from uclusion
      * @param reason why the user is deleting themselves
      * @returns {PromiseLike<T> | Promise<T>} the result of the delete
