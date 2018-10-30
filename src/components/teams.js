@@ -13,7 +13,7 @@ function Teams(client) {
      * @param isAdmin Whether or not the invited user should be made an admin
      * @returns the result of inviting the user
      */
-    this.invite = function(teamId, marketId, email, ideaSharesQuantity, isAdmin){
+        this.invite = function(teamId, marketId, email, ideaSharesQuantity, isAdmin){
         const body = {
             email: email,
             quantity: ideaSharesQuantity,

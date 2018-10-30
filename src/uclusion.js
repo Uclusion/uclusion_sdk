@@ -8,12 +8,12 @@ function Uclusion() {
 
     /**
      * Constructs an api client from a given base endpoint url and a user token gotten from cognito
-     * @param configuration a js object contaning baseURL, and the authorizor object which returns a promise
+     * @param configuration a js object contaning baseURL, and the authorizor object which implements authorize and re-authorize, which return a promise
      * that resolves to the authorization token
      * @returns a promise that when resolved results in instantiated api client.
      */
         this.constructClient = (configuration) => {
-        let transportClient = a_client({baseURL: configuration.baseURL});
+        let transportClient = a_client({baseURL: configuration.baseURL, authorizer: configuration.authorizer});
         let authorizerPromise = configuration.authorizer.authorize();
         return authorizerPromise.then((userToken) => {
             transportClient.setAuthorization(userToken);

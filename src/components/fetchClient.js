@@ -23,20 +23,7 @@ function FetchClient(configuration){
         }
         return false;
     };
-    let responseHandler = (response) => {
-        if(!response.ok){
-            throw response; //give the response to upstream code
-        }
-        if(isJson(response)) {
-            //massage things to be same standard as other clients
-            let json = response.json().then((json) => {
-                return {status: response.status, data: json}
-            });
-            return json;
-        }
-        //todo make sure it's actually text
-        return response.text().then((text) => {return {status: response.status, body:text}});
-    };
+
 
     let urlConstructor = (subdomain, path, queryParams) => {
         let url = new URL(configuration.baseURL + '/' + path);
@@ -70,8 +57,7 @@ function FetchClient(configuration){
         let url = urlConstructor(subdomain, path, queryParams);
         let headers = headersConstructor(configuration.headers);
         let args = {method: 'GET', headers: headers};
-        let promise = fetch(url, args)
-            .then(responseHandler);
+        let promise = this.fetchReauthorize(url, args);
         return promise;
     };
 
@@ -85,8 +71,7 @@ function FetchClient(configuration){
     this.doDelete = function(subdomain, path, queryParams) {
         let url = urlConstructor(subdomain, path, queryParams);
         let args = {method: 'DELETE', headers: configuration.headers};
-        let promise = fetch(url, {method: 'DELETE', headers: configuration.headers})
-            .then(responseHandler);
+        let promise = this.fetchReauthorize(url, {method: 'DELETE', headers: configuration.headers});
         return promise;
     };
 
@@ -101,8 +86,7 @@ function FetchClient(configuration){
         let url = urlConstructor(subdomain, path, queryParams);
         let headers = headersConstructor(configuration.headers);
         let args = {method: 'POST', headers: headers};
-        let promise = fetch(url, {method: 'POST', body: JSON.stringify(body), headers: configuration.headers})
-            .then(responseHandler);
+        let promise = this.fetchReauthorize(url, {method: 'POST', body: JSON.stringify(body), headers: configuration.headers});
         return promise;
     };
 
@@ -116,21 +100,52 @@ function FetchClient(configuration){
     this.doPatch = function(subdomain, path, queryParams, body) {
         let url = urlConstructor(subdomain, path, queryParams);
         let args = {method: 'PATCH', headers: configuration.headers};
-        let promise = fetch(url, {method: 'PATCH', body: JSON.stringify(body), headers: configuration.headers})
-            .then(responseHandler);
+        let promise = this.fetchReauthorize(url, {method: 'PATCH', body: JSON.stringify(body), headers: configuration.headers});
         return promise;
     };
+
 
     this.setAuthorization = function(token) {
         configuration.headers['Authorization'] = token;
         //console.log(configuration);
     };
+    //lets handle rea-authorization, by retrying on 403
 
+    this.fetchReauthorize = function(url, options){
+        let nonReauthorizingResponseHandler = (response) => {
+            if(!response.ok){
+                throw response; //give the response to upstream code
+            }
+            if(isJson(response)) {
+                //massage things to be same standard as other clients
+                let json = response.json().then((json) => {
+                    return {status: response.status, data: json}
+                });
+                return json;
+            }
+            //todo make sure it's actually text
+            return response.text().then((text) => {return {status: response.status, body:text}});
+        };
+
+        let reauthorizingResponseHandler = (response) => {
+            if(response.status === 403){
+                //try one more time
+                return configuration.reauthorize().then((newToken) => {
+                    this.setAuthorization(newToken);
+                    return fetch(url, options).then(nonReauthorizingResponseHandler);
+                });
+            }
+            return nonReauthorizingResponseHandler(response);
+        };
+
+        return new Promise((resolve, reject) => {
+            return fetch(url, options).then(reauthorizingResponseHandler)
+        });
+    }
 }
 
 let configuredClient = function (configuration) {
-    let myClient = new FetchClient(configuration);
-    return myClient;
+    return new FetchClient(configuration);
 };
 
 export default configuredClient;
