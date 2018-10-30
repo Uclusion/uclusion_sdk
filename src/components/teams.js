@@ -47,11 +47,8 @@ function Teams(client) {
      * @returns {PromiseLike<T> | Promise<T>} the result of the bind
      */
     this.bind = function(teamId, marketId, sharedResources){
-        const body = {
-            shared_resources: sharedResources
-        };
         const path = teamId + '/bind/' + marketId;
-        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+        const createPromise = client.doPost(SUBDOMAIN, path);
         return createPromise.then(dataResolver);
     };
 
@@ -61,7 +58,7 @@ function Teams(client) {
      * @returns {PromiseLike<T> | Promise<T>}
      */
     this.get = function(teamId) {
-        const getPromise = client.doGet(SUBDOMAIN, teamId, body);
+        const getPromise = client.doGet(SUBDOMAIN, teamId);
         return getPromise.then(dataResolver);
     };
 

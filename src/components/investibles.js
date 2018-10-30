@@ -115,10 +115,18 @@ function Investibles(client){
 
     /**
      * Listed investibles that a user has which are not bound to a market (ie draft or template)
+     * @param pageSize Maximum number of templates to return
+     * @param lastEvaluated Optional investible_id last evaluated for pagination
      * @returns {PromiseLike<T> | Promise<T>}
      */
-    this.listTemplates = function () {
-        const getPromise = client.doGet(SUBDOMAIN, 'list');
+    this.listTemplates = function (pageSize, lastEvaluated) {
+        let queryParams = {
+            pageSize: pageSize
+        };
+        if (lastEvaluated) {
+            queryParams.lastEvaluated = lastEvaluated;
+        }
+        const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
         return getPromise.then(dataResolver);
     };
 
