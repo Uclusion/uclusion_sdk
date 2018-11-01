@@ -69,7 +69,16 @@ function Teams(client) {
     this.list = function() {
         const getPromise = client.doGet(SUBDOMAIN, 'list');
         return getPromise.then(dataResolver);
-    }
+    };
+
+    /**
+     * Lists all teams that the calling user is part of
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.mine = function() {
+        const getPromise = client.doGet(SUBDOMAIN, 'mine');
+        return getPromise.then(dataResolver);
+    };
 }
 
 let configuredTeams = (client) => {
