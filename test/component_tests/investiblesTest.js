@@ -1,27 +1,7 @@
-//npm stuff for node test env
-let fetch = require('node-fetch');
-global.fetch = fetch;
+import assert from 'assert';
+import { serverCreator, clientCreator } from './testSetup';
+const {app, server} = serverCreator();
 
-let assert = require('assert');
-
-let testConfig = {
-    baseURL: 'http://localhost:3001',
-    headers: {}
-};
-
-import aclient from '../../src/components/fetchClient.js';
-let client = aclient(testConfig);
-import inv from '../../src/components/investibles.js';
-let investibles = inv(client);
-
-//set up a simple http server for our tests
-const express = require('express');
-const app = express();
-const port = 3001;
-const server = require('http').createServer(app);
-const bodyParser = require('body-parser');
-
-app.use(bodyParser.json());
 
 app.post('/create', (request, response) => {
     response.json({test_body: request.body});
@@ -44,24 +24,29 @@ app.get('/list', (request, response) => {
 });
 
 
-
 app.patch('/meat', (request, response) => {
     response.json({success_message: 'updated', test_body: request.body});
 });
 
+import inv from '../../src/components/investibles.js';
+
+
+
+let investibles = null;
 
 describe('Investibles', () => {
     before(() => {
-        server.listen(port);
+        const client = clientCreator(server);
+        investibles = inv(client);
     });
 
     after(() => {
-        server.close();
+        server.close()
     });
-
 
     describe('#doCreate', () => {
         it('should create investible without error', () => {
+            assert(server.listening);
             let promise = investibles.create('investiblesName', 'this is description', ['foo', 'bar']);
             promise.then((result) => {
                 assert(result.test_body.name === 'investiblesName', 'Did not pass the correct name in body');
@@ -100,9 +85,9 @@ describe('Investibles', () => {
 
 
     describe('#doGet', () => {
-        it('should get investible without error', () => {
+        it('should get investible without error', async () => {
             let promise = investibles.get('asdf4');
-            promise.then((result) => {
+            await promise.then((result) => {
                 //console.log(result);
                 assert(result.id === 'asdf4', 'Should have returned asdf4 as id')
             }).catch((error) => {

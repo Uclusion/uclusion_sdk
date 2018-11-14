@@ -24,14 +24,23 @@ function FetchClient(configuration){
         return false;
     };
 
-
-    let urlConstructor = (subdomain, path, queryParams) => {
-        let url = new URL(configuration.baseURL + '/' + path);
-        //change the url to the subdomain to enable our endpoint endpoint stuff
+    let defaultDomainMunger = (url, subdomain) => {
         if(subdomain){
             let oldHostname = url.hostname;
             const newHostname = subdomain + '.' + oldHostname;
             url.hostname = newHostname;
+        }
+        return url;
+    };
+
+
+    let urlConstructor = (subdomain, path, queryParams) => {
+        let url = new URL(configuration.baseURL + '/' + path);
+        //change the url to the subdomain to enable our endpoint endpoint stuff
+        if(configuration.domainMunger){
+            url = configuration.domainMunger(url, subdomain);
+        }else{
+            url = defaultDomainMunger(url, subdomain);
         }
         let search = url.searchParams;
         for(var key in queryParams){

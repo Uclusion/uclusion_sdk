@@ -1,26 +1,8 @@
-//npm stuff for node test env
-let fetch = require('node-fetch');
-global.fetch = fetch;
-
 import assert from 'assert';
-
-let testConfig = {
-    baseURL: 'http://localhost:3001',
-    headers: {}
-};
-
-import aclient from '../../src/components/fetchClient.js';
-let client = aclient(testConfig);
+import { serverCreator, clientCreator } from './testSetup';
+const {app, server} = serverCreator();
 import ateams from '../../src/components/teams.js';
-let teams = ateams(client);
-
-//set up a simple http server for our tests
-const express = require('express');
-const app = express();
-const port = 3001;
-const server = require('http').createServer(app);
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+let teams = null;
 
 app.post('/devil/invite/h3x3n', (request, response) => {
     response.json({success_message: 'User invitation being processed', test_body: request.body});
@@ -37,7 +19,8 @@ app.get('/list', (request, response) => {
 
 describe('Teams', () => {
     before(() => {
-        server.listen(port);
+        const client = clientCreator(server);
+        teams = ateams(client);
     });
 
     after(() => {

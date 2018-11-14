@@ -1,27 +1,6 @@
-//npm stuff for node test env
-let fetch = require('node-fetch');
-global.fetch = fetch;
-
 import assert from 'assert';
-
-let testConfig  = {
-    baseURL: 'http://localhost:3001',
-    headers: {}
-};
-
-import aclient from '../../src/components/fetchClient.js';
-let client = aclient(testConfig);
-import ausers from '../../src/components/users.js';
-let users = ausers(client);
-
-//set up a simple http server for our tests
-const express = require('express');
-const app = express();
-const port = 3001;
-const server = require('http').createServer(app);
-
-const  bodyParser = require('body-parser');
-app.use(bodyParser.json());
+import { serverCreator, clientCreator } from './testSetup';
+const {app, server} = serverCreator();
 
 app.get('/get/1234', (request, response) => {
     response.json({id: 1234});
@@ -43,9 +22,13 @@ app.patch('/testUser/grant/testMarket', (request, response) => {
     response.json({success_message: 'Granted Team', test_body: request.body});
 });
 
+import us from '../../src/components/users.js';
+let users = null;
+
 describe('Users', () => {
     before(() => {
-        server.listen(port);
+        const client = clientCreator(server);
+        users = us(client);
     });
 
     after(() => {

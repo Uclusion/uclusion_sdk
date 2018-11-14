@@ -1,27 +1,9 @@
-//npm stuff for node test env
-let fetch = require('node-fetch');
-global.fetch = fetch;
-
 import assert from 'assert';
+import { serverCreator, clientCreator } from './testSetup';
+const {app, server} = serverCreator();
 
-let testConfig = {
-    baseURL: 'http://localhost:3001',
-    headers: {}
-};
-
-import aclient from '../../src/components/fetchClient.js';
-let client = aclient(testConfig);
 import amarkets from '../../src/components/markets.js';
-let markets = amarkets(client);
-
-//set up a simple http server for our tests
-const express = require('express');
-const app = express();
-const port = 3001;
-const server = require('http').createServer(app);
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-
+let markets = null;
 
 app.post('/DanielsMarket/teams/MyTeam/invest', (request, response) => {
     response.json({ userid: 'myUser' , test_body: request.body})
@@ -88,7 +70,8 @@ app.get('/list/barron', (request, response) => {
 
 describe('Market', () => {
     before(() => {
-        server.listen(port);
+        const client = clientCreator(server);
+        markets = amarkets(client);
     });
 
     after(() => {
