@@ -44,9 +44,6 @@ app.get('/list', (request, response) => {
 });
 
 
-app.patch('resolve/EXXXOONN', (request, response) => {
-    response.json({success_message: 'Investible resolved'});
-});
 
 app.patch('/meat', (request, response) => {
     response.json({success_message: 'updated', test_body: request.body});
@@ -97,16 +94,6 @@ describe('Investibles', () => {
             promise.then((result) => {
                 assert(result.success_message === 'unfollowed', 'Should have returned the proper success message');
                 assert(result.test_body.remove, 'Should have put the remove request in the body');
-            });
-        });
-    });
-
-
-    describe('#doResolveInvestible', () => {
-        it('should resolve the market category without error', () =>{
-            let promise = investibles.resolve('EXXXOONN');
-            promise.then((result) => {
-                assert(result.success_message === 'Investible resolved', 'Should have returned the proper success message');
             });
         });
     });

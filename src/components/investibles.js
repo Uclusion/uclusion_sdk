@@ -100,18 +100,7 @@ function Investibles(client){
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
     };
-
-
-    /**
-     * Resolves the given investible within the given market
-     * @param investibleId the id of the investible to resolve
-     * @returns {PromiseLike<T> | Promise<T>} the result of the resolve
-     */
-    this.resolve = function(investibleId){
-        const path = 'resolve/' + investibleId;
-        const resolvePromise = client.doPatch(SUBDOMAIN, path);
-        return resolvePromise.then(dataResolver);
-    };
+    
 
     /**
      * Listed investibles that a user has which are not bound to a market (ie draft or template)
