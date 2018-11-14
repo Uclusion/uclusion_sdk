@@ -34,4 +34,9 @@ jobs:
       # run tests!
       - run: npm test
       
-      - run: ls -la
+      - run:
+          name: checkout nodejs_sdk
+          command: |
+            cd ~/project
+            git clone git@github.com:Uclusion/nodejs_sdk.git .
+            
