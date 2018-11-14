@@ -61,11 +61,11 @@ describe('Teams', () => {
 
     describe('#doBind', () => {
         it('should bind team without error', () => {
-            let promise = teams.bind('realmadrid', 'fifa', true);
+            let promise = teams.bind('realmadrid', 'fifa', 99);
             promise.then((result) => {
                 //console.log(result);
                 assert(result.success_message === 'Team bound');
-                assert(result.test_body.shared_resources, 'Did not pass the correct shard resources in body');
+                assert(result.test_body.quantity == 99, 'Did not pass the correct quantity in body');
             }).catch((error) => {
                 console.error(error);
             });

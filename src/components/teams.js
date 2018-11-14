@@ -43,12 +43,13 @@ function Teams(client) {
      * Allows a team to make investments in a market
      * @param teamId the id of the team making the investment
      * @param marketId the id of the market to make the investment inspect
-     * @param sharedResources whether or not a team spends from a common pool of idea shares
+     * @param quantity the quantity of shares to grant the team
      * @returns {PromiseLike<T> | Promise<T>} the result of the bind
      */
-    this.bind = function(teamId, marketId, sharedResources){
+    this.bind = function(teamId, marketId, quantity){
         const path = teamId + '/bind/' + marketId;
-        const createPromise = client.doPost(SUBDOMAIN, path);
+        const body = {quantity: quantity};
+        const createPromise = client.doPost(SUBDOMAIN, path, null, body);
         return createPromise.then(dataResolver);
     };
 

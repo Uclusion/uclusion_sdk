@@ -12,7 +12,7 @@ function Uclusion() {
      * that resolves to the authorization token
      * @returns a promise that when resolved results in instantiated api client.
      */
-        this.constructClient = (configuration) => {
+    this.constructClient = (configuration) => {
         let transportClient = a_client({baseURL: configuration.baseURL, authorizer: configuration.authorizer});
         let authorizerPromise = configuration.authorizer.authorize();
         return authorizerPromise.then((userToken) => {
