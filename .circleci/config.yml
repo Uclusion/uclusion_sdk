@@ -32,7 +32,11 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: cd ~/repo/uclusion_sdk && npm test
+      - run: 
+          name: running tests
+          command: |
+            pwd
+            npm test
       
       # checkout nodejs_sdk repo
       - checkout:
