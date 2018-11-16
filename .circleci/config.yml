@@ -40,6 +40,6 @@ jobs:
             cd ../
             #git clone git@github.com:Uclusion/nodejs_sdk.git
             
-      - checkout
+      - checkout:
           path: nodejs_sdk
           
