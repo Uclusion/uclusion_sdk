@@ -37,6 +37,5 @@ jobs:
       - run:
           name: checkout nodejs_sdk
           command: |
-            pwd
-            #git clone git@github.com:Uclusion/nodejs_sdk.git .
-            
+            cd ../
+            git clone git@github.com:Uclusion/nodejs_sdk.git .
