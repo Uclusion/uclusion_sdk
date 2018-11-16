@@ -14,11 +14,10 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/repo
+    working_directory: ~/repo/uclusion_sdk
 
     steps:
-      - checkout:
-          path: ~/repo/uclusion_sdk
+      - checkout
 
       # Download and cache dependencies
       - restore_cache:
@@ -33,7 +32,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: cd uclusion_sdk/ && npm test
+      - run: cd ~/repo/uclusion_sdk && npm test
       
       # checkout nodejs_sdk repo
       - checkout:
