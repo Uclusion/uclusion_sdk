@@ -36,6 +36,7 @@ jobs:
           name: running tests
           command: |
             pwd
+            ls -l
             npm test
       
       # checkout nodejs_sdk repo
