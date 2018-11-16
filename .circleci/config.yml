@@ -17,7 +17,8 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      - checkout
+      - checkout:
+          path: ~/repo/uclusion_sdk
 
       # Download and cache dependencies
       - restore_cache:
@@ -32,7 +33,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: npm test
+      - run: cd uclusion_sdk/ && npm test
       
       # checkout nodejs_sdk repo
       - checkout:
@@ -41,6 +42,9 @@ jobs:
       - run:
           name: debugging
           command: |
+            pwd
             ls -l
-            ls -l ../
+            ls -l ~/repo/
+            ls -l ~/repo/uclusion_sdk/
+            ls -l ~/repo/nodejs_sdk/
             
