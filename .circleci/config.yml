@@ -42,5 +42,5 @@ jobs:
           name: debugging
           command: |
             ls -l
-            ls -l ../nodejs_sdk
+            ls -l ../
             
