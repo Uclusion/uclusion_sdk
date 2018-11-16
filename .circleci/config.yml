@@ -35,14 +35,13 @@ jobs:
       - run: npm test
       
       # checkout nodejs_sdk repo
-      - run:
-          name: changing working directory
-          command: cd ../
+      working_directory: cd ~/
           
       - checkout:
           path: nodejs_sdk
           
       - run:
           name: debugging
-          command: ls -l
-      
+          command: |
+            pwd
+            ls -l
