@@ -14,7 +14,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/repo
+    working_directory: ~/repo/uclusion_sdk
 
     steps:
       - checkout
@@ -35,13 +35,13 @@ jobs:
       - run: npm test
       
       # checkout nodejs_sdk repo
-      working_directory: cd ~/
-          
       - checkout:
-          path: nodejs_sdk
+          path: ~/repo/nodejs_sdk
           
       - run:
           name: debugging
           command: |
+            pwd
+            cd ~/repo/nodejs_sdk
             pwd
             ls -l
