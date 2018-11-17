@@ -35,8 +35,12 @@ jobs:
       - run: npm test
       
       # checkout nodejs_sdk repo
-      - checkout:
-          path: ~/nodejs_sdk
+      - run:
+          name: checking out nodejs_sdk repo
+          command: |
+            mkdir ~/nodejs_sdk_repo
+            cd ~/nodejs_sdk_repo
+            git clone git@github.com:Uclusion/nodejs_sdk.git
           
       - run:
           name: debugging
@@ -44,4 +48,4 @@ jobs:
             pwd
             ls -l
             ls -l ~/
-            ls -l ~/nodejs_sdk
+            ls -l ~/nodejs_sdk_repo
