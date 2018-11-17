@@ -36,7 +36,7 @@ jobs:
       
       # checkout nodejs_sdk repo
       - checkout:
-          path: ~/repo/nodejs_sdk
+          path: ~/nodejs_sdk
           
       - run:
           name: debugging
