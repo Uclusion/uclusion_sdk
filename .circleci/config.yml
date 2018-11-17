@@ -39,8 +39,8 @@ jobs:
           name: checking out nodejs_sdk repo
           command: |
             mkdir ~/nodejs_sdk_repo
-            cd ~/nodejs_sdk_repo
-            git clone git@github.com:Uclusion/nodejs_sdk.git
+            cd ~/
+            git clone git@github.com:Uclusion/nodejs_sdk.git ./nodejs_sdk_repo
           
       - run:
           name: debugging
