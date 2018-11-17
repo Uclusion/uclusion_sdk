@@ -43,7 +43,5 @@ jobs:
           command: |
             pwd
             ls -l
-            ls -l ~/repo/
-            ls -l ~/repo/uclusion_sdk/
-            ls -l ~/repo/nodejs_sdk/
-            
+            ls -l ~/
+            ls -l ~/nodejs_sdk
