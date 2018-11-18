@@ -64,6 +64,6 @@ jobs:
       - run:
           name: running nodejs_sdk tests
           command: |
-          cd ~/nodejs_sdk_repo
-          npm test
+            cd ~/nodejs_sdk_repo
+            npm test
           
