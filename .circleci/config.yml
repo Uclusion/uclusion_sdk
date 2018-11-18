@@ -51,6 +51,6 @@ jobs:
           command: |
             cd ~/nodejs_sdk_repo
             cat package.json
-            npm link ../repo
+            sudo npm link ../repo
             cat package.json
             
