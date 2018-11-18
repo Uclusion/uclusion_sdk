@@ -45,7 +45,14 @@ jobs:
             cd ~/
             mkdir nodejs_sdk_repo
             git clone git@github.com:Uclusion/nodejs_sdk.git ./nodejs_sdk_repo
-          
+      
+      - run:
+          name: cleaning up uclusion_sdk node_modules
+          command: |
+            cd ~/repo
+            rm -rf node_modules
+            npm install
+      
       - run:
           name: updating nodejs_sdk local dependencies
           command: |
