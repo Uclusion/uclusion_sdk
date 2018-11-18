@@ -61,3 +61,9 @@ jobs:
             sudo npm link ../repo
             cat package.json
             
+      - run:
+          name: running nodejs_sdk tests
+          command: |
+          cd ~/nodejs_sdk_repo
+          npm test
+          
