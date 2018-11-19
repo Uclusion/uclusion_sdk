@@ -146,9 +146,13 @@ function Markets(client){
         return getPromise.then(dataResolver);
     };
 
-    this.listUserInvestments = function (marketId, userId, currentPage, pageSize) {
+    this.listUserInvestments = function (marketId, userId, pageSize, lastEvaluatedKey) {
         const path = 'list/' + marketId;
-        const getPromise = client.doGet(SUBDOMAIN, path, {type: 'userInvestments', userId: userId, currentPage: currentPage, pageSize: pageSize});
+        let queryParams = {type: 'userInvestments', userId: userId, pageSize: pageSize};
+        if (lastEvaluatedKey) {
+            queryParams.lastEvaluatedKey = lastEvaluatedKey;
+        }
+        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };
 }
