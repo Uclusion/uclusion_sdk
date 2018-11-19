@@ -16,7 +16,6 @@ function Uclusion() {
         let transportClient = a_client({baseURL: configuration.baseURL, authorizer: configuration.authorizer});
         let authorizerPromise = configuration.authorizer.authorize();
         return authorizerPromise.then((userToken) => {
-            transportClient.setAuthorization(userToken);
             let apiClient = {
                 users: a_users(transportClient),
                 markets: a_markets(transportClient),
