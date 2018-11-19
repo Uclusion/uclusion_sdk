@@ -52,7 +52,9 @@ function FetchClient(configuration){
     };
 
     let headersConstructor = (headers) => {
-        return headers;
+        let newHeaders = {...headers}
+        newHeaders['Authorization'] = configuration.authorizer.getToken();
+        return newHeaders;
     };
 
 
@@ -114,10 +116,6 @@ function FetchClient(configuration){
     };
 
 
-    this.setAuthorization = function(token) {
-        configuration.headers['Authorization'] = token;
-        //console.log(configuration);
-    };
     //lets handle rea-authorization, by retrying on 403
 
     this.fetchReauthorize = function(url, options){
@@ -140,7 +138,6 @@ function FetchClient(configuration){
             if(response.status === 403){
                 //try one more time
                 return configuration.reauthorize().then((newToken) => {
-                    this.setAuthorization(newToken);
                     return fetch(url, options).then(nonReauthorizingResponseHandler);
                 });
             }

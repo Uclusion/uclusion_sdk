@@ -61,7 +61,7 @@ describe('Investibles', () => {
     describe('#doUpdate', () => {
         it('should update investible without error', () => {
             let promise = investibles.update('asdf3', 'investiblesName', 'this is description', ['foo', 'bar']);
-            promise.then((result) => {
+            return promise.then((result) => {
                 //console.log(result);
                 assert(result.test_body.name === 'investiblesName', 'Did not pass the correct name in body');
                 assert(result.test_body.description === 'this is description', 'Did not pass the correct description in body');
