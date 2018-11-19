@@ -57,9 +57,7 @@ jobs:
           name: updating nodejs_sdk local dependencies
           command: |
             cd ~/nodejs_sdk_repo
-            cat package.json
             sudo npm link ../repo
-            cat package.json
             
       - run:
           name: running nodejs_sdk tests
