@@ -38,20 +38,20 @@ jobs:
       # run tests!
       - run: npm test
       
-      # checkout nodejs_sdk repo
+      - run:
+          name: cleaning up node_modules
+          command: |
+            cd ~/repo
+            rm -rf node_modules
+            npm install
+      
+      # checkout nodejs_sdk repo, update local dependencies and run integration tests
       - run:
           name: checking out nodejs_sdk repo
           command: |
             cd ~/
             mkdir nodejs_sdk_repo
             git clone git@github.com:Uclusion/nodejs_sdk.git ./nodejs_sdk_repo
-      
-      - run:
-          name: cleaning up uclusion_sdk node_modules
-          command: |
-            cd ~/repo
-            rm -rf node_modules
-            npm install
       
       - run:
           name: updating nodejs_sdk local dependencies
