@@ -65,5 +65,5 @@ jobs:
           name: running nodejs_sdk tests
           command: |
             cd ~/nodejs_sdk_repo
-            npm test
+            sudo npm test
           
