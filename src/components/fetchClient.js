@@ -153,3 +153,5 @@ export function FetchClient(passedConfig){
         return fetch(url, options).then(reauthorizingResponseHandler);
     }
 }
+
+export default FetchClient;

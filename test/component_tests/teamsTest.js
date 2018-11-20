@@ -20,7 +20,7 @@ app.get('/list', (request, response) => {
 describe('Teams', () => {
     before(() => {
         const client = clientCreator(server);
-        teams = Teams(client);
+        teams = new Teams(client);
     });
 
     after(() => {

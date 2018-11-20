@@ -136,3 +136,5 @@ export function Users(client) {
 
 
 }
+
+export default Users;

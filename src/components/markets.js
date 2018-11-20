@@ -157,3 +157,4 @@ export function Markets(client){
     };
 }
 
+export default Markets;

@@ -81,3 +81,5 @@ export function Teams(client) {
         return getPromise.then(dataResolver);
     };
 }
+
+export default Teams;

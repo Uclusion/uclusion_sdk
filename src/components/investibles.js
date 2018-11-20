@@ -120,3 +120,5 @@ export function Investibles(client){
     };
 
 }
+
+export default Investibles;

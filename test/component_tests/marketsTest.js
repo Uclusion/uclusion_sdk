@@ -230,8 +230,8 @@ describe('Market', () => {
             let promise = markets.listUserInvestments('barron', 'daniel', 3, 20);
             promise.then((result) => {
                 assert(result.test_query.userId === 'daniel', 'Should have returned proper user id');
-                assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
-                assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+                assert(result.test_query.lastEvaluatedKey == 20, 'Should have returned proper current page');
+                assert(result.test_query.pageSize == 3, 'Should have returned proper page size');
             }).catch((error) => {
                 console.error(error);
             });
