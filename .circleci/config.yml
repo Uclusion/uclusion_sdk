@@ -33,9 +33,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}  
-        
-      - run: mkdir -p reports/mocha
+          key: v1-dependencies-{{ checksum "package.json" }}
         
       - run:
           name: run unit tests
@@ -43,7 +41,7 @@ jobs:
           when: always
           
       - run:
-          name: genrate code coverage
+          name: generate code coverage
           command: npm run coverage
           when: always
       
@@ -59,21 +57,27 @@ jobs:
           path: test
       
       - run:
-          name: checking out nodejs_sdk repo
+          name: check out nodejs_sdk repo
           command: |
             cd ~/
             mkdir nodejs_sdk_repo
             git clone git@github.com:Uclusion/nodejs_sdk.git ./nodejs_sdk_repo
       
       - run:
-          name: updating nodejs_sdk local dependencies
+          name: update nodejs_sdk local dependencies
           command: |
             cd ~/nodejs_sdk_repo
             sudo npm link ../repo
             
       - run:
-          name: running nodejs_sdk tests
+          name: run integration tests
           command: |
             cd ~/nodejs_sdk_repo
             sudo npm test
           
+      - store_artifacts:
+          path: test/nodejs/test-results.xml
+          prefix: tests
+          
+      - store_test_results:
+          path: test
