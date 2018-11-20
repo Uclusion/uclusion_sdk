@@ -1,0 +1,5 @@
+#Ignore test results file
+test-results.xml
+
+#Ignore files in coverage directory
+coverage/

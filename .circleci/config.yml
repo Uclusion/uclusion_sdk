@@ -30,12 +30,6 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: npm install
-
-      - run: npm install mocha-junit-reporter # just for CircleCI
-      
-      - run: npm install nyc
-
       - save_cache:
           paths:
             - node_modules
@@ -43,19 +37,26 @@ jobs:
         
       - run: mkdir -p reports/mocha
         
-      # Run mocha
       - run:
-          name: npm test
-          #command: ./node_modules/.bin/nyc ./node_modules/.bin/mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml
-          command: ./node_modules/.bin/nyc npm --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml test
+          name: run unit tests
+          command: npm test
+          when: always
+          
+      - run:
+          name: genrate code coverage
+          command: npm run coverage
           when: always
       
-      # Upload results
-      - store_test_results:
-          path: reports/mocha
-
       - store_artifacts:
-          path: ./reports/mocha/test-results.xml
+          path: test/test-results.xml
+          prefix: tests
+          
+      - store_artifacts:
+          path: test/coverage
+          prefix: coverage
+          
+      - store_test_results:
+          path: test
       
       - run:
           name: checking out nodejs_sdk repo
