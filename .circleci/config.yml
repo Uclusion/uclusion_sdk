@@ -76,8 +76,8 @@ jobs:
             sudo npm test
           
       - store_artifacts:
-          path: test/nodejs/test-results.xml
+          path: ~/nodejs_sdk_repo/test/nodejs/test-results.xml
           prefix: tests
           
       - store_test_results:
-          path: test
+          path: ~/nodejs_sdk_repo/test
