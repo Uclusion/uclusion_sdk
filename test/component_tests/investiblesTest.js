@@ -28,7 +28,7 @@ app.patch('/meat', (request, response) => {
     response.json({success_message: 'updated', test_body: request.body});
 });
 
-import inv from '../../src/components/investibles.js';
+import {Investibles } from '../../src/components/investibles.js';
 
 
 
@@ -37,7 +37,7 @@ let investibles = null;
 describe('Investibles', () => {
     before(() => {
         const client = clientCreator(server);
-        investibles = inv(client);
+        investibles = new Investibles(client);
     });
 
     after(() => {

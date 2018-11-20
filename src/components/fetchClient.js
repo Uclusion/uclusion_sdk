@@ -1,5 +1,6 @@
+export function FetchClient(passedConfig){
 
-function FetchClient(configuration){
+    let configuration = {...passedConfig};
 
     const defaultHeaders = {
         'Content-Type': 'application/json;charset=UTF-8',
@@ -52,8 +53,9 @@ function FetchClient(configuration){
     };
 
     let headersConstructor = (headers) => {
-        let newHeaders = {...headers}
+        let newHeaders = {...headers};
         newHeaders['Authorization'] = configuration.authorizer.getToken();
+        //console.log(newHeaders);
         return newHeaders;
     };
 
@@ -67,8 +69,8 @@ function FetchClient(configuration){
     this.doGet = function (subdomain, path, queryParams) {
         let url = urlConstructor(subdomain, path, queryParams);
         let headers = headersConstructor(configuration.headers);
-        let args = {method: 'GET', headers: headers};
-        let promise = this.fetchReauthorize(url, args);
+     //   console.log(headers);
+        let promise = this.fetchReauthorize(url, {method: 'GET', headers: headers});
         return promise;
     };
 
@@ -81,8 +83,9 @@ function FetchClient(configuration){
      */
     this.doDelete = function(subdomain, path, queryParams) {
         let url = urlConstructor(subdomain, path, queryParams);
-        let args = {method: 'DELETE', headers: configuration.headers};
-        let promise = this.fetchReauthorize(url, {method: 'DELETE', headers: configuration.headers});
+        let headers = headersConstructor(configuration.headers);
+      //  console.log(headers);
+        let promise = this.fetchReauthorize(url, {method: 'DELETE', headers: headers});
         return promise;
     };
 
@@ -96,7 +99,7 @@ function FetchClient(configuration){
     this.doPost = function(subdomain, path, queryParams, body) {
         let url = urlConstructor(subdomain, path, queryParams);
         let headers = headersConstructor(configuration.headers);
-        let args = {method: 'POST', headers: headers};
+   //     console.log(headers);
         let promise = this.fetchReauthorize(url, {method: 'POST', body: JSON.stringify(body), headers: configuration.headers});
         return promise;
     };
@@ -110,13 +113,14 @@ function FetchClient(configuration){
      */
     this.doPatch = function(subdomain, path, queryParams, body) {
         let url = urlConstructor(subdomain, path, queryParams);
-        let args = {method: 'PATCH', headers: configuration.headers};
-        let promise = this.fetchReauthorize(url, {method: 'PATCH', body: JSON.stringify(body), headers: configuration.headers});
+        let headers = headersConstructor(configuration.headers);
+    //    console.log(headers);
+        let promise = this.fetchReauthorize(url, {method: 'PATCH', body: JSON.stringify(body), headers: headers});
         return promise;
     };
 
 
-    //lets handle rea-authorization, by retrying on 403
+    //lets handle rea-authorization, by retrying on 403 or 401
 
     this.fetchReauthorize = function(url, options){
         let nonReauthorizingResponseHandler = (response) => {
@@ -135,9 +139,10 @@ function FetchClient(configuration){
         };
 
         let reauthorizingResponseHandler = (response) => {
-            if(response.status === 403){
+            if(response.status === 403 || response.status === 401){
+                console.log("Reauthorizing");
                 //try one more time
-                return configuration.reauthorize().then((newToken) => {
+                return configuration.authorizer.reauthorize().then((newToken) => {
                     return fetch(url, options).then(nonReauthorizingResponseHandler);
                 });
             }
@@ -147,9 +152,3 @@ function FetchClient(configuration){
         return fetch(url, options).then(reauthorizingResponseHandler);
     }
 }
-
-let configuredClient = function (configuration) {
-    return new FetchClient(configuration);
-};
-
-export default configuredClient;

@@ -1,4 +1,4 @@
-function Investibles(client){
+export function Investibles(client){
 
     const SUBDOMAIN = 'investibles';
 
@@ -120,9 +120,3 @@ function Investibles(client){
     };
 
 }
-
-let configuredInvestibles = (client) => {
-    return new Investibles(client);
-};
-
-export default configuredInvestibles;

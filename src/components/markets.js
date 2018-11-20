@@ -1,4 +1,4 @@
-function Markets(client){
+export function Markets(client){
 
     const SUBDOMAIN = 'markets';
 
@@ -157,8 +157,3 @@ function Markets(client){
     };
 }
 
-let configuredMarkets = (client) => {
-    return new Markets(client);
-};
-
-export default configuredMarkets;

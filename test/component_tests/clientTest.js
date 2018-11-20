@@ -25,9 +25,9 @@ let testConfig = {
     domainMunger: (url, domain) => { return url} //don't do the sub domain additionxx`
 };
 
-import aclient from '../../src/components/fetchClient.js';
+import { FetchClient } from '../../src/components/fetchClient.js';
 
-let client = aclient(testConfig);
+let client = new FetchClient(testConfig);
 //console.log(client);
 
 describe('Client', () => {
