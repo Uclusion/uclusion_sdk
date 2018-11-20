@@ -74,10 +74,20 @@ jobs:
           command: |
             cd ~/nodejs_sdk_repo
             sudo npm test
+            
+      - run:
+          name: generate code coverage
+          command: |
+            cd ~/nodejs_sdk_repo
+            sudo npm run coverage
           
       - store_artifacts:
           path: ~/nodejs_sdk_repo/test/nodejs/test-results.xml
           prefix: tests
+          
+      - store_artifacts:
+          path: ~/nodejs_sdk_repo/test/coverage
+          prefix: coverage    
           
       - store_test_results:
           path: ~/nodejs_sdk_repo/test
