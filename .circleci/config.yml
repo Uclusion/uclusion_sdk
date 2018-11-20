@@ -30,30 +30,29 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+      - run: npm install
+
+      - run: npm install mocha-junit-reporter # just for CircleCI
+
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "package.json" }}  
         
-      - run: 
-          name: running unit tests
-          command: |
-            mkdir -p test-results/mocha
-            npm test > test-results/mocha/results.log
-      
-      - store_artifacts:
-          path: test-results
-          destination: prefix
-      
-      - store_test_results:
-          path: test-results
-
+      - run: mkdir reports  
+        
+      # Run mocha
       - run:
-          name: cleaning up node_modules
-          command: |
-            cd ~/repo
-            rm -rf node_modules
-            npm install
+          name: npm test
+          command: ./node_modules/.bin/nyc ./node_modules/.bin/mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml
+          when: always
+      
+      # Upload results
+      - store_test_results:
+          path: reports
+
+      - store_artifacts:
+          path: ./reports/mocha/test-results.xml
       
       - run:
           name: checking out nodejs_sdk repo
