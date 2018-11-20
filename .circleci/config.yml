@@ -38,6 +38,13 @@ jobs:
       # run tests!
       - run: npm test
       
+      - store_artifacts:
+          path: test-results
+          destination: prefix
+      
+      - store_test_results:
+          path: test-results
+
       - run:
           name: cleaning up node_modules
           command: |
