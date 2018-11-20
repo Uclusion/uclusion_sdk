@@ -19,7 +19,7 @@
   },
   "scripts": {
     "pretest": "npm install",
-    "test": "nyc mocha -r esm --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=test/test-results.xml test",
+    "test": "nyc mocha -r esm --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=test/mocha/test-results.xml test",
     "coverage": "nyc report --reporter=html --reporter=text --reporter=lcovonly --report-dir=test/coverage",
     "build": "webpack"
   }

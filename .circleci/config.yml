@@ -48,7 +48,7 @@ jobs:
           when: always
       
       - store_artifacts:
-          path: test/test-results.xml
+          path: test/mocha/test-results.xml
           prefix: tests
           
       - store_artifacts:
