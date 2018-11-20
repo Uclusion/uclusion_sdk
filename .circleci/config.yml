@@ -35,8 +35,11 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
         
-      # run tests!
-      - run: npm test
+      - run: 
+          name: running unit tests
+          command: |
+            mkdir -p test-results/mocha
+            npm test > test-results/mocha/results.log
       
       - store_artifacts:
           path: test-results
@@ -52,7 +55,6 @@ jobs:
             rm -rf node_modules
             npm install
       
-      # checkout nodejs_sdk repo, update local dependencies and run integration tests
       - run:
           name: checking out nodejs_sdk repo
           command: |
