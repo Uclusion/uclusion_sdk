@@ -34,7 +34,7 @@ jobs:
 
       - run: npm install mocha-junit-reporter # just for CircleCI
       
-      - run: npm install nyc -g
+      - run: npm install nyc
 
       - save_cache:
           paths:
@@ -47,7 +47,7 @@ jobs:
       - run:
           name: npm test
           #command: ./node_modules/.bin/nyc ./node_modules/.bin/mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml
-          command: nyc npm test
+          command: ./node_modules/.bin/nyc npm test
           when: always
       
       # Upload results
