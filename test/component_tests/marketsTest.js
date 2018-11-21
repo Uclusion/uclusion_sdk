@@ -28,27 +28,25 @@ app.patch('/fish', (request, response) => {
 app.patch('/oil/resolve', (request, response) => {
     response.json({success_message: 'Category being resolved', test_body: request.body});
 });
-;
 
-app.patch('/meat/follow', (request, response) => {
-    response.json({success_message: 'unfollowed', test_body: request.body});
+app.patch('/follow/meat', (request, response) => {
+    response.json({test_body: request.body});
 });
 
+app.get('/roi/aresolutionid', (request, response) => {
+    response.json({test_query: request.query});
+});
 
 app.get('/meat/investibles/chicken', (request, response) => {
     response.json({id: 'chicken'});
 });
 
-app.get('/meat/list', (request, response) => {
+app.get('/list/meat', (request, response) => {
     response.json({category: 'fake'});
 });
 
-app.get('/list/stocknasdaq/', (request, response) => {
+app.get('/list/stocknasdaq', (request, response) => {
     response.json({type: 'categoryInvestibles', test_query: request.query});
-});
-
-app.get('/list/dow', (request, response) => {
-    response.json({type: 'investibleInvestments', test_query: request.query});
 });
 
 app.get('/list/s&p', (request, response) => {
@@ -130,6 +128,8 @@ describe('Market', () => {
             promise.then((result) => {
                 assert(result.id === 'fish');
                 assert(result.test_body.description === marketUpdateOptions.description, 'Market Update Options should match request body');
+            }).catch((error) => {
+                console.error(error);
             });
         });
     });
@@ -138,19 +138,32 @@ describe('Market', () => {
         it('should follow the investible without error', () =>{
             let promise = markets.followMarket('meat', true);
             promise.then((result) => {
-                assert(result.success_message === 'unfollowed', 'Should have returned the proper success message');
                 assert(result.test_body.remove, 'Should have put the remove request in the body');
+            }).catch((error) => {
+                console.error(error);
             });
         });
     });
 
-
+    describe('#doListRoi', () => {
+        it('should get the Roi without error', () =>{
+            let promise = markets.listRoi('marketwithroi', 'aresolutionid');
+            promise.then((result) => {
+                //console.log(JSON.stringify(result));
+                assert(result.test_query.marketId === 'marketwithroi', 'Should have returned proper market');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
 
     describe('#doGetMarketInvestible', () => {
         it('should get  the investible without error', () =>{
             let promise = markets.getMarketInvestible('meat', 'chicken');
             promise.then((result) => {
                 assert(result.id === 'chicken', 'Should have returned proper id');
+            }).catch((error) => {
+                console.error(error);
             });
         });
     });
@@ -160,30 +173,20 @@ describe('Market', () => {
             let promise = markets.listCategories('meat');
             promise.then((result) => {
                 assert(result.category === 'fake', 'Should have returned proper category');
-            });
-        });
-    });
-
-    describe('#doListCategoriesInvestibles', () => {
-        it('should get  the investible without error', () =>{
-            let promise = markets.listCategoriesInvestibles('stocknasdaq', 3, 20, 25);
-            promise.then((result) => {
-                assert(result.test_query.category == 3, 'Should have returned proper category');
-                assert(result.test_query.currentPage == 20, 'Should have returned proper page number');
-                assert(result.test_query.pageSize == 25, 'Should have returned proper page size');
             }).catch((error) => {
                 console.error(error);
             });
         });
     });
 
-    describe('#doListInvestiblesInvestment', () => {
+    describe('#doListCategoriesInvestibles', () => {
         it('should get  the investible without error', () =>{
-            let promise = markets.listInvestibleInvestments('dow', 'company', 3, 20);
+            let promise = markets.listCategoriesInvestibles('stocknasdaq', 'aCat', 20, 25);
             promise.then((result) => {
-                assert(result.test_query.investibleId === 'company', 'Should have returned proper investible id');
-                assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
-                assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+                //console.log(JSON.stringify(result));
+                assert(result.test_query.category === 'aCat', 'Should have returned proper category');
+                assert(parseInt(result.test_query.currentPage) === 20, 'Should have returned proper page number');
+                assert(parseInt(result.test_query.pageSize) === 25, 'Should have returned proper page size');
             }).catch((error) => {
                 console.error(error);
             });
@@ -206,8 +209,8 @@ describe('Market', () => {
             let promise = markets.listInvestibles('russel', 'search', 3, 20);
             promise.then((result) => {
                 assert(result.test_query.searchString === 'search', 'Should have returned proper search string');
-                assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
-                assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+                assert(parseInt(result.test_query.currentPage) === 3, 'Should have returned proper current page');
+                assert(parseInt(result.test_query.pageSize) === 20, 'Should have returned proper page size');
             }).catch((error) => {
                 console.error(error);
             });
@@ -227,19 +230,14 @@ describe('Market', () => {
 
     describe('#doListUserInvestments', () => {
         it('should get  the investible without error', () =>{
-            let promise = markets.listUserInvestments('barron', 'daniel', 3, 20);
+            let promise = markets.listUserInvestments('barron', 'daniel', 20, 'lastKey');
             promise.then((result) => {
                 assert(result.test_query.userId === 'daniel', 'Should have returned proper user id');
-                assert(result.test_query.currentPage == 3, 'Should have returned proper current page');
-                assert(result.test_query.pageSize == 20, 'Should have returned proper page size');
+                assert(result.test_query.lastEvaluatedKey === 'lastKey', 'Should have returned proper last key');
+                assert(parseInt(result.test_query.pageSize) === 20, 'Should have returned proper page size');
             }).catch((error) => {
                 console.error(error);
             });
         });
     });
-
-
-
-
-
 });

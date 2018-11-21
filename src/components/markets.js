@@ -99,6 +99,20 @@ function Markets(client){
     };
 
     /**
+     * Lists ROI
+     * @param resolutionId ID of an investible or investibles to list ROI
+     * @param marketId Market to list ROI for
+     * @param resolutionId optional constraint
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.listRoi = function(marketId, resolutionId) {
+        let path = 'roi/' + resolutionId;
+        let queryParams = {marketId: marketId};
+        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
+        return getPromise.then(dataResolver);
+    };
+
+    /**
      * Fetches the given market investible from the given market
      * @param marketId the id of the market to retrieve the investible in
      * @param investibleId the id of the investible to retrieve
@@ -119,12 +133,6 @@ function Markets(client){
     this.listCategoriesInvestibles = function (marketId, category, pageNumber, pageSize) {
         const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'categoryInvestibles', category: category, currentPage: pageNumber, pageSize: pageSize});
-        return getPromise.then(dataResolver);
-    };
-
-    this.listInvestibleInvestments = function (marketId, investibleId, pageNumber, pageSize, trendingWindowDate) {
-        const path = 'list/' + marketId;
-        const getPromise = client.doGet(SUBDOMAIN, path, {type: 'investibleInvestments', investibleId: investibleId, currentPage: pageNumber, pageSize: pageSize, trendingWindowDate: trendingWindowDate});
         return getPromise.then(dataResolver);
     };
 

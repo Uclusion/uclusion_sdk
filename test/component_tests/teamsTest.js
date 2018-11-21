@@ -12,6 +12,10 @@ app.post('/realmadrid/bind/fifa', (request, response) => {
     response.json({success_message: 'Team bound', test_body: request.body});
 });
 
+app.get('/roi/teamwithroi', (request, response) => {
+    response.json({test_query: request.query});
+});
+
 app.get('/list', (request, response) => {
     response.json({type: 'list', test_query: request.query});
 });
@@ -48,13 +52,25 @@ describe('Teams', () => {
             promise.then((result) => {
                 //console.log(result);
                 assert(result.success_message === 'Team bound');
-                assert(result.test_body.quantity == 99, 'Did not pass the correct quantity in body');
+                assert(parseInt(result.test_body.quantity) === 99, 'Did not pass the correct quantity in body');
             }).catch((error) => {
                 console.error(error);
             });
         });
     });
 
+    describe('#doListRoi', () => {
+        it('should get the Roi without error', () =>{
+            let promise = teams.listRoi('teamwithroi', 'marketwithroi', 'aresolutionid');
+            promise.then((result) => {
+                //console.log(JSON.stringify(result));
+                assert(result.test_query.marketId === 'marketwithroi', 'Should have returned proper market');
+                assert(result.test_query.resolutionId === 'aresolutionid', 'Should have returned proper resolution');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
 
     describe('#doList', () => {
         it('should get teams', () =>{

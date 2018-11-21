@@ -15,8 +15,16 @@ app.get('/asdf4', (request, response) => {
     response.json({id: 'asdf4'});
 });
 
-app.patch('follow/steak/', (request, response) => {
-    response.json({success_message: 'unfollowed', test_body: request.body});
+app.patch('/follow/steak', (request, response) => {
+    response.json({test_body: request.body});
+});
+
+app.patch('/roi/steak', (request, response) => {
+    response.json({resolution_id: 'asdf5'});
+});
+
+app.patch('/state/steak', (request, response) => {
+    response.json({success_message: 'Investible state updated'});
 });
 
 app.get('/list', (request, response) => {
@@ -77,12 +85,34 @@ describe('Investibles', () => {
         it('should follow the investible without error', () =>{
             let promise = investibles.follow('steak', true);
             promise.then((result) => {
-                assert(result.success_message === 'unfollowed', 'Should have returned the proper success message');
                 assert(result.test_body.remove, 'Should have put the remove request in the body');
+            }).catch((error) => {
+                console.error(error);
             });
         });
     });
 
+    describe('#doInitiateRoi', () => {
+        it('should initiate ROI for the investible without error', () =>{
+            let promise = investibles.initiateRoi('steak');
+            promise.then((result) => {
+                assert(result.resolution_id === 'asdf5', 'Should have returned asdf5 as id');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doStateChange', () => {
+        it('should change investible state without error', () =>{
+            let promise = investibles.stateChange('steak', {option1: 'option1', option2: 'option2'});
+            promise.then((result) => {
+                assert(result.success_message === 'Investible state updated', 'Should return the proper success message');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
 
     describe('#doGet', () => {
         it('should get investible without error', async () => {

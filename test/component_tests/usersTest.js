@@ -3,7 +3,7 @@ import { serverCreator, clientCreator } from './testSetup';
 const {app, server} = serverCreator();
 
 app.get('/get/1234', (request, response) => {
-    response.json({id: 1234});
+    response.json({id: '1234'});
 });
 
 app.delete('/delete', (request, response) => {
@@ -39,7 +39,7 @@ describe('Users', () => {
         it('should fetch user without error', () => {
             let promise = users.get('1234');
             promise.then((result) => {
-                assert(result.id == '1234', "Client should have returned 1234 as it's ID");
+                assert(result.id === '1234', "Client should have returned 1234 as it's ID");
             }).catch((error) => {
                 console.error(error);
             });
@@ -50,7 +50,7 @@ describe('Users', () => {
         it('should delete without error', () => {
             users.delete('I hate uclusion so I\'m deleting myself')
                 .then((result) => {
-                    assert(result.success_message == 'User deleted');
+                    assert(result.success_message === 'User deleted');
                 }).catch((error) => {
                 console.error(error);
             });
@@ -63,7 +63,7 @@ describe('Users', () => {
             let promise = users.grant('myUser', 'n3wbie', 1090);
             promise.then((result) => {
                 //console.log(result);
-                assert(result.success_message == 'Granted');
+                assert(result.success_message === 'Granted');
                 assert(result.test_body.quantity === 1090, 'Should have granted the proper amount');
             }).catch((error) => {
                 console.error(error);
@@ -76,11 +76,10 @@ describe('Users', () => {
             let promise = users.grantAddExistingUserToMarket('testUser', 'testMarket', 'ateam', 10902, true);
             promise.then((result) => {
                 //console.log(result);
-                assert(result.success_message == 'Granted Team');
+                assert(result.success_message === 'Granted Team');
                 assert(result.test_body.quantity === 10902, 'Should have granted the proper amount');
                 assert(result.test_body.team_id === 'ateam', 'Should have assigned the proper team');
                 assert(result.test_body.is_admin, 'Should have specified an admin');
-
             }).catch((error) => {
                 console.error(error);
             });
@@ -89,15 +88,13 @@ describe('Users', () => {
 
     describe('#doPatch', () => {
         it('should update without error', () => {
-            users.update('New Name')
-                .then((result) => {
+            let promise = users.update('New Name');
+            promise.then((result) => {
                     assert(result.success_message = 'User updated');
-                    assert(result.test_body.name  == 'New Name', 'Body passed to server did not match expected');
-                }).catch((error) => {
+                    assert(result.test_body.name  === 'New Name', 'Body passed to server did not match expected');
+            }).catch((error) => {
                 console.error(error);
             });
         });
     });
-
-
 });

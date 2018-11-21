@@ -100,7 +100,37 @@ function Investibles(client){
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
     };
-    
+
+    /**
+     * Creates a resolution_id object which initiates asynchronous creation of ROI suggestions
+     * @param investibleId the id of the investible to create ROI from
+     * @returns {PromiseLike<T> | Promise<T>} resolution_id result
+     */
+    this.initiateRoi = function(investibleId){
+        const path = 'roi/' + investibleId;
+        const roiPromise = client.doPatch(SUBDOMAIN, path, undefined, undefined);
+        return roiPromise.then(dataResolver);
+    };
+
+    /**
+     * Allows or stops different operations on an investible and sets stage. stateOptions is an object with form
+     * shown below where all parameters are optional
+     * <ul>
+     *  <li>open_for_investment : boolean</li>
+     *  <li>open_for_refunds: boolean</li>
+     *  <li>open_for_editing: boolean</li>
+     *  <li>is_active: boolean</li>
+     *  <li>stage: string</li>
+     * </ul>
+     * @param investibleId the id of the investible to control
+     * @param stateOptions controls the state of the market investible
+     * @returns {PromiseLike<T> | Promise<T>} the result of the allowed interaction call
+     */
+    this.stateChange = function(investibleId, stateOptions){
+        const path = 'state/' + investibleId;
+        const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, stateOptions);
+        return updatePromise.then(dataResolver);
+    };
 
     /**
      * Listed investibles that a user has which are not bound to a market (ie draft or template)
