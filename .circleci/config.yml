@@ -91,3 +91,6 @@ jobs:
           
       - store_test_results:
           path: ~/nodejs_sdk_repo/test
+          
+      - run: npm publish
+      
