@@ -13,10 +13,14 @@
     "mocha": "^5.2.0",
     "node-fetch": "latest",
     "webpack": "latest",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "nyc": "^13.1.0",
+    "mocha-junit-reporter": "^1.18.0"
   },
   "scripts": {
-    "test": "mocha -r esm --recursive test",
+    "pretest": "npm install",
+    "test": "nyc mocha -r esm --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=test/mocha/test-results.xml test",
+    "coverage": "nyc report --reporter=html --reporter=text --reporter=lcovonly --report-dir=test/coverage",
     "build": "webpack"
   }
 }

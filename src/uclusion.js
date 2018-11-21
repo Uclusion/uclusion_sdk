@@ -1,8 +1,8 @@
-import a_users from './components/users.js';
-import a_markets from './components/markets.js';
-import a_investibles from './components/investibles.js';
-import a_teams from './components/teams';
-import a_client from './components/fetchClient.js';
+import { Users } from './components/users.js';
+import { Markets } from './components/markets.js';
+import { Investibles } from './components/investibles.js';
+import { Teams } from './components/teams';
+import { FetchClient } from './components/fetchClient.js';
 
 function Uclusion() {
 
@@ -13,15 +13,15 @@ function Uclusion() {
      * @returns a promise that when resolved results in instantiated api client.
      */
     this.constructClient = (configuration) => {
-        let transportClient = a_client({baseURL: configuration.baseURL, authorizer: configuration.authorizer});
+        let transportClient = new FetchClient({baseURL: configuration.baseURL, authorizer: configuration.authorizer});
         let authorizerPromise = configuration.authorizer.authorize();
         return authorizerPromise.then((userToken) => {
-            transportClient.setAuthorization(userToken);
-            let apiClient = {
-                users: a_users(transportClient),
-                markets: a_markets(transportClient),
-                investibles: a_investibles(transportClient),
-                teams: a_teams(transportClient)
+            //console.log("Got user token:" + userToken)
+             let apiClient = {
+                users: new Users(transportClient),
+                markets: new Markets(transportClient),
+                investibles: new Investibles(transportClient),
+                teams: new Teams(transportClient)
             };
             return apiClient;
         });

@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { serverCreator, clientCreator } from './testSetup';
 const {app, server} = serverCreator();
-import ateams from '../../src/components/teams.js';
+import { Teams } from '../../src/components/teams.js';
 let teams = null;
 
 app.post('/devil/invite/h3x3n', (request, response) => {
@@ -24,7 +24,7 @@ app.get('/list', (request, response) => {
 describe('Teams', () => {
     before(() => {
         const client = clientCreator(server);
-        teams = ateams(client);
+        teams = new Teams(client);
     });
 
     after(() => {

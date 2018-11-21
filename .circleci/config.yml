@@ -35,33 +35,59 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
         
-      # run tests!
-      - run: npm test
+      - run:
+          name: run unit tests
+          command: npm test
+          when: always
+          
+      - run:
+          name: generate code coverage
+          command: npm run coverage
+          when: always
+      
+      - store_artifacts:
+          path: test/mocha/test-results.xml
+          prefix: tests
+          
+      - store_artifacts:
+          path: test/coverage
+          prefix: coverage
+          
+      - store_test_results:
+          path: test
       
       - run:
-          name: cleaning up node_modules
-          command: |
-            cd ~/repo
-            rm -rf node_modules
-            npm install
-      
-      # checkout nodejs_sdk repo, update local dependencies and run integration tests
-      - run:
-          name: checking out nodejs_sdk repo
+          name: check out nodejs_sdk repo
           command: |
             cd ~/
             mkdir nodejs_sdk_repo
             git clone git@github.com:Uclusion/nodejs_sdk.git ./nodejs_sdk_repo
       
       - run:
-          name: updating nodejs_sdk local dependencies
+          name: update nodejs_sdk local dependencies
           command: |
             cd ~/nodejs_sdk_repo
             sudo npm link ../repo
             
       - run:
-          name: running nodejs_sdk tests
+          name: run integration tests
           command: |
             cd ~/nodejs_sdk_repo
             sudo npm test
+            
+      - run:
+          name: generate code coverage
+          command: |
+            cd ~/nodejs_sdk_repo
+            sudo npm run coverage
           
+      - store_artifacts:
+          path: ~/nodejs_sdk_repo/test/nodejs/test-results.xml
+          prefix: tests
+          
+      - store_artifacts:
+          path: ~/nodejs_sdk_repo/test/coverage
+          prefix: coverage    
+          
+      - store_test_results:
+          path: ~/nodejs_sdk_repo/test

@@ -1,4 +1,4 @@
-function Users(client) {
+export function Users(client) {
 
     const SUBDOMAIN = 'users';
 
@@ -137,8 +137,4 @@ function Users(client) {
 
 }
 
-let configuredUsers = (client) => {
-    return new Users(client);
-};
-//module.exports = configuredUsers;
-export default configuredUsers;
+export default Users;

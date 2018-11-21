@@ -22,13 +22,13 @@ app.patch('/testUser/grant/testMarket', (request, response) => {
     response.json({success_message: 'Granted Team', test_body: request.body});
 });
 
-import us from '../../src/components/users.js';
+import { Users } from '../../src/components/users.js';
 let users = null;
 
 describe('Users', () => {
     before(() => {
         const client = clientCreator(server);
-        users = us(client);
+        users = new Users(client);
     });
 
     after(() => {

@@ -2,7 +2,7 @@ import assert from 'assert';
 import { serverCreator, clientCreator } from './testSetup';
 const {app, server} = serverCreator();
 
-import amarkets from '../../src/components/markets.js';
+import { Markets } from '../../src/components/markets.js';
 let markets = null;
 
 app.post('/DanielsMarket/teams/MyTeam/invest', (request, response) => {
@@ -69,7 +69,7 @@ app.get('/list/barron', (request, response) => {
 describe('Market', () => {
     before(() => {
         const client = clientCreator(server);
-        markets = amarkets(client);
+        markets = new Markets(client);
     });
 
     after(() => {

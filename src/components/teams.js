@@ -1,4 +1,4 @@
-function Teams(client) {
+export function Teams(client) {
 
     const SUBDOMAIN = 'teams';
 
@@ -99,8 +99,4 @@ function Teams(client) {
     };
 }
 
-let configuredTeams = (client) => {
-    return new Teams(client);
-};
-//module.exports = configuredUsers;
-export default configuredTeams;
+export default Teams;
