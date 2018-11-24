@@ -92,5 +92,14 @@ jobs:
       - store_test_results:
           path: ~/nodejs_sdk_repo/test
           
-      - run: npm publish
+      - run:
+          name: npm login
+          command: "npm adduser<<!
+                   $NPM_USERNAME
+                   $NPM_PASSWORD
+                   $NPM_EMAIL
+                   !"
+      - run: 
+          name: npm user profile
+          command: ls -la .npmrc
       
