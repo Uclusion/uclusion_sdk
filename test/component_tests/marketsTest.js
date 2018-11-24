@@ -88,6 +88,17 @@ describe('Market', () => {
         });
     });
 
+    describe('#doInvestAndBind', () => {
+        it('should invest and bind', () => {
+            let promise = markets.investAndBind('DanielsMarket', 'MyTeam', 'NewInvestment', 500, ['foo', 'bar']);
+            promise.then((result) => {
+                assert(result.userid === 'myUser', 'Did not return the proper user id from the result');
+                assert(result.test_body.quantity === 500, 'Did not pass the proper quantity in the body');
+                assert(result.test_body.investible_id === 'NewInvestment', 'Did not pass the proper investment id in the body');
+                assert(JSON.stringify(result.test_body.category_list) === JSON.stringify(['foo', 'bar']), 'Did not pass the correct category list in body');
+            });
+        });
+    });
 
     describe('#doDeleteInvestment', () => {
         it('should delete the investment without error', () => {

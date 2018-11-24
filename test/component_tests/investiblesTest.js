@@ -23,6 +23,10 @@ app.patch('/roi/steak', (request, response) => {
     response.json({resolution_id: 'asdf5'});
 });
 
+app.post('/category/myMarketId', (request, response) => {
+    response.json({test_body: request.body});
+});
+
 app.patch('/state/steak', (request, response) => {
     response.json({success_message: 'Investible state updated'});
 });
@@ -55,11 +59,22 @@ describe('Investibles', () => {
     describe('#doCreate', () => {
         it('should create investible without error', () => {
             assert(server.listening);
-            let promise = investibles.create('investiblesName', 'this is description', ['foo', 'bar']);
+            let promise = investibles.create('investiblesName', 'this is description');
             promise.then((result) => {
                 assert(result.test_body.name === 'investiblesName', 'Did not pass the correct name in body');
                 assert(result.test_body.description === 'this is description', 'Did not pass the correct description in body');
-                assert(JSON.stringify(result.test_body.category_list) === JSON.stringify(['foo', 'bar']), 'Did not pass the correct category list in body');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doCreateCategory', () => {
+        it('should create category without error', () => {
+            assert(server.listening);
+            let promise = investibles.createCategory('my category name', 'myMarketId');
+            promise.then((result) => {
+                assert(result.test_body.name === 'my category name', 'Did not pass the correct name in body');
             }).catch((error) => {
                 console.error(error);
             });

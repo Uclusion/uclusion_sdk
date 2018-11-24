@@ -8,17 +8,31 @@ export function Investibles(client){
      * Creates an investible
      * @param investibleName name of investible
      * @param investibleDescription description of investible
-     * @param categoryList list of categories
      * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
      */
-    this.create = function(investibleName, investibleDescription, categoryList)
+    this.create = function(investibleName, investibleDescription)
     {
         const body = {
             name: investibleName,
-            description: investibleDescription,
-            category_list: categoryList
+            description: investibleDescription
         };
         const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
+        return createPromise.then(dataResolver);
+    };
+
+    /**
+     * Creates a category
+     * @param name name of investible
+     * @param marketId market_id of the category
+     * @returns {PromiseLike<T> | Promise<T>} resulting category
+     */
+    this.createCategory = function(name, marketId)
+    {
+        const path = 'category/' + marketId;
+        const body = {
+            name: name
+        };
+        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return createPromise.then(dataResolver);
     };
 

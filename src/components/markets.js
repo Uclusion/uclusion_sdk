@@ -22,6 +22,28 @@ export function Markets(client){
         const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return createPromise.then(dataResolver);
     };
+
+    /**
+     * Creates an investment in the given investible and market with the specified number
+     * of idea ideaShares and categories
+     * @param marketId the id of the market to make the investment inspect
+     * @param teamId the id of the team making the investment
+     * @param investibleId the id of the investible to invest
+     * @param ideaSharesQuantity the number of idea shares to investible
+     * @param categoryList list of categories
+     * @returns {PromiseLike<T> | Promise<T>} the result of the investment
+     */
+    this.investAndBind = function(marketId, teamId, investibleId, ideaSharesQuantity, categoryList){
+        const body = {
+            quantity: ideaSharesQuantity,
+            investible_id: investibleId,
+            category_list: categoryList
+        };
+        const path = marketId + '/teams/' + teamId + '/invest';
+        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+        return createPromise.then(dataResolver);
+    };
+
     /**
       * Deletes an investment in the given investible and market
       * @param marketId the id of the market to make the investment inspect
