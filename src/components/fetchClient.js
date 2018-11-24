@@ -1,6 +1,6 @@
 export function FetchClient(passedConfig){
 
-    let configuration = {...passedConfig};
+    let configuration = Object.assign({}, passedConfig);
 
     const defaultHeaders = {
         'Content-Type': 'application/json;charset=UTF-8',
@@ -53,7 +53,7 @@ export function FetchClient(passedConfig){
     };
 
     let headersConstructor = (headers) => {
-        let newHeaders = {...headers};
+        let newHeaders = Object.assign({}, headers);
         newHeaders['Authorization'] = configuration.authorizer.getToken();
         //console.log(newHeaders);
         return newHeaders;
