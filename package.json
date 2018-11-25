@@ -4,7 +4,7 @@
   "keywords": [
     "uclusion"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./src/uclusion.js",
   "devDependencies": {
     "esm": "^3.0.74",
