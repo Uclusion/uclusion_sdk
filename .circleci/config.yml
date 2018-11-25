@@ -93,13 +93,9 @@ jobs:
           path: ~/nodejs_sdk_repo/test
           
       - run:
-          name: npm login
-          command: "npm adduser<<!
-                   $NPM_USERNAME
-                   $NPM_PASSWORD
-                   $NPM_EMAIL
-                   !"
-      - run: 
-          name: npm user profile
-          command: ls -la .npmrc
-      
+          name: Authenticate with npm registry
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+          
+      - run:
+          name: Publish package
+          command: npm publish
