@@ -94,12 +94,8 @@ jobs:
           
       - run:
           name: Authenticate with npm registry
-          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
             
       - run:
           name: Publish package
-          command: |
-            npm config ls -l
-            cat /home/circleci/.npmrc
-            npm publish --userconfig ~/.npmrc
-            
+          command: npm publish
