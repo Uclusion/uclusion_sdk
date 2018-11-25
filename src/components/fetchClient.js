@@ -11,7 +11,7 @@ export function FetchClient(passedConfig){
         'Accept' : 'application/json, text/plain, */*'
     };
 
-    let actualHeaders = Object.assign(defaultHeaders, configuration.headers);
+    let actualHeaders = Object.assign({}, defaultHeaders, configuration.headers);
     configuration.headers = actualHeaders;
 
     let isJson = (response) => {
