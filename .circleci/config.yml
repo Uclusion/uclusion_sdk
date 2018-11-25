@@ -100,5 +100,6 @@ jobs:
           name: Publish package
           command: |
             npm config ls -l
+            cat /home/circleci/.npmrc
             npm publish --userconfig ~/.npmrc
             
