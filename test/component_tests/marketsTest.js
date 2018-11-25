@@ -46,7 +46,7 @@ app.get('/list/meat', (request, response) => {
 });
 
 app.get('/list/stocknasdaq', (request, response) => {
-    response.json({type: 'categoryInvestibles', test_query: request.query});
+    response.json({test_query: request.query, url: request.url});
 });
 
 app.get('/list/s&p', (request, response) => {
@@ -192,12 +192,13 @@ describe('Market', () => {
 
     describe('#doListCategoriesInvestibles', () => {
         it('should get  the investible without error', () =>{
-            let promise = markets.listCategoriesInvestibles('stocknasdaq', 'aCat', 20, 25);
+            let promise = markets.listCategoriesInvestibles('stocknasdaq', 'aCat', 20, 25, ['BOUND', 'CLOSED']);
             promise.then((result) => {
-                //console.log(JSON.stringify(result));
                 assert(result.test_query.category === 'aCat', 'Should have returned proper category');
                 assert(parseInt(result.test_query.currentPage) === 20, 'Should have returned proper page number');
                 assert(parseInt(result.test_query.pageSize) === 25, 'Should have returned proper page size');
+                //console.log(result.url);
+                assert(result.url.includes('&stage=BOUND&stage=CLOSED'));
             }).catch((error) => {
                 console.error(error);
             });

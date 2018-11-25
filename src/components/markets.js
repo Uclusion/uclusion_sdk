@@ -152,9 +152,13 @@ export function Markets(client){
         return getPromise.then(dataResolver)
     };
 
-    this.listCategoriesInvestibles = function (marketId, category, pageNumber, pageSize) {
+    this.listCategoriesInvestibles = function (marketId, category, pageNumber, pageSize, stages) {
         const path = 'list/' + marketId;
-        const getPromise = client.doGet(SUBDOMAIN, path, {type: 'categoryInvestibles', category: category, currentPage: pageNumber, pageSize: pageSize});
+        let queryParams = {type: 'categoryInvestibles', category: category, currentPage: pageNumber, pageSize: pageSize};
+        if (stages) {
+            queryParams.stage = stages;
+        }
+        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };
 
@@ -164,15 +168,23 @@ export function Markets(client){
         return getPromise.then(dataResolver);
     };
 
-    this.listInvestibles = function (marketId, searchString, currentPage, pageSize) {
+    this.listInvestibles = function (marketId, searchString, currentPage, pageSize, stages) {
         const path = 'list/' + marketId;
-        const getPromise = client.doGet(SUBDOMAIN, path, {type: 'investibles', searchString: searchString, currentPage: currentPage, pageSize: pageSize});
+        let queryParams = {type: 'investibles', searchString: searchString, currentPage: currentPage, pageSize: pageSize};
+        if (stages) {
+            queryParams.stage = stages;
+        }
+        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };
 
-    this.listTrending = function (marketId, trendingWindowDate) {
+    this.listTrending = function (marketId, trendingWindowDate, stages) {
         const path = 'list/' + marketId;
-        const getPromise = client.doGet(SUBDOMAIN, path, {type: 'trending', trendingWindowDate: trendingWindowDate});
+        let queryParams = {type: 'trending', trendingWindowDate: trendingWindowDate};
+        if (stages) {
+            queryParams.stage = stages;
+        }
+        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };
 
