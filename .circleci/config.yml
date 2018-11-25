@@ -99,6 +99,6 @@ jobs:
       - run:
           name: Publish package
           command: |
-            ls -la ~/
-            npm publish
+            npm config ls -l
+            npm publish --userconfig ~/.npmrc
             
