@@ -7,12 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:latest
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
+      - image: circleci/node:10
 
     working_directory: ~/repo
 
@@ -36,12 +31,12 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       - run:
-          name: run unit tests
+          name: Run unit tests
           command: npm test
           when: always
           
       - run:
-          name: generate code coverage
+          name: Generate code coverage
           command: npm run coverage
           when: always
       
@@ -57,26 +52,26 @@ jobs:
           path: test
       
       - run:
-          name: check out nodejs_sdk repo
+          name: Check out nodejs_sdk repo
           command: |
             cd ~/
             mkdir nodejs_sdk_repo
             git clone git@github.com:Uclusion/nodejs_sdk.git ./nodejs_sdk_repo
       
       - run:
-          name: update nodejs_sdk local dependencies
+          name: Update nodejs_sdk local dependencies
           command: |
             cd ~/nodejs_sdk_repo
             sudo npm link ../repo
             
       - run:
-          name: run integration tests
+          name: Run integration tests
           command: |
             cd ~/nodejs_sdk_repo
             sudo npm test
             
       - run:
-          name: generate code coverage
+          name: Generate code coverage
           command: |
             cd ~/nodejs_sdk_repo
             sudo npm run coverage
