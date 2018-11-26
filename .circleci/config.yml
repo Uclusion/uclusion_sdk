@@ -108,7 +108,7 @@ jobs:
 
 workflows:
   version: 2
-  build-deploy-$CIRCLE_PREVIOUS_BUILD_NUM:
+  build-deploy:
     jobs:
       - build:
           filters: # required since `deploy` has tag filters AND requires `build`
