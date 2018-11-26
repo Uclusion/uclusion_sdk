@@ -45,7 +45,14 @@ export function FetchClient(passedConfig){
         }
         let search = url.searchParams;
         for(var key in queryParams){
-            search.set(key, queryParams[key]);
+            let value = queryParams[key];
+            if(Array.isArray(value)){
+                for(var index in value){
+                    search.append(key, value[index])
+                }
+            }else {
+                search.append(key, value);
+            }
         }
         url.search = search.toString();
         //console.log(url);
@@ -153,5 +160,6 @@ export function FetchClient(passedConfig){
         return fetch(url, options).then(reauthorizingResponseHandler);
     }
 }
+
 
 export default FetchClient;
