@@ -60,7 +60,7 @@ jobs:
             git clone git@github.com:Uclusion/nodejs_sdk.git ./nodejs_sdk_repo
       
       - run:
-          name: Update nodejs_sdk local dependencies
+          name: Create link for uclusion_sdk dependency
           command: |
             cd ~/nodejs_sdk_repo
             sudo npm link ../repo
