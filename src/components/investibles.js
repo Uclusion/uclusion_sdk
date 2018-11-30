@@ -135,6 +135,8 @@ export function Investibles(client){
      *  <li>open_for_editing: boolean</li>
      *  <li>is_active: boolean</li>
      *  <li>stage: string</li>
+     *  <li>next_stage: string, <b>required</b></li>
+     *  <li>next_stage_threshold: number, <b>required</b></li>
      * </ul>
      * @param investibleId the id of the investible to control
      * @param stateOptions controls the state of the market investible

@@ -63,6 +63,8 @@ export function Markets(client){
      *  <li>description: string, <b>required</b></li>
      *  <li>trending_window: number</li>
      *  <li>manual_roi: boolean</li>
+     *  <li>initial_next_stage: string, <b>required</b></li>
+     *  <li>initial_next_stage_threshold: number, <b>required</b></li>
      * </ul>
      * @param marketOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
@@ -88,6 +90,8 @@ export function Markets(client){
      *  <li>name : string, <b>required</b></li>
      *  <li>description: string, <b>required</b></li>
      *  <li>trending_window: number, <b>required</b></li>
+     *  <li>initial_next_stage: string, <b>required</b></li>
+     *  <li>initial_next_stage_threshold: number, <b>required</b></li>
      * </ul>
      * @param marketId Market to update
      * @param marketUpdateOptions the options for the market
