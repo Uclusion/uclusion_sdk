@@ -127,6 +127,55 @@ export function Investibles(client){
     };
 
     /**
+     * Creates a comment for an investible
+     * @param investibleId the id of the investible to create the comment for
+     * @param title of the comment
+     * @param body html body of the comment
+     * @param replyId comment_id of the parent comment
+     * @returns {PromiseLike<T> | Promise<T>} resolution_id result
+     */
+    this.createComment = function(investibleId, title, body, replyId){
+        const path = investibleId + '/comment';
+        const msgBody = {
+            title: title,
+            body: body
+        };
+        if (replyId) {
+            msgBody.replyId = replyId;
+        }
+        const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
+        return commentPromise.then(dataResolver);
+    };
+
+    /**
+     * Updates a comment
+     * @param commentId the id of the comment to update
+     * @param title of the comment
+     * @param body html body of the comment
+     * @returns {PromiseLike<T> | Promise<T>} resolution_id result
+     */
+    this.updateComment = function(commentId, title, body){
+        const path = 'comment/' + commentId;
+        const msgBody = {
+            title: title,
+            body: body
+        };
+        const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
+        return commentPromise.then(dataResolver);
+    };
+
+    /**
+     * Deletes a comment
+     * @param commentId the id of the comment to delete
+     * @returns {PromiseLike<T> | Promise<T>} resolution_id result
+     */
+    this.deleteComment = function(commentId){
+        const path = 'comment/' + commentId;
+        const commentPromise = client.doDelete(SUBDOMAIN, path);
+        return commentPromise.then(dataResolver);
+    };
+
+    /**
      * Allows or stops different operations on an investible and sets stage. stateOptions is an object with form
      * shown below where all parameters are optional
      * <ul>
@@ -162,6 +211,25 @@ export function Investibles(client){
             queryParams.lastEvaluated = lastEvaluated;
         }
         const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
+        return getPromise.then(dataResolver);
+    };
+
+    /**
+     * Listed comments associated with an investible
+     * @param investibleId the id of the investible to list comments of
+     * @param pageSize Maximum number of templates to return
+     * @param lastEvaluated Optional investible_id last evaluated for pagination
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.listComments = function (investibleId, pageSize, lastEvaluated) {
+        const path = 'comments/' + investibleId;
+        let queryParams = {
+            pageSize: pageSize
+        };
+        if (lastEvaluated) {
+            queryParams.lastEvaluated = lastEvaluated;
+        }
+        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };
 

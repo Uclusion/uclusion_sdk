@@ -7,7 +7,15 @@ app.post('/create', (request, response) => {
     response.json({test_body: request.body});
 });
 
+app.post('/asdf3/comment', (request, response) => {
+    response.json({test_body: request.body});
+});
+
 app.patch('/asdf3', (request, response) => {
+    response.json({test_body: request.body});
+});
+
+app.patch('/comment/Casdf3', (request, response) => {
     response.json({test_body: request.body});
 });
 
@@ -35,6 +43,9 @@ app.get('/list', (request, response) => {
     response.json({investibleTemplates: 'fiction'});
 });
 
+app.get('/comments/asdf3', (request, response) => {
+    response.json({comments: 'some comments'});
+});
 
 app.patch('/meat', (request, response) => {
     response.json({success_message: 'updated', test_body: request.body});
@@ -63,6 +74,32 @@ describe('Investibles', () => {
             promise.then((result) => {
                 assert(result.test_body.name === 'investiblesName', 'Did not pass the correct name in body');
                 assert(result.test_body.description === 'this is description', 'Did not pass the correct description in body');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doCreateComment', () => {
+        it('should create comment without error', () => {
+            assert(server.listening);
+            let promise = investibles.createComment('asdf3', 'comment title', 'comment body');
+            promise.then((result) => {
+                assert(result.test_body.title === 'comment title', 'Did not pass the correct title');
+                assert(result.test_body.body === 'comment body', 'Did not pass the correct body');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doUpdateComment', () => {
+        it('should update comment without error', () => {
+            assert(server.listening);
+            let promise = investibles.updateComment('Casdf3', 'comment title', 'comment body');
+            promise.then((result) => {
+                assert(result.test_body.title === 'comment title', 'Did not pass the correct title');
+                assert(result.test_body.body === 'comment body', 'Did not pass the correct body');
             }).catch((error) => {
                 console.error(error);
             });
@@ -146,6 +183,17 @@ describe('Investibles', () => {
             let promise = investibles.listTemplates();
             promise.then((result) => {
                 assert(result.investibleTemplates === 'fiction', 'Should have returned proper investible templates');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doListComments', () => {
+        it('should get the comments without error', () =>{
+            let promise = investibles.listComments('asdf3');
+            promise.then((result) => {
+                assert(result.comments === 'some comments', 'Should have returned proper investible comments');
             }).catch((error) => {
                 console.error(error);
             });
