@@ -2,7 +2,10 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
+version: 2.1
+
+orbs:
+    hello: circleci/hello-build@0.0.5
 
 defaults: &defaults
   working_directory: ~/repo
@@ -107,7 +110,9 @@ jobs:
           command: npm publish
 
 workflows:
-  version: 2
+  hello:
+    jobs:
+      - hello/hello-build
   build-deploy:
     jobs:
       - build:
@@ -122,4 +127,3 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-              

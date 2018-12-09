@@ -71,3 +71,6 @@ package-lock.json
 
 #no dist
 dist/
+
+#circleci config to run builds locally using CLI
+.circleci/config_local.yml
