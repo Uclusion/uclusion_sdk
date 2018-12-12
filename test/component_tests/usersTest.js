@@ -18,10 +18,6 @@ app.patch('/myUser/grant/n3wbie', (request, response) => {
     response.json({success_message: 'Granted', test_body: request.body});
 });
 
-app.patch('/testUser/grant/testMarket', (request, response) => {
-    response.json({success_message: 'Granted Team', test_body: request.body});
-});
-
 import { Users } from '../../src/components/users.js';
 let users = null;
 
@@ -65,21 +61,6 @@ describe('Users', () => {
                 //console.log(result);
                 assert(result.success_message === 'Granted');
                 assert(result.test_body.quantity === 1090, 'Should have granted the proper amount');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
-
-    describe('#doGrantAddExistingUserToMarket', () => {
-        it('should grant user shares without error', () => {
-            let promise = users.grantAddExistingUserToMarket('testUser', 'testMarket', 'ateam', 10902, true);
-            promise.then((result) => {
-                //console.log(result);
-                assert(result.success_message === 'Granted Team');
-                assert(result.test_body.quantity === 10902, 'Should have granted the proper amount');
-                assert(result.test_body.team_id === 'ateam', 'Should have assigned the proper team');
-                assert(result.test_body.is_admin, 'Should have specified an admin');
             }).catch((error) => {
                 console.error(error);
             });
