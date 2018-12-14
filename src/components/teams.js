@@ -43,7 +43,6 @@ export function Teams(client) {
      * Allows a team to make investments in a market
      * @param teamId the id of the team making the investment
      * @param marketId the id of the market to make the investment inspect
-     * @param quantity the quantity of shares to grant the team
      * @param roleOptions object with the following form:
      * <ul>
      *  <li>default_role: string, <b>required</b></li>
@@ -52,10 +51,9 @@ export function Teams(client) {
      * </ul>
      * @returns {PromiseLike<T> | Promise<T>} the result of the bind
      */
-    this.bind = function(teamId, marketId, quantity, roleOptions){
+    this.bind = function(teamId, marketId, roleOptions){
         const path = teamId + '/bind/' + marketId;
         const body = {
-            quantity: quantity,
             default_role: roleOptions.default_role,
             lead_role: roleOptions.lead_role
         };
