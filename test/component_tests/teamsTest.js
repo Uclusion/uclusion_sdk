@@ -48,11 +48,15 @@ describe('Teams', () => {
 
     describe('#doBind', () => {
         it('should bind team without error', () => {
-            let promise = teams.bind('realmadrid', 'fifa', 99);
+            let roleOptions = {
+                default_role: 'ronaldo',
+                lead_role: 'messi'
+            };
+            let promise = teams.bind('realmadrid', 'fifa', roleOptions);
             promise.then((result) => {
                 //console.log(result);
                 assert(result.success_message === 'Team bound');
-                assert(parseInt(result.test_body.quantity) === 99, 'Did not pass the correct quantity in body');
+                assert(result.test_body.lead_role === 'messi', 'Did not pass the correct lead role in body');
             }).catch((error) => {
                 console.error(error);
             });
