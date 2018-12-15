@@ -4,8 +4,12 @@ const {app, server} = serverCreator();
 import { Teams } from '../../src/components/teams.js';
 let teams = null;
 
-app.post('/devil/invite/h3x3n', (request, response) => {
+app.post('/invite/devil', (request, response) => {
     response.json({success_message: 'User invitation being processed', test_body: request.body});
+});
+
+app.post('/devil/invite', (request, response) => {
+    response.json({success_message: 'token'});
 });
 
 app.post('/realmadrid/bind/fifa', (request, response) => {
@@ -31,9 +35,9 @@ describe('Teams', () => {
         server.close();
     });
 
-    describe('#doInvite', () => {
+    describe('#doInviteUser', () => {
         it('should invite user without error', () => {
-            let promise = teams.invite('devil', 'h3x3n', 'me@example.com', 100);
+            let promise = teams.inviteUser('devil', 'me@example.com', 100, false);
             promise.then((result) => {
                 //console.log(result);
                 assert(result.success_message === 'User invitation being processed', 'Should have succeded in invite');
@@ -45,6 +49,17 @@ describe('Teams', () => {
         });
     });
 
+    describe('#doInviteTeam', () => {
+        it('should invite team without error', () => {
+            let promise = teams.inviteTeam('devil');
+            promise.then((result) => {
+                //console.log(result);
+                assert(result.success_message === 'token');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
 
     describe('#doBind', () => {
         it('should bind team without error', () => {
