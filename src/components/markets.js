@@ -65,7 +65,6 @@ export function Markets(client){
      *  <li>manual_roi: boolean</li>
      *  <li>initial_next_stage: string, <b>required</b></li>
      *  <li>initial_next_stage_threshold: number, <b>required</b></li>
-     *  <li>shared_resources: boolean</li>
      * </ul>
      * @param marketOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
