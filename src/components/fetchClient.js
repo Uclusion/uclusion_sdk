@@ -66,6 +66,12 @@ export function FetchClient(passedConfig){
         return newHeaders;
     };
 
+    this.setToken = function(result) {
+        return result.then((response) => {
+            configuration.authorizer.setToken(response.login_capability);
+            return response;
+        });
+    };
 
     /**
      * Syntactic sugar over fetch get

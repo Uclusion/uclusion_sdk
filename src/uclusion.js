@@ -21,7 +21,8 @@ function Uclusion() {
                 users: new Users(transportClient),
                 markets: new Markets(transportClient),
                 investibles: new Investibles(transportClient),
-                teams: new Teams(transportClient)
+                teams: new Teams(transportClient),
+                sso: new Sso(transportClient)
             };
             return apiClient;
         });
