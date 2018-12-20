@@ -1,7 +1,8 @@
 import { Users } from './components/users.js';
 import { Markets } from './components/markets.js';
 import { Investibles } from './components/investibles.js';
-import { Teams } from './components/teams';
+import { Teams } from './components/teams.js';
+import { Sso } from './components/sso.js';
 import { FetchClient } from './components/fetchClient.js';
 
 function Uclusion() {
