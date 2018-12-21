@@ -12,7 +12,6 @@ export function Sso(client) {
      * @param teamDescription description of the team that will own the account
      * @param oidcOptions options used for OIDC authorization. Of the form
      * <ul>
-     *  <li>op_login_url : string, <b>required</b></li>
      *  <li>op_endpoint_base_url: string, <b>required</b></li>
      *  <li>uclusion_client_id: string, <b>required</b></li>
      *  <li>destination_url: string, <b>required</b></li>
@@ -24,7 +23,6 @@ export function Sso(client) {
             account_name: accountName,
             team_name: teamName,
             team_description: teamDescription,
-            op_login_url: oidcOptions.op_login_url,
             op_endpoint_base_url: oidcOptions.op_endpoint_base_url,
             uclusion_client_id: oidcOptions.uclusion_client_id,
             destination_url: oidcOptions.destination_url
