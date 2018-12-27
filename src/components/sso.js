@@ -27,22 +27,46 @@ export function Sso(client) {
             uclusion_client_id: oidcOptions.uclusion_client_id,
             destination_url: oidcOptions.destination_url
         };
-        const oidcprePromise = client.doPost(SUBDOMAIN, 'oidcpre', undefined, body);
-        return oidcprePromise.then(dataResolver);
+        const oidcPreAccountPromise = client.doPost(SUBDOMAIN, 'oidcpre', undefined, body);
+        return oidcPreAccountPromise.then(dataResolver);
     };
 
     /**
-     * Redirects to an OIDC endpoint authorization with parameters on the redirect for the OIDC redirect and user
-     * creation. This method requires an authorization header that is a magic link token.
+     * Redirects to an OIDC authorization with parameters on the redirect.
+     * @param accountId account ID that will be given access to after login
      * @param destinationUrl page to send the user back to after authorization
      * @returns {PromiseLike<T> | Promise<T>} a redirect to OIDC authorizaton with correct query params
      */
-    this.userCreateAuthRedirect = function(destinationUrl) {
+    this.oidcAuthRedirect = function(accountId, destinationUrl) {
         const body = {
-            destination_url: destinationUrl
+            destination_url: destinationUrl,
+            account_id: accountId
         };
-        const oidcprePromise = client.doPost(SUBDOMAIN, 'oidcpreuser', undefined, body);
-        return oidcprePromise.then(dataResolver);
+        const oidcPrePromise = client.doPost(SUBDOMAIN, 'prelogin', undefined, body);
+        return oidcPrePromise.then(dataResolver);
+    };
+
+    /**
+     * Redirects to a product authorization with parameters on the redirect.
+     * @param marketId market ID that will be given access to after login
+     * @param destinationUrl page to send the user back to after authorization
+     * @param referringUserId Optional magic link referring user ID
+     * @param referringTeamId Optional magic link referring team ID
+     * @returns {PromiseLike<T> | Promise<T>} a redirect to product authorizaton with correct query params
+     */
+    this.externalAuthRedirect = function(marketId, destinationUrl, referringUserId, referringTeamId) {
+        const body = {
+            destination_url: destinationUrl,
+            market_id: marketId
+        };
+        if (referringUserId) {
+            body.referring_user_id = referringUserId;
+        }
+        if (referringTeamId) {
+            body.referring_team_id = referringTeamId;
+        }
+        const externalPrePromise = client.doPost(SUBDOMAIN, 'prelogin', undefined, body);
+        return externalPrePromise.then(dataResolver);
     };
 
     /**
@@ -60,6 +84,38 @@ export function Sso(client) {
         };
         const accountPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
         return client.setToken(accountPromise.then(dataResolver));
+    };
+
+    /**
+     * Logs in after an OIDC authorization. This method does not use an authorization header.
+     * @param idToken OIDC ID token with user identity
+     * @param state token with all information passed from oidcAuthRedirect
+     * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
+     * automatically applied
+     */
+    this.accountLogin = function(idToken, state) {
+        const body = {
+            id_token: idToken,
+            state: state
+        };
+        const oidcLoginPromise = client.doPost(SUBDOMAIN, 'login', undefined, body);
+        return client.setToken(oidcLoginPromise.then(dataResolver));
+    };
+
+    /**
+     * Logs in after an external product authorization. This method does not use an authorization header.
+     * @param externalAuthToken external token with user identity and team info
+     * @param state token with all information passed from externalAuthRedirect
+     * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
+     * automatically applied
+     */
+    this.marketLogin = function(externalAuthToken, state) {
+        const body = {
+            external_auth_token: externalAuthToken,
+            state: state
+        };
+        const marketLoginPromise = client.doPost(SUBDOMAIN, 'login', undefined, body);
+        return client.setToken(marketLoginPromise.then(dataResolver));
     };
 }
 

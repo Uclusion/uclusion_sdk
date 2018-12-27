@@ -5,36 +5,6 @@ export function Teams(client) {
     const dataResolver = (result) => { return result.data };
 
     /**
-     * Invites a user for given team, identified by email, and assigns them a quantity of idea shares
-     * @param teamId Team to add user to
-     * @param email the email of the user to inviter
-     * @param ideaSharesQuantity How many idea shares to grant the user in marketId
-     * @param isAdmin Whether or not the invited user should be made an admin
-     * @returns the result of inviting the user
-     */
-        this.inviteUser = function(teamId, email, ideaSharesQuantity, isAdmin){
-        const body = {
-            email: email,
-            quantity: ideaSharesQuantity,
-            is_admin: isAdmin
-        };
-        const path =  'invite/' + teamId;
-        const invitePromise = client.doPost(SUBDOMAIN, path, undefined, body);
-        return invitePromise.then(dataResolver);
-    };
-
-    /**
-     * Invites a team
-     * @param teamId Team to add user to
-     * @returns magic link token
-     */
-    this.inviteTeam = function(teamId){
-        const path =  teamId + '/invite';
-        const invitePromise = client.doPost(SUBDOMAIN, path, undefined, undefined);
-        return invitePromise.then(dataResolver);
-    };
-
-    /**
      * Creates a team
      * @param name name of the team
      * @param description description of the team

@@ -97,28 +97,6 @@ export function Users(client) {
     };
 
     /**
-     * Creates a new user from a magic link and identification
-     * @param idToken OIDC ID token
-     * @param email used if no idToken
-     * @param name optional when using email instead of idToken
-     * @returns {PromiseLike<T> | Promise<T>} the new user and an already consumed login capability
-     */
-    this.register = function(idToken, email, name){
-        const body = {};
-        if (idToken) {
-            body.id_token = idToken;
-        }
-        if (email) {
-            body.email = email;
-        }
-        if (name) {
-            body.name = name;
-        }
-        const registerPromise = client.doPost(SUBDOMAIN, 'register', undefined, body);
-        return client.setToken(registerPromise.then(dataResolver));
-    };
-
-    /**
      * Grants the given number of idea shares in the given market to the given user
      * @param userId the user to grant them to
      * @param marketId the market to grant the idea shares in
