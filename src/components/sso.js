@@ -31,20 +31,6 @@ export function Sso(client) {
         return oidcPreAccountPromise.then(dataResolver);
     };
 
-    /**
-     * Redirects to an OIDC authorization with parameters on the redirect.
-     * @param accountId account ID that will be given access to after login
-     * @param destinationUrl page to send the user back to after authorization
-     * @returns {PromiseLike<T> | Promise<T>} a redirect to OIDC authorizaton with correct query params
-     */
-    this.oidcAuthRedirect = function(accountId, destinationUrl) {
-        const body = {
-            destination_url: destinationUrl,
-            account_id: accountId
-        };
-        const oidcPrePromise = client.doPost(SUBDOMAIN, 'prelogin', undefined, body);
-        return oidcPrePromise.then(dataResolver);
-    };
 
     /**
      * Redirects to a product authorization with parameters on the redirect.
@@ -86,21 +72,7 @@ export function Sso(client) {
         return client.setToken(accountPromise.then(dataResolver));
     };
 
-    /**
-     * Logs in after an OIDC authorization. This method does not use an authorization header.
-     * @param idToken OIDC ID token with user identity
-     * @param state token with all information passed from oidcAuthRedirect
-     * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
-     * automatically applied
-     */
-    this.accountLogin = function(idToken, state) {
-        const body = {
-            id_token: idToken,
-            state: state
-        };
-        const oidcLoginPromise = client.doPost(SUBDOMAIN, 'login', undefined, body);
-        return client.setToken(oidcLoginPromise.then(dataResolver));
-    };
+
 
     /**
      * Logs in after an external product authorization. This method does not use an authorization header.
