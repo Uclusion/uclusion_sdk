@@ -1,7 +1,5 @@
 export function Sso(client) {
 
-    const SUBDOMAIN = 'sso';
-
     const dataResolver = (result) => { return result.data };
 
     /**
@@ -33,29 +31,6 @@ export function Sso(client) {
 
 
     /**
-     * Redirects to a product authorization with parameters on the redirect.
-     * @param marketId market ID that will be given access to after login
-     * @param destinationUrl page to send the user back to after authorization
-     * @param referringUserId Optional magic link referring user ID
-     * @param referringTeamId Optional magic link referring team ID
-     * @returns {PromiseLike<T> | Promise<T>} a redirect to product authorizaton with correct query params
-     */
-    this.externalAuthRedirect = function(marketId, destinationUrl, referringUserId, referringTeamId) {
-        const body = {
-            destination_url: destinationUrl,
-            market_id: marketId
-        };
-        if (referringUserId) {
-            body.referring_user_id = referringUserId;
-        }
-        if (referringTeamId) {
-            body.referring_team_id = referringTeamId;
-        }
-        const externalPrePromise = client.doPost(SUBDOMAIN, 'prelogin', undefined, body);
-        return externalPrePromise.then(dataResolver);
-    };
-
-    /**
      * Creates an account with the information collected from accountCreateAuthRedirect. This method does not use an
      * authorization header.
      * @param idToken OIDC ID token with account creator's identity
@@ -73,22 +48,6 @@ export function Sso(client) {
     };
 
 
-
-    /**
-     * Logs in after an external product authorization. This method does not use an authorization header.
-     * @param externalAuthToken external token with user identity and team info
-     * @param state token with all information passed from externalAuthRedirect
-     * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
-     * automatically applied
-     */
-    this.marketLogin = function(externalAuthToken, state) {
-        const body = {
-            external_auth_token: externalAuthToken,
-            state: state
-        };
-        const marketLoginPromise = client.doPost(SUBDOMAIN, 'login', undefined, body);
-        return client.setToken(marketLoginPromise.then(dataResolver));
-    };
 }
 
 export default Sso;
