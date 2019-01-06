@@ -76,7 +76,7 @@ export function FetchClient(passedConfig){
         let url = urlConstructor(subdomain, path, queryParams);
         const headers = headersConstructor(configuration.headers);
         //console.log(headers);
-        let promise = this.fetch(url, {method: 'GET', headers: headers});
+        let promise = fetch(url, {method: 'GET', headers: headers});
         return promise;
     };
 
@@ -91,7 +91,7 @@ export function FetchClient(passedConfig){
         let url = urlConstructor(subdomain, path, queryParams);
         const headers = headersConstructor(configuration.headers);
         //console.log(headers);
-        let promise = this.fetch(url, {method: 'DELETE', headers: headers});
+        let promise = fetch(url, {method: 'DELETE', headers: headers});
         return promise;
     };
 
@@ -106,7 +106,7 @@ export function FetchClient(passedConfig){
         let url = urlConstructor(subdomain, path, queryParams);
         const headers = headersConstructor(configuration.headers);
         //console.log(headers);
-        let promise = this.fetch(url, {method: 'POST', body: JSON.stringify(body), headers: headers});
+        let promise = fetch(url, {method: 'POST', body: JSON.stringify(body), headers: headers});
         return promise;
     };
 
@@ -121,7 +121,7 @@ export function FetchClient(passedConfig){
         let url = urlConstructor(subdomain, path, queryParams);
         let headers = headersConstructor(configuration.headers);
         //console.log(headers);
-        let promise = this.fetch(url, {method: 'PATCH', body: JSON.stringify(body), headers: headers});
+        let promise = fetch(url, {method: 'PATCH', body: JSON.stringify(body), headers: headers});
         return promise;
     };
 }
