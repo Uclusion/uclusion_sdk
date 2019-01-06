@@ -2,6 +2,24 @@ export function FetchClient(passedConfig){
 
     let configuration = Object.assign({}, passedConfig);
 
+    let responseHandler = (response) => {
+        if (!response.ok) {
+            throw response; //give the response to upstream code
+        }
+        if (isJson(response)) {
+            //massage things to be same standard as other clients
+            let json = response.json().then((json) => {
+                return {status: response.status, data: json}
+            });
+            return json;
+        }
+        //todo make sure it's actually text
+        return response.text().then((text) => {
+            return {status: response.status, body: text}
+        });
+    };
+
+
     const defaultHeaders = {
         'Content-Type': 'application/json;charset=UTF-8',
         // If use these then need to do CORs pre-flight and anyway api gateway should not cache
@@ -76,7 +94,7 @@ export function FetchClient(passedConfig){
         let url = urlConstructor(subdomain, path, queryParams);
         const headers = headersConstructor(configuration.headers);
         //console.log(headers);
-        let promise = fetch(url, {method: 'GET', headers: headers});
+        let promise = fetch(url, {method: 'GET', headers: headers}).then(responseHandler);
         return promise;
     };
 
@@ -91,7 +109,7 @@ export function FetchClient(passedConfig){
         let url = urlConstructor(subdomain, path, queryParams);
         const headers = headersConstructor(configuration.headers);
         //console.log(headers);
-        let promise = fetch(url, {method: 'DELETE', headers: headers});
+        let promise = fetch(url, {method: 'DELETE', headers: headers}).then(responseHandler);
         return promise;
     };
 
@@ -106,7 +124,7 @@ export function FetchClient(passedConfig){
         let url = urlConstructor(subdomain, path, queryParams);
         const headers = headersConstructor(configuration.headers);
         //console.log(headers);
-        let promise = fetch(url, {method: 'POST', body: JSON.stringify(body), headers: headers});
+        let promise = fetch(url, {method: 'POST', body: JSON.stringify(body), headers: headers}).then(responseHandler);
         return promise;
     };
 
@@ -121,7 +139,7 @@ export function FetchClient(passedConfig){
         let url = urlConstructor(subdomain, path, queryParams);
         let headers = headersConstructor(configuration.headers);
         //console.log(headers);
-        let promise = fetch(url, {method: 'PATCH', body: JSON.stringify(body), headers: headers});
+        let promise = fetch(url, {method: 'PATCH', body: JSON.stringify(body), headers: headers}).then(responseHandler);
         return promise;
     };
 }
