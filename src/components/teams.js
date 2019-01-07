@@ -25,22 +25,32 @@ export function Teams(client) {
      * @param marketId the id of the market to make the investment inspect
      * @param roleOptions object with the following form:
      * <ul>
-     *  <li>default_role: string, <b>required</b></li>
-     *  <li>lead_role: string, <b>required</b></li>
-     *  <li>allowed_roles: array</li>
+     *  <li>allowedRoles: array</li>
+     *  <li>isCognito: boolean</li>
      * </ul>
      * @returns {PromiseLike<T> | Promise<T>} the result of the bind
      */
     this.bind = function(teamId, marketId, roleOptions){
         const path = teamId + '/bind/' + marketId;
-        const body = {
-            default_role: roleOptions.default_role,
-            lead_role: roleOptions.lead_role
-        };
-        if (roleOptions.allowed_roles) {
-            body.allowed_roles = roleOptions.allowed_roles;
+        let body = {};
+        if (roleOptions && roleOptions.allowedRoles) {
+            body.allowed_roles = roleOptions.allowedRoles;
+        }
+        if (roleOptions && roleOptions.isCognito) {
+            body.auth_type = 'COGNITO';
         }
         const createPromise = client.doPost(SUBDOMAIN, path, null, body);
+        return createPromise.then(dataResolver);
+    };
+
+    /**
+     * Allows anonymous access to a market
+     * @param marketId the id of the market to make the investment inspect
+     * @returns {PromiseLike<T> | Promise<T>} the result of the bind
+     */
+    this.bindAnonymous = function(marketId){
+        const path = 'bind/' + marketId;
+        const createPromise = client.doPost(SUBDOMAIN, path, null, {});
         return createPromise.then(dataResolver);
     };
 

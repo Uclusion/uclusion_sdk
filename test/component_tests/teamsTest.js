@@ -5,7 +5,11 @@ import { Teams } from '../../src/components/teams.js';
 let teams = null;
 
 app.post('/realmadrid/bind/fifa', (request, response) => {
-    response.json({success_message: 'Team bound', test_body: request.body});
+    response.json({success_message: 'Team bound'});
+});
+
+app.post('/bind/fifa', (request, response) => {
+    response.json({success_message: 'Team bound'});
 });
 
 app.get('/roi/teamwithroi', (request, response) => {
@@ -29,15 +33,22 @@ describe('Teams', () => {
 
     describe('#doBind', () => {
         it('should bind team without error', () => {
-            let roleOptions = {
-                default_role: 'ronaldo',
-                lead_role: 'messi'
-            };
-            let promise = teams.bind('realmadrid', 'fifa', roleOptions);
+            let promise = teams.bind('realmadrid', 'fifa');
             promise.then((result) => {
                 //console.log(result);
                 assert(result.success_message === 'Team bound');
-                assert(result.test_body.lead_role === 'messi', 'Did not pass the correct lead role in body');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doBindAnonymous', () => {
+        it('should bind anonymous team without error', () => {
+            let promise = teams.bindAnonymous('fifa');
+            promise.then((result) => {
+                //console.log(result);
+                assert(result.success_message === 'Team bound');
             }).catch((error) => {
                 console.error(error);
             });
