@@ -32,16 +32,16 @@ export function FetchClient(passedConfig){
     let actualHeaders = Object.assign({}, defaultHeaders, configuration.headers);
     configuration.headers = actualHeaders;
 
-    let isJson = (response) => {
-        for (var pair of response.headers.entries()){
-            let key = pair[0];
-            let value = pair[1];
-            if (key.toLowerCase() == 'content-type' && value.toLowerCase().indexOf("json") != -1){
-                return true;
+        let isJson = (response) => {
+            for (var pair of response.headers.entries()){
+                let key = pair[0];
+                let value = pair[1];
+                if (key.toLowerCase() == 'content-type' && value.toLowerCase().indexOf("json") != -1){
+                    return true;
+                }
             }
-        }
-        return false;
-    };
+            return false;
+        };
 
     let defaultDomainMunger = (url, subdomain) => {
         if(subdomain){
