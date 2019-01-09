@@ -25,6 +25,39 @@ export function Users(client) {
     };
 
     /**
+     * Updates another user. Options is an object with the following form
+     * <ul>
+     *  <li>name : string</li>
+     *  <li>defaultMarketId: string</li>
+     *  <li>defaultTeamId: number</li>
+     *  <li>teamId: string</li>
+     *  <li>teamRole: enum</li>
+     * </ul>
+     * @param userId user_id of the user to update
+     * @param userOptions the options for the market
+     * @returns {PromiseLike<T> | Promise<T>} the result of the update
+     */
+    this.updateUser = function(userId, userOptions) {
+        let path = 'update/'+userId;
+        const body = {};
+        if (userOptions.name) {
+            body.name = userOptions.name;
+        }
+        if (userOptions.defaultMarketId) {
+            body.default_market_id = userOptions.defaultMarketId;
+        }
+        if (userOptions.defaultTeamId) {
+            body.default_team_id = userOptions.defaultTeamId;
+        }
+        if (userOptions.teamId) {
+            body.team_id = userOptions.teamId;
+            body.team_role = userOptions.teamRole;
+        }
+        const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        return updatePromise.then(dataResolver);
+    };
+
+    /**
      * Gets a user's definition given it's ID or null for invoking user
      * @param userId which can be null to get yourself
      * @param marketId Market to pull user data from - defaults if not set and user has at least one market
