@@ -3,10 +3,9 @@ export function FetchClient(passedConfig){
     let configuration = Object.assign({}, passedConfig);
 
     let responseHandler = (response) => {
-        // if we're 400 or 403 we're unauthorized so jsut tell the authorizer to reauthorize us
+        // if we're 400, 401 or 403 we're unauthorized so jsut tell the authorizer to reauthorize us
         // and abandon the current call
-
-        if (response.status === 400 || response.status === 403){
+        if (response.status === 400 || response.status == 401 || response.status === 403){
             configuration.authorizer.reauthorize() // no page or dest url since I don't have it handy
         } else if (!response.ok) {
             throw response; //give the response to upstream code
