@@ -32,6 +32,7 @@ export function Users(client) {
      *  <li>defaultTeamId: number</li>
      *  <li>teamId: string</li>
      *  <li>teamRole: enum</li>
+     *  <li>accountRole: enum</li>
      * </ul>
      * @param userId user_id of the user to update
      * @param userOptions the options for the market
@@ -49,12 +50,36 @@ export function Users(client) {
         if (userOptions.defaultTeamId) {
             body.default_team_id = userOptions.defaultTeamId;
         }
+        if (userOptions.accountRole) {
+            body.account_role = userOptions.accountRole;
+        }
         if (userOptions.teamId) {
             body.team_id = userOptions.teamId;
             body.team_role = userOptions.teamRole;
         }
         const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return updatePromise.then(dataResolver);
+    };
+
+    /**
+     * Changes the team of the user
+     * @param userId the user to move
+     * @param oldTeamId Team user will be removed from
+     * @param newTeamId Team user will be added to
+     * @param teamRole Optional role user will have on new team
+     * @returns {PromiseLike<T> | Promise<T>} the result of the move
+     */
+    this.moveUser = function(userId, oldTeamId, newTeamId, teamRole) {
+        let path = 'move/'+userId;
+        const body = {
+            old_team_id: oldTeamId,
+            new_team_id: newTeamId
+        };
+        if (teamRole) {
+            body.team_role = teamRole;
+        }
+        const movePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        return movePromise.then(dataResolver);
     };
 
     /**
