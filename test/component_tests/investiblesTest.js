@@ -15,6 +15,10 @@ app.patch('/asdf3', (request, response) => {
     response.json({test_body: request.body});
 });
 
+app.post('/foo/bind/bar', (request, response) => {
+    response.json({ test_body: request.body})
+});
+
 app.patch('/comment/Casdf3', (request, response) => {
     response.json({test_body: request.body});
 });
@@ -132,6 +136,16 @@ describe('Investibles', () => {
         });
     });
 
+    describe('#doBindInvestible', () => {
+        it('should bind investible without error', () => {
+            let promise = investibles.bindToMarket('foo', 'bar', ['cat1', 'cat2']);
+            return promise.then((result) => {
+                assert(JSON.stringify(result.test_body.category_list) === JSON.stringify(['cat1', 'cat2']), 'Did not pass the correct category list in body');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
 
     describe('#doUnfollowInvestible', () => {
         it('should follow the investible without error', () =>{

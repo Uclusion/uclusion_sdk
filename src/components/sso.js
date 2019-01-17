@@ -12,6 +12,7 @@ export function Sso(client) {
      * <ul>
      *  <li>op_endpoint_base_url: string, <b>required</b></li>
      *  <li>uclusion_client_id: string, <b>required</b></li>
+     *  <li>oidc_type: enum, <b>required</b></li>
      *  <li>destination_url: string, <b>required</b></li>
      * </ul>
      * @returns {PromiseLike<T> | Promise<T>} a redirect to OIDC authorizaton with correct query params

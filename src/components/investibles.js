@@ -127,6 +127,21 @@ export function Investibles(client){
     };
 
     /**
+     * Puts a copy of an investible into a market - for use by L3/L2 that cannot invest
+     * @param investibleId the id of the investible to bind
+     * @param marketId the id of the market the investible will display in
+     * @returns {PromiseLike<T> | Promise<T>} copied investible result
+     */
+    this.bindToMarket = function(investibleId, marketId, categoryList){
+        const path = investibleId + '/bind/' + marketId;
+        const body = {
+            category_list: categoryList
+        };
+        const bindPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+        return bindPromise.then(dataResolver);
+    };
+
+    /**
      * Creates a comment for an investible
      * @param investibleId the id of the investible to create the comment for
      * @param title of the comment
