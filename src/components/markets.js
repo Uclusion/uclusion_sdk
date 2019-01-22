@@ -150,6 +150,13 @@ export function Markets(client){
         return getPromise.then(dataResolver);
     };
 
+    /**
+     * Lists the categories present in a market
+     * @param marketId the id of the market we want to list categories for
+     * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved the promise will
+     * contain the list of categories in the market
+     */
+
     this.listCategories = function (marketId) {
         const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'categories'});
