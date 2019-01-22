@@ -102,6 +102,12 @@ export function Markets(client){
         return updatePromise.then(dataResolver);
     };
 
+    /**
+     * Deletes the given market from the system
+     * @param marketId the id of the market to delete
+     * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved gives the result of the deletion
+     *
+     */
     this.deleteMarket = function(marketId){
         const getPromise = client.doDelete(SUBDOMAIN, marketId, undefined, undefined);
         return getPromise.then(dataResolver);
@@ -189,6 +195,14 @@ export function Markets(client){
         return getPromise.then(dataResolver);
     };
 
+    /**
+     * Lists the trending investibles for the given market subject to the restrictions of trendingWindowDate and stages
+     * @param marketId the id of the market to list investibles in
+     * @param trendingWindowDate the date of the trending window start
+     * @param stages the stages we want to list for
+     * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved, contains the list of investibles matching
+     * the given criteria
+     */
     this.listTrending = function (marketId, trendingWindowDate, stages) {
         const path = 'list/' + marketId;
         let queryParams = {type: 'trending', trendingWindowDate: trendingWindowDate};
@@ -199,6 +213,15 @@ export function Markets(client){
         return getPromise.then(dataResolver);
     };
 
+    /**
+     * Lists the user's investments
+     * @param marketId the id of the market the investments are in
+     * @param userId the id of the user to list investments for
+     * @param pageSize the maximum number of results you can consume
+     * @param lastEvaluatedKey the cookie telling us what the last page you've looked at is
+     * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved contains the list of user investments
+     * for the user and page we're on
+     */
     this.listUserInvestments = function (marketId, userId, pageSize, lastEvaluatedKey) {
         const path = 'list/' + marketId;
         let queryParams = {type: 'userInvestments', userId: userId, pageSize: pageSize};
