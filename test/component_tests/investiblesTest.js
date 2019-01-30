@@ -55,6 +55,10 @@ app.patch('/meat', (request, response) => {
     response.json({success_message: 'updated', test_body: request.body});
 });
 
+app.delete('/market/steak/category/steak%20sauce', (request, response) => {
+    response.json({success_message: 'Category deleted'});
+});
+
 import {Investibles } from '../../src/components/investibles.js';
 
 
@@ -116,6 +120,18 @@ describe('Investibles', () => {
             let promise = investibles.createCategory('my category name', 'myMarketId');
             promise.then((result) => {
                 assert(result.test_body.name === 'my category name', 'Did not pass the correct name in body');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doDeleteCategory', () => {
+        it('should delete category without error', () => {
+            assert(server.listening);
+            let promise = investibles.deleteCategory('steak sauce', 'steak');
+            promise.then((result) => {
+                assert(result.success_message === 'Category deleted', 'Did not delete category');
             }).catch((error) => {
                 console.error(error);
             });

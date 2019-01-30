@@ -37,6 +37,19 @@ export function Investibles(client){
     };
 
     /**
+     * Deletes a category
+     * @param name name of category
+     * @param marketId market_id of the category
+     * @returns {PromiseLike<T> | Promise<T>} result of delete
+     */
+    this.deleteCategory = function(name, marketId)
+    {
+        const path = 'market/' + marketId + '/category/' + name;
+        const createPromise = client.doDelete(SUBDOMAIN, path, undefined);
+        return createPromise.then(dataResolver);
+    };
+
+    /**
      * Updates an investible with name, description, and categories
      * @param investibleId the id of the investible updated
      * @param investibleName name of investible
