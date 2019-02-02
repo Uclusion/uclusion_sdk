@@ -37,8 +37,8 @@ app.get('/roi/aresolutionid', (request, response) => {
     response.json({test_query: request.query});
 });
 
-app.get('/meat/investibles/chicken', (request, response) => {
-    response.json({id: 'chicken'});
+app.get('/meat/investibles', (request, response) => {
+    response.json(request.query);
 });
 
 app.get('/list/meat', (request, response) => {
@@ -168,11 +168,12 @@ describe('Market', () => {
         });
     });
 
-    describe('#doGetMarketInvestible', () => {
-        it('should get  the investible without error', () =>{
-            let promise = markets.getMarketInvestible('meat', 'chicken');
-            promise.then((result) => {
-                assert(result.id === 'chicken', 'Should have returned proper id');
+    describe('#doGetMarketInvestibles', () => {
+        it('should get the investibled without error', () =>{
+            let promise = markets.getMarketInvestibles('meat', ['chicken', 'ham']);
+            promise.then((results) => {
+                assert(results.id[0] === 'chicken', 'Should have returned proper id');
+                assert(results.id[1] === 'ham', 'Should have returned proper id');
             }).catch((error) => {
                 console.error(error);
             });
@@ -184,21 +185,6 @@ describe('Market', () => {
             let promise = markets.listCategories('meat');
             promise.then((result) => {
                 assert(result.category === 'fake', 'Should have returned proper category');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
-
-    describe('#doListCategoriesInvestibles', () => {
-        it('should get  the investible without error', () =>{
-            let promise = markets.listCategoriesInvestibles('stocknasdaq', 'aCat', 20, 25, ['BOUND', 'CLOSED']);
-            promise.then((result) => {
-                assert(result.test_query.category === 'aCat', 'Should have returned proper category');
-                assert(parseInt(result.test_query.currentPage) === 20, 'Should have returned proper page number');
-                assert(parseInt(result.test_query.pageSize) === 25, 'Should have returned proper page size');
-                //console.log(result.url);
-                assert(result.url.includes('&stage=BOUND&stage=CLOSED'));
             }).catch((error) => {
                 console.error(error);
             });
@@ -218,22 +204,9 @@ describe('Market', () => {
 
     describe('#doListInvestibles', () => {
         it('should get  the investible without error', () =>{
-            let promise = markets.listInvestibles('russel', 'search', 3, 20);
+            let promise = markets.listInvestibles('russel', 'search');
             promise.then((result) => {
                 assert(result.test_query.searchString === 'search', 'Should have returned proper search string');
-                assert(parseInt(result.test_query.currentPage) === 3, 'Should have returned proper current page');
-                assert(parseInt(result.test_query.pageSize) === 20, 'Should have returned proper page size');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
-
-    describe('#doListTrending', () => {
-        it('should get  the investible without error', () =>{
-            let promise = markets.listTrending('wilshire', '10/10/10');
-            promise.then((result) => {
-                assert(result.test_query.trendingWindowDate === '10/10/10', 'Should have returned proper trending window date');
             }).catch((error) => {
                 console.error(error);
             });

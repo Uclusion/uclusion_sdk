@@ -145,14 +145,15 @@ export function Markets(client){
     };
 
     /**
-     * Fetches the given market investible from the given market
+     * Fetches requested market investibles from the given market
      * @param marketId the id of the market to retrieve the investible in
-     * @param investibleId the id of the investible to retrieve
+     * @param investibleIds list of the investible id to retrieve
      * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
      */
-    this.getMarketInvestible = function(marketId, investibleId){
-        const path = marketId + '/investibles/' + investibleId;
-        const getPromise = client.doGet(SUBDOMAIN, path);
+    this.getMarketInvestibles = function(marketId, investibleIds){
+        let path = marketId + '/investibles';
+        let queryParams = {id: investibleIds};
+        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };
 
@@ -169,45 +170,24 @@ export function Markets(client){
         return getPromise.then(dataResolver)
     };
 
-    this.listCategoriesInvestibles = function (marketId, category, pageNumber, pageSize, stages) {
-        const path = 'list/' + marketId;
-        let queryParams = {type: 'categoryInvestibles', category: category, currentPage: pageNumber, pageSize: pageSize};
-        if (stages) {
-            queryParams.stage = stages;
-        }
-        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
-        return getPromise.then(dataResolver);
-    };
-
     this.listInvestiblePresences = function (marketId) {
         const path = 'list/' + marketId;
         const getPromise = client.doGet(SUBDOMAIN, path, {type: 'investiblePresences'});
         return getPromise.then(dataResolver);
     };
 
-    this.listInvestibles = function (marketId, searchString, currentPage, pageSize, stages) {
-        const path = 'list/' + marketId;
-        let queryParams = {type: 'investibles', searchString: searchString, currentPage: currentPage, pageSize: pageSize};
-        if (stages) {
-            queryParams.stage = stages;
-        }
-        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
-        return getPromise.then(dataResolver);
-    };
-
     /**
-     * Lists the trending investibles for the given market subject to the restrictions of trendingWindowDate and stages
-     * @param marketId the id of the market to list investibles in
-     * @param trendingWindowDate the date of the trending window start
-     * @param stages the stages we want to list for
-     * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved, contains the list of investibles matching
-     * the given criteria
+     * This method allows the client to discover which investibles in its store have changed.
+     * Here last_updated includes changes to the investible or investments in it.
+     * @param marketId Market to search
+     * @param searchString optional full text search string
+     * @returns {PromiseLike<T> | Promise<T>} list of investible IDs and last_updated field
      */
-    this.listTrending = function (marketId, trendingWindowDate, stages) {
+    this.listInvestibles = function (marketId, searchString) {
         const path = 'list/' + marketId;
-        let queryParams = {type: 'trending', trendingWindowDate: trendingWindowDate};
-        if (stages) {
-            queryParams.stage = stages;
+        let queryParams = {type: 'investibles'};
+        if (searchString) {
+            queryParams.searchString = searchString;
         }
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
