@@ -91,9 +91,8 @@ describe('Investibles', () => {
     describe('#doCreateComment', () => {
         it('should create comment without error', () => {
             assert(server.listening);
-            let promise = investibles.createComment('asdf3', 'comment title', 'comment body');
+            let promise = investibles.createComment('asdf3', 'comment body');
             promise.then((result) => {
-                assert(result.test_body.title === 'comment title', 'Did not pass the correct title');
                 assert(result.test_body.body === 'comment body', 'Did not pass the correct body');
             }).catch((error) => {
                 console.error(error);
@@ -104,9 +103,8 @@ describe('Investibles', () => {
     describe('#doUpdateComment', () => {
         it('should update comment without error', () => {
             assert(server.listening);
-            let promise = investibles.updateComment('Casdf3', 'comment title', 'comment body');
+            let promise = investibles.updateComment('Casdf3', 'comment body');
             promise.then((result) => {
-                assert(result.test_body.title === 'comment title', 'Did not pass the correct title');
                 assert(result.test_body.body === 'comment body', 'Did not pass the correct body');
             }).catch((error) => {
                 console.error(error);

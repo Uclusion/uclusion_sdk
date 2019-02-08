@@ -157,15 +157,13 @@ export function Investibles(client){
     /**
      * Creates a comment for an investible
      * @param investibleId the id of the investible to create the comment for
-     * @param title of the comment
      * @param body html body of the comment
      * @param replyId comment_id of the parent comment
      * @returns {PromiseLike<T> | Promise<T>} resolution_id result
      */
-    this.createComment = function(investibleId, title, body, replyId){
+    this.createComment = function(investibleId, body, replyId){
         const path = investibleId + '/comment';
         const msgBody = {
-            title: title,
             body: body
         };
         if (replyId) {
@@ -178,14 +176,12 @@ export function Investibles(client){
     /**
      * Updates a comment
      * @param commentId the id of the comment to update
-     * @param title of the comment
      * @param body html body of the comment
      * @returns {PromiseLike<T> | Promise<T>} resolution_id result
      */
-    this.updateComment = function(commentId, title, body){
+    this.updateComment = function(commentId, body){
         const path = 'comment/' + commentId;
         const msgBody = {
-            title: title,
             body: body
         };
         const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
