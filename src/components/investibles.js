@@ -200,6 +200,17 @@ export function Investibles(client){
     };
 
     /**
+     * Fetches a given comment and returns it in whole
+     * @param commentId the id of the comment it to get
+     * @returns {PromiseLike<T | never> | Promise<T | never>}
+     */
+    this.getComment = function(commentId){
+        const path = 'comment/' + commentId;
+        const commentPromise = client.doGet(SUBDOMAIN, path);
+        return commentPromise.then(dataResolver);
+    };
+
+    /**
      * Allows or stops different operations on an investible and sets stage. stateOptions is an object with form
      * shown below where all parameters are optional
      * <ul>

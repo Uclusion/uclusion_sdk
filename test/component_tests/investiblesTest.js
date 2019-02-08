@@ -1,5 +1,6 @@
 import assert from 'assert';
-import { serverCreator, clientCreator } from './testSetup';
+import {serverCreator, clientCreator} from './testSetup';
+
 const {app, server} = serverCreator();
 
 
@@ -16,7 +17,7 @@ app.patch('/asdf3', (request, response) => {
 });
 
 app.post('/foo/bind/bar', (request, response) => {
-    response.json({ test_body: request.body})
+    response.json({test_body: request.body})
 });
 
 app.patch('/comment/Casdf3', (request, response) => {
@@ -55,12 +56,15 @@ app.patch('/meat', (request, response) => {
     response.json({success_message: 'updated', test_body: request.body});
 });
 
+app.get('/comment/snark', (request, response) => {
+    response.json({comment: 'snarky comment'})
+});
+
 app.delete('/market/steak/category/steak%20sauce', (request, response) => {
     response.json({success_message: 'Category deleted'});
 });
 
-import {Investibles } from '../../src/components/investibles.js';
-
+import {Investibles} from '../../src/components/investibles.js';
 
 
 let investibles = null;
@@ -162,7 +166,7 @@ describe('Investibles', () => {
     });
 
     describe('#doUnfollowInvestible', () => {
-        it('should follow the investible without error', () =>{
+        it('should follow the investible without error', () => {
             let promise = investibles.follow('steak', true);
             promise.then((result) => {
                 assert(result.test_body.remove, 'Should have put the remove request in the body');
@@ -173,7 +177,7 @@ describe('Investibles', () => {
     });
 
     describe('#doInitiateRoi', () => {
-        it('should initiate ROI for the investible without error', () =>{
+        it('should initiate ROI for the investible without error', () => {
             let promise = investibles.initiateRoi('steak');
             promise.then((result) => {
                 assert(result.resolution_id === 'asdf5', 'Should have returned asdf5 as id');
@@ -184,7 +188,7 @@ describe('Investibles', () => {
     });
 
     describe('#doStateChange', () => {
-        it('should change investible state without error', () =>{
+        it('should change investible state without error', () => {
             let promise = investibles.stateChange('steak', {option1: 'option1', option2: 'option2'});
             promise.then((result) => {
                 assert(result.success_message === 'Investible state updated', 'Should return the proper success message');
@@ -207,7 +211,7 @@ describe('Investibles', () => {
     });
 
     describe('#doListInvestibleTemplates', () => {
-        it('should get  the investible without error', () =>{
+        it('should get  the investible without error', () => {
             let promise = investibles.listTemplates();
             promise.then((result) => {
                 assert(result.investibleTemplates === 'fiction', 'Should have returned proper investible templates');
@@ -218,7 +222,7 @@ describe('Investibles', () => {
     });
 
     describe('#doListComments', () => {
-        it('should get the comments without error', () =>{
+        it('should get the comments without error', () => {
             let promise = investibles.listComments('asdf3');
             promise.then((result) => {
                 assert(result.comments === 'some comments', 'Should have returned proper investible comments');
@@ -228,14 +232,25 @@ describe('Investibles', () => {
         });
     });
 
+    describe('#doGetComment', () => {
+        it('should get the comment without error', () => {
+            let promise = investibles.getComment('snark');
+            promise.then((result) => {
+                assert(result.comment === 'snarky comment', 'Should have returned proper comment');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
     describe('#doUpdateMarketInvestible', () => {
-        it('should update the investible without error', () =>{
+        it('should update the investible without error', () => {
             let promise = investibles.updateInMarket('meat', 'pork', 'foo', 'mydesc', ['a']);
             promise.then((result) => {
                 assert(result.success_message === 'updated', 'Should have returned the proper success message');
                 assert(result.test_body.name === 'foo', 'Should have put the name in the body');
                 assert(result.test_body.market_id === 'pork', 'Should have put market id in the body');
-                assert(result.test_body.category_list[0]  === 'a', 'Should have put the category in the body');
+                assert(result.test_body.category_list[0] === 'a', 'Should have put the category in the body');
             });
         });
     });
