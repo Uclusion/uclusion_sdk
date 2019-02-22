@@ -246,26 +246,7 @@ export function Investibles(client) {
   };
 
   /**
-   * Lists comments associated with an investible
-   * @param investibleId the id of the investible to list comments of
-   * @param pageSize Maximum number of templates to return
-   * @param lastEvaluated Optional investible_id last evaluated for pagination
-   * @returns {PromiseLike<T> | Promise<T>}
-   */
-  this.listComments = function (investibleId, pageSize, lastEvaluated) {
-    const path = 'comments/' + investibleId;
-    let queryParams = {
-      pageSize: pageSize
-    };
-    if (lastEvaluated) {
-      queryParams.lastEvaluated = lastEvaluated;
-    }
-    const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
-    return getPromise.then(dataResolver);
-  };
-
-  /**
-   * Lists comments associated with a market, and returns their IDs and updated times 
+   * Lists comments associated with a market, and returns their IDs and updated times
    * @param marketId the market to list comments for
    * @returns {PromiseLike<T | never> | Promise<T | never>}
    */
