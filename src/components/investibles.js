@@ -246,7 +246,7 @@ export function Investibles(client) {
   };
 
   /**
-   * Listed comments associated with an investible
+   * Lists comments associated with an investible
    * @param investibleId the id of the investible to list comments of
    * @param pageSize Maximum number of templates to return
    * @param lastEvaluated Optional investible_id last evaluated for pagination
@@ -264,6 +264,16 @@ export function Investibles(client) {
     return getPromise.then(dataResolver);
   };
 
+  /**
+   * Lists comments associated with a market, and returns their IDs and updated times 
+   * @param marketId the market to list comments for
+   * @returns {PromiseLike<T | never> | Promise<T | never>}
+   */
+  this.listCommentsByMarket = function (marketId) {
+    const path = 'market/' + marketId + '/comments';
+    const getPromise = client.doGet(SUBDOMAIN, path);
+    return getPromise.then(dataResolver);
+  };
 }
 
 export default Investibles;
