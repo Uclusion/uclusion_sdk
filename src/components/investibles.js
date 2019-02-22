@@ -194,16 +194,6 @@ export function Investibles(client) {
     return commentPromise.then(dataResolver);
   };
 
-  /**
-   * Fetches a given comment and returns it in whole
-   * @param commentId the id of the comment it to get
-   * @returns {PromiseLike<T | never> | Promise<T | never>}
-   */
-  this.getComment = function (commentId) {
-    const path = 'comment/' + commentId;
-    const commentPromise = client.doGet(SUBDOMAIN, path);
-    return commentPromise.then(dataResolver);
-  };
 
   /**
    * Allows or stops different operations on an investible and sets stage. stateOptions is an object with form
@@ -251,10 +241,26 @@ export function Investibles(client) {
    * @returns {PromiseLike<T | never> | Promise<T | never>}
    */
   this.listCommentsByMarket = function (marketId) {
-    const path = 'market/' + marketId + '/comments';
+    const path = 'list/market/' + marketId + '/comments';
     const getPromise = client.doGet(SUBDOMAIN, path);
     return getPromise.then(dataResolver);
   };
+
+  /**
+   * Fetches the given comments present in the given market. The maximum number of comments
+   * that can be requested at one time is 100.
+   * @param marketId the id of the market to retrieve the comments from
+   * @param commentIds list of the comment ids to retrieve. Max length of 100
+   * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
+   */
+  this.getMarketComments = function(marketId, commentIds){
+    let path = 'market/' + marketId + '/comments';
+    let queryParams = {id: commentIds};
+    const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
+    return getPromise.then(dataResolver);
+  };
+
+
 }
 
 export default Investibles;

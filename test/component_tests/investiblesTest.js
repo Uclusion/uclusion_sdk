@@ -48,7 +48,7 @@ app.get('/list', (request, response) => {
     response.json({investibleTemplates: 'fiction'});
 });
 
-app.get('/comments/asdf3', (request, response) => {
+app.get('/list/market/asdf3/comments', (request, response) => {
     response.json({comments: 'some comments'});
 });
 
@@ -56,7 +56,7 @@ app.patch('/meat', (request, response) => {
     response.json({success_message: 'updated', test_body: request.body});
 });
 
-app.get('/comment/snark', (request, response) => {
+app.get('/market/snark/comments', (request, response) => {
     response.json({comment: 'snarky comment'})
 });
 
@@ -223,7 +223,7 @@ describe('Investibles', () => {
 
     describe('#doListComments', () => {
         it('should get the comments without error', () => {
-            let promise = investibles.listComments('asdf3');
+            let promise = investibles.listCommentsByMarket('asdf3');
             promise.then((result) => {
                 assert(result.comments === 'some comments', 'Should have returned proper investible comments');
             }).catch((error) => {
@@ -232,9 +232,9 @@ describe('Investibles', () => {
         });
     });
 
-    describe('#doGetComment', () => {
-        it('should get the comment without error', () => {
-            let promise = investibles.getComment('snark');
+    describe('#doGetComments', () => {
+        it('should get the comments without error', () => {
+            let promise = investibles.getMarketComments('snark', ['foo']);
             promise.then((result) => {
                 assert(result.comment === 'snarky comment', 'Should have returned proper comment');
             }).catch((error) => {
