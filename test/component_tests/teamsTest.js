@@ -16,7 +16,7 @@ app.get('/roi/teamwithroi', (request, response) => {
     response.json({test_query: request.query});
 });
 
-app.get('/list', (request, response) => {
+app.get('/list/fake', (request, response) => {
     response.json({type: 'list', test_query: request.query});
 });
 
@@ -70,7 +70,7 @@ describe('Teams', () => {
 
     describe('#doList', () => {
         it('should get teams', () =>{
-            let promise = teams.list();
+            let promise = teams.list('fake');
             promise.then((result) => {
                 assert(result.type === 'list');
             }).catch((error) => {

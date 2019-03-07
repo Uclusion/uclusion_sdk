@@ -1,7 +1,17 @@
+/**
+ * Module representing the market api
+ * @param client the configured fetch client
+ * @constructor
+ */
 export function Markets(client){
 
     const SUBDOMAIN = 'markets';
 
+  /**
+   * Unpacks a result body and returns just the data portion
+   * @param result the result body
+   * @returns {*} the data portion of the body
+   */
     const dataResolver = (result) => { return result.data };
 
     /**
