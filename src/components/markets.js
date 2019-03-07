@@ -168,37 +168,14 @@ export function Markets(client){
     };
 
     /**
-     * Lists the categories present in a market
-     * @param marketId the id of the market we want to list categories for
-     * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved the promise will
-     * contain the list of categories in the market
-     */
-
-    this.listCategories = function (marketId) {
-        const path = 'list/' + marketId;
-        const getPromise = client.doGet(SUBDOMAIN, path, {type: 'categories'});
-        return getPromise.then(dataResolver)
-    };
-
-    this.listInvestiblePresences = function (marketId) {
-        const path = 'list/' + marketId;
-        const getPromise = client.doGet(SUBDOMAIN, path, {type: 'investiblePresences'});
-        return getPromise.then(dataResolver);
-    };
-
-    /**
      * This method allows the client to discover which investibles in its store have changed.
      * Here last_updated includes changes to the investible or investments in it.
      * @param marketId Market to search
-     * @param searchString optional full text search string
-     * @returns {PromiseLike<T> | Promise<T>} list of investible IDs and last_updated field
+     * @returns {PromiseLike<T> | Promise<T>} list of categories, investible IDs and last_updated field
      */
-    this.listInvestibles = function (marketId, searchString) {
+    this.listInvestibles = function (marketId) {
         const path = 'list/' + marketId;
         let queryParams = {type: 'investibles'};
-        if (searchString) {
-            queryParams.searchString = searchString;
-        }
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };

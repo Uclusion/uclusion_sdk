@@ -41,24 +41,8 @@ app.get('/meat/investibles', (request, response) => {
     response.json(request.query);
 });
 
-app.get('/list/meat', (request, response) => {
-    response.json({category: 'fake'});
-});
-
-app.get('/list/stocknasdaq', (request, response) => {
-    response.json({test_query: request.query, url: request.url});
-});
-
-app.get('/list/s&p', (request, response) => {
-    response.json({investiblePresences: 'notreal'});
-});
-
 app.get('/list/russel', (request, response) => {
-    response.json({type: 'investibles', test_query: request.query});
-});
-
-app.get('/list/wilshire', (request, response) => {
-    response.json({type: 'trending', test_query: request.query});
+    response.json({id: 'terrier'});
 });
 
 app.get('/list/barron', (request, response) => {
@@ -180,33 +164,11 @@ describe('Market', () => {
         });
     });
 
-    describe('#doListCategories', () => {
-        it('should get  the investible without error', () =>{
-            let promise = markets.listCategories('meat');
-            promise.then((result) => {
-                assert(result.category === 'fake', 'Should have returned proper category');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
-
-    describe('#doListInvestiblePresences', () => {
-        it('should get  the investible without error', () =>{
-            let promise = markets.listInvestiblePresences('s&p');
-            promise.then((result) => {
-                assert(result.investiblePresences === 'notreal', 'Should have returned proper investible presences');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
-
     describe('#doListInvestibles', () => {
         it('should get  the investible without error', () =>{
-            let promise = markets.listInvestibles('russel', 'search');
+            let promise = markets.listInvestibles('russel');
             promise.then((result) => {
-                assert(result.test_query.searchString === 'search', 'Should have returned proper search string');
+                assert(result.id === 'terrier');
             }).catch((error) => {
                 console.error(error);
             });
