@@ -1,10 +1,19 @@
+/**
+ * Module for the investibles api
+ * @param client the configured fetch clent
+ * @constructor
+ */
 export function Investibles(client) {
 
   const SUBDOMAIN = 'investibles';
+  
+  /**
+   * Unpacks a result body and returns just the data portion
+   * @param result the result body
+   * @returns {*} the data portion of the body
+   */
+  const dataResolver = (result) => { return result.data };
 
-  const dataResolver = (result) => {
-    return result.data;
-  };
 
   /**
    * Creates an investible
