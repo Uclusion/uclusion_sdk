@@ -89,6 +89,17 @@ export function Teams(client) {
   };
 
   /**
+   * Gets an invite token for this team
+   * @param teamId to put in the signed token
+   * @returns {PromiseLike<T> | Promise<T>} signed token allowing adding a user to this team
+   */
+  this.inviteToken = function (teamId) {
+      const path = 'invite/' + teamId;
+      const getPromise = client.doGet(SUBDOMAIN, path);
+      return getPromise.then(dataResolver);
+  };
+
+  /**
    * Lists all investments of a team in a market
    * @param teamId the id of the team to list investments of
    * @param marketId the id of the market to list investments of
