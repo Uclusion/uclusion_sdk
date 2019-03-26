@@ -132,13 +132,30 @@ export function Users(client) {
   };
 
   /**
+   * Creates a user
+   * @param teamId team to add the user to
+   * @param name name of the user
+   * @param email email of the user
+   * @returns {PromiseLike<T> | Promise<T>} created user
+   */
+  this.create = function (teamId, name, email) {
+    let path = 'create/' + teamId;
+    const body = {
+      name,
+      email
+    };
+    const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+    return createPromise.then(dataResolver);
+  };
+
+  /**
    * Deletes the current user from uclusion
    * @param reason why the user is deleting themselves
    * @returns {PromiseLike<T> | Promise<T>} the result of the delete
    */
   this.delete = function (reason) {
     const body = {
-      reason: reason
+      reason
     };
     const deletePromise = client.doDelete(SUBDOMAIN, 'delete', undefined, body);
     return deletePromise.then(dataResolver);

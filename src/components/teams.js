@@ -21,7 +21,7 @@ export function Teams(client) {
    * Creates a team
    * @param name name of the team
    * @param description description of the team
-   * @returns {PromiseLike<T> | Promise<T>} the result of the investment
+   * @returns {PromiseLike<T> | Promise<T>} created team
    */
   this.create = function (name, description) {
     const body = {
