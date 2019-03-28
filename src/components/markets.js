@@ -72,7 +72,7 @@ export function Markets(client){
      * @param investibleId the id of the investible to invest inspect
      * @returns {PromiseLike<T> | Promise<T>} the result of the delete
      */
-    this.deleteInvestible = function(marketId, investibleId){
+    this.deleteInvestments = function(marketId, investibleId){
         const path = marketId + '/investible/' + investibleId;
         const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, undefined);
         return deletePromise.then(dataResolver);
