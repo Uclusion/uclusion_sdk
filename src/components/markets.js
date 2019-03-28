@@ -67,6 +67,18 @@ export function Markets(client){
     };
 
     /**
+     * Deletes all user investments in the given investible and market
+     * @param marketId the id of the market to make the investment inspect
+     * @param investibleId the id of the investible to invest inspect
+     * @returns {PromiseLike<T> | Promise<T>} the result of the delete
+     */
+    this.deleteInvestible = function(marketId, investibleId){
+        const path = marketId + '/investible/' + investibleId;
+        const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, undefined);
+        return deletePromise.then(dataResolver);
+    };
+
+    /**
      * Creates a market with the given options. Options is an object with the following form
      * <ul>
      *  <li>name : string, <b>required</b></li>
