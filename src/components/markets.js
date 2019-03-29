@@ -30,7 +30,7 @@ export function Markets(client){
      *    visible_to_roles. array of length >=1 drawn from the set of {MarketAnonymousUser, MarketUser,
      *    MarketTeamAdmin, MarketManager} Duplicate values are ignored
      *  }
-     * @returns {PromiseLike<T | never> | Promise<T | never>}
+     * @returns {PromiseLike<T | never> | Promise<T | never>} the created stage's info
      */
     this.createStage = function(marketId, stageInfo){
         const body = stageInfo;
