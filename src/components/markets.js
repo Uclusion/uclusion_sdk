@@ -28,7 +28,7 @@ export function Markets(client){
      *    allows_refunds: boolean, required,
      *    allows_editing: boolean, required
      *    visible_to_roles. array of length >=1 drawn from the set of {MarketAnonymousUser, MarketUser,
-     *    MarketTeamAdmin, MarketManager, MarketAdmin} Duplicate values are ignored
+     *    MarketTeamAdmin, MarketManager} Duplicate values are ignored
      *  }
      * @returns {PromiseLike<T | never> | Promise<T | never>}
      */
