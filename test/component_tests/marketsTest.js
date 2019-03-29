@@ -52,7 +52,9 @@ app.get('/list/barron', (request, response) => {
 app.get('/stock/stages', (request, response) => {
     response.json({result: 'ack'});
 });
-
+app.post('/fish/stage', (request, response) => {
+    response.json({'id': 'deboned', test_body: request.body});
+});
 
 describe('Market', () => {
     before(() => {
@@ -64,6 +66,15 @@ describe('Market', () => {
         server.close();
     });
 
+    describe('#doCreateStage', () => {
+        it('should create a stage', () => {
+           let promise = markets.createStage('fish', {name: 'tuna'});
+           promise.then((result) => {
+              assert(result.id === 'deboned', 'Did not return the proper stage id');
+              assert(result.test_body.name === 'tuna', 'Did not pass the proper name in the body');
+           });
+        });
+    });
 
     describe('#doCreateInvestment', () => {
       it('should create an investment', () => {

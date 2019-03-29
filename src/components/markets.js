@@ -15,6 +15,32 @@ export function Markets(client){
     const dataResolver = (result) => { return result.data };
 
     /**
+     * Creates a new stage in the market provided.
+     * @param marketId the id of the market to create the stage in
+     * @param stage_info a dict of stage creation information of the form
+     *  { name: string, required <=>255 chars
+     *    automatic_transition: optional dict of form {
+     *        additional_investment: number , min 1
+     *        next_stage: string, id of some other stage
+     *    }
+     *    appears_in_market_summary: boolean, required
+     *    allows_investment: boolean, required. If automatic_transition present, then must be true
+     *    allows_refunds: boolean, required,
+     *    allows_editing: boolean, required
+     *    visible_to_roles. array of length >=1 drawn from the set of {MarketAnonymousUser, MarketUser,
+     *    MarketTeamAdmin, MarketManager, MarketAdmin} Duplicate values are ignored
+     *  }
+     * @returns {PromiseLike<T | never> | Promise<T | never>}
+     */
+    this.createStage = function(marketId, stageInfo){
+        const body = stageInfo;
+        const path = marketId + '/stage';
+        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+        return createPromise.then(dataResolver);
+    };
+
+
+    /**
       * Creates an investment in the given investible and market with the specified number
       * of idea ideaShares
       * @param marketId the id of the market to make the investment inspect
