@@ -87,6 +87,9 @@ export function Markets(client){
      *  <li>manual_roi: boolean</li>
      *  <li>initial_next_stage: string, <b>required</b></li>
      *  <li>initial_next_stage_threshold: number, <b>required</b></li>
+     *  <li>new_team_grant: number of shares to grant to a new team when they enter the account</li>
+     *  <li>new_user_grant: number of shares to grant to a new team when they enter the account</li>
+     *  <li>investment_bonus_threshold: number of shares the user has to invest to cross into an "active" user</li>
      * </ul>
      * @param marketOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
