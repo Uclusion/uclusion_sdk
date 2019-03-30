@@ -100,18 +100,6 @@ export function Teams(client) {
   };
 
   /**
-   * Lists all investments of a team in a market
-   * @param teamId the id of the team to list investments of
-   * @param marketId the id of the market to list investments of
-   * @returns {PromiseLike<T> | Promise<T>} Dictionary of investible IDs and investment amounts
-   */
-  this.investments = function (teamId, marketId) {
-    const path = teamId + '/investments/' + marketId;
-    const getPromise = client.doGet(SUBDOMAIN, path);
-    return getPromise.then(dataResolver);
-  };
-
-  /**
    * Lists ROI
    * @param teamId Team to list ROI for
    * @param marketId Market to list ROI for
