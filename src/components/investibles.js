@@ -205,20 +205,15 @@ export function Investibles(client) {
 
 
   /**
-   * Allows or stops different operations on an investible and sets stage. stateOptions is an object with form
-   * shown below where all parameters are optional
+   * Allows or stops different operations on an investible by setting stage. stateOptions is an object with form
+   * shown below
    * <ul>
-   *  <li>open_for_investment : boolean</li>
-   *  <li>open_for_refunds: boolean</li>
-   *  <li>open_for_editing: boolean</li>
-   *  <li>is_active: boolean</li>
-   *  <li>stage: string</li>
-   *  <li>current_stage: string</li>
-   *  <li>next_stage: string</li>
-   *  <li>next_stage_threshold: number</li>
+   *  <li>stage_id: string, <b>required</b></li>
+   *  <li>current_stage_id: string, <b>required</b></li>
+   *  <li>next_stage_additional_investment: number</li>
    * </ul>
    * @param investibleId the id of the investible to control
-   * @param stateOptions controls the state of the market investible. current_stage required if stage specified.
+   * @param stateOptions controls the stage of the market investible and can overwrite next_stage_additional_investment
    * @returns {PromiseLike<T> | Promise<T>} the result of the allowed interaction call
    */
   this.stateChange = function (investibleId, stateOptions) {
