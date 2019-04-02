@@ -139,7 +139,7 @@ export function Markets(client){
      *  <li>name : string, <b>required</b></li>
      *  <li>description: string, <b>required</b></li>
      *  <li>trending_window: number, <b>required</b></li>
-     *  <li>initial_stage: string, <b>required</b>: Id of the initial stage for the market</li>
+     *  <li>initial_stage_id: string, <b>required</b>: Id of the initial stage for the market</li>
      * </ul>
      * @param marketId Market to update
      * @param marketUpdateOptions the options for the market
