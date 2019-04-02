@@ -135,7 +135,6 @@ export function Markets(client){
         return getPromise.then(dataResolver);
     };
 
-
     /**
      * Follows or unfollows the given market
      * @param marketId the market id to follow/unfollow
@@ -150,6 +149,17 @@ export function Markets(client){
         const path = 'follow/' + marketId;
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
+    };
+
+    /**
+    * Lists all of the stages present in the market that the user has access too
+    * @param marketId the id of the market to list stages for
+    * @returns {PromiseLike<T | never> | Promise<T | never>} the list of stages
+    */
+    this.listStages = function(marketId) {
+      let path = marketId + '/stages';
+      const getPromise = client.doGet(SUBDOMAIN, path);
+      return getPromise.then(dataResolver);
     };
 
     /**

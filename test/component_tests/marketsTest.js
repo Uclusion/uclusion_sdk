@@ -49,6 +49,10 @@ app.get('/list/barron', (request, response) => {
     response.json({type: 'userInvestments', test_query: request.query});
 });
 
+app.get('/stock/stages', (request, response) => {
+    response.json({result: 'ack'});
+});
+
 
 describe('Market', () => {
     before(() => {
@@ -169,6 +173,17 @@ describe('Market', () => {
             let promise = markets.listInvestibles('russel');
             promise.then((result) => {
                 assert(result.id === 'terrier');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+
+    describe('#doListStages', () => {
+        it('should list the stages without error', () =>{
+            let promise = markets.listStages('stock');
+            promise.then((result) => {
+                assert(result.result === 'ack');
             }).catch((error) => {
                 console.error(error);
             });
