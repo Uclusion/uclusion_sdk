@@ -82,14 +82,17 @@ export function Investibles(client) {
    * @param investibleName name of investible
    * @param investibleDescription description of investible
    * @param categoryList list of categories
+   * @param labelList list of labels
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
-  this.updateInMarket = function (investibleId, marketId, investibleName, investibleDescription, categoryList) {
+  this.updateInMarket = function (investibleId, marketId, investibleName, investibleDescription, categoryList,
+                                  labelList) {
     const body = {
       market_id: marketId,
       name: investibleName,
       description: investibleDescription,
-      category_list: categoryList
+      category_list: categoryList,
+      label_list: labelList
     };
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
     return updatePromise.then(dataResolver);
