@@ -33,6 +33,23 @@ export function Teams(client) {
   };
 
   /**
+   * Follows or unfollows the given team
+   * @param marketId the market id to follow/unfollow in
+   * @param teamId to follow/unfollow investments of
+   * @param stopFollowing whether or not to STOP following the market.
+   * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
+   */
+  this.followTeam = function(teamId, marketId, stopFollowing){
+    let body = {};
+    if(stopFollowing){
+      body.remove = true;
+    }
+    const path = teamId + '/follow/' + marketId;
+    const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+    return followPromise.then(dataResolver);
+  };
+
+  /**
    * Allows a team to make investments in a market
    * @param teamId the id of the team making the investment
    * @param marketId the id of the market to make the investment inspect
