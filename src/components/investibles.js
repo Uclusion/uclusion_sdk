@@ -109,6 +109,17 @@ export function Investibles(client) {
   };
 
   /**
+   * Gets the investing teams and amounts of the investible with given id
+   * @param investibleId the id of the investible
+   * @returns {PromiseLike<T> | Promise<T>} investing teams and invested_quantity
+   */
+  this.getInvestingTeams = function (investibleId) {
+    const path = investibleId + '/teams';
+    const getPromise = client.doGet(SUBDOMAIN, path);
+    return getPromise.then(dataResolver);
+  };
+
+  /**
    * Deletes investible with given id
    * @param investibleId id of the investible
    * @returns {*|PromiseLike<T>|Promise<T>} result of deleting investible
@@ -136,20 +147,10 @@ export function Investibles(client) {
   };
 
   /**
-   * Creates a resolution_id object which initiates asynchronous creation of ROI suggestions
-   * @param investibleId the id of the investible to create ROI from
-   * @returns {PromiseLike<T> | Promise<T>} resolution_id result
-   */
-  this.initiateRoi = function (investibleId) {
-    const path = 'roi/' + investibleId;
-    const roiPromise = client.doPatch(SUBDOMAIN, path, undefined, undefined);
-    return roiPromise.then(dataResolver);
-  };
-
-  /**
    * Puts a copy of an investible into a market - for use by L3/L2 that cannot invest
    * @param investibleId the id of the investible to bind
    * @param marketId the id of the market the investible will display in
+   * @param categoryList
    * @returns {PromiseLike<T> | Promise<T>} copied investible result
    */
   this.bindToMarket = function (investibleId, marketId, categoryList) {

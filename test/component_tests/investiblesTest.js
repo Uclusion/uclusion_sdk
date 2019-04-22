@@ -32,10 +32,6 @@ app.patch('/follow/steak', (request, response) => {
     response.json({test_body: request.body});
 });
 
-app.patch('/roi/steak', (request, response) => {
-    response.json({resolution_id: 'asdf5'});
-});
-
 app.post('/category/myMarketId', (request, response) => {
     response.json({test_body: request.body});
 });
@@ -170,17 +166,6 @@ describe('Investibles', () => {
             let promise = investibles.follow('steak', true);
             promise.then((result) => {
                 assert(result.test_body.remove, 'Should have put the remove request in the body');
-            }).catch((error) => {
-                console.error(error);
-            });
-        });
-    });
-
-    describe('#doInitiateRoi', () => {
-        it('should initiate ROI for the investible without error', () => {
-            let promise = investibles.initiateRoi('steak');
-            promise.then((result) => {
-                assert(result.resolution_id === 'asdf5', 'Should have returned asdf5 as id');
             }).catch((error) => {
                 console.error(error);
             });
