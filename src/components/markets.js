@@ -249,17 +249,29 @@ export function Markets(client){
      * Lists the user's investments
      * @param marketId the id of the market the investments are in
      * @param userId the id of the user to list investments for
-     * @param pageSize the maximum number of results you can consume
-     * @param lastEvaluatedKey the cookie telling us what the last page you've looked at is
      * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved contains the list of user investments
      * for the user and page we're on
      */
-    this.listUserInvestments = function (marketId, userId, pageSize, lastEvaluatedKey) {
+    this.listUserInvestments = function (marketId, userId) {
         const path = 'list/' + marketId;
-        let queryParams = {type: 'userInvestments', userId: userId, pageSize: pageSize};
-        if (lastEvaluatedKey) {
-            queryParams.lastEvaluatedKey = lastEvaluatedKey;
-        }
+        let queryParams = {type: 'userInvestments', userId: userId };
+
+        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
+        return getPromise.then(dataResolver);
+    };
+
+    /**
+     * Summarizes the user's investments. Specifically, investments in a single investible
+     * are summed over the investible. Because of this, detailed individual investment information is not
+     * available
+     * @param marketId the id of the market the investments are in
+     * @param userId the id of the user to summarize investments for
+     * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved contains the list of user investments
+     * for the user and page we're on
+     */
+    this.summarizeUserInvestments = function (marketId, userId) {
+        const path = 'list/' + marketId;
+        let queryParams = {type: 'userInvestmentsSummary', userId: userId };
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };
