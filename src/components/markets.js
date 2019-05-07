@@ -25,8 +25,7 @@ export function Markets(client){
      *    }
      *    appears_in_market_summary: boolean, required
      *    allows_investment: boolean, required. If automatic_transition present, then must be true
-     *    allows_refunds: boolean, required,
-     *    allows_editing: boolean, required
+     *    allows_refunds: boolean, required
      *    visible_to_roles. array of length >=1 drawn from the set of {MarketAnonymousUser, MarketUser,
      *    MarketTeamAdmin, MarketManager} Duplicate values are ignored
      *  }
