@@ -140,6 +140,7 @@ export function Markets(client){
      *  <li>description: string, <b>required</b></li>
      *  <li>trending_window: number, <b>required</b></li>
      *  <li>initial_stage_id: string, <b>required</b>: Id of the initial stage for the market</li>
+     *  <li>is_public_signup, <b>required</b>: boolean of whether or not public sign up allowed
      * </ul>
      * @param marketId Market to update
      * @param marketUpdateOptions the options for the market
