@@ -18,20 +18,19 @@ export function Users(client) {
   /**
    * Updates the current user with the given name
    * @param name the new name of the user
-   * @param defaultMarketId Market ID to use for a user get when not specified
-   * @param defaultTeamId Team ID to use for a user get when not specified
+   * @param default_market_id Market ID to use for a user get when not specified
+   * @param default_team_id Team ID to use for a user get when not specified
+   * @param Optional String argument: ui_preferences any UI preferences to update.
+   * Will overwrite any existing value
    * @returns {PromiseLike<T> | Promise<T>} the result of the update
    */
-  this.update = function (name, defaultMarketId, defaultTeamId) {
+  this.update = function (name, default_market_id, default_team_id, ui_preferences) {
     const body = {
-      name: name
+      name,
+      default_market_id,
+      default_team_id,
+      ui_preferences
     };
-    if (defaultMarketId) {
-      body.default_market_id = defaultMarketId;
-    }
-    if (defaultTeamId) {
-      body.default_team_id = defaultTeamId;
-    }
     const updatePromise = client.doPatch(SUBDOMAIN, 'update', undefined, body);
     return updatePromise.then(dataResolver);
   };
@@ -136,13 +135,15 @@ export function Users(client) {
    * @param teamId team to add the user to
    * @param name name of the user
    * @param email email of the user
+   * @param Optional string argument containing any ui preferences
    * @returns {PromiseLike<T> | Promise<T>} created user
    */
-  this.create = function (teamId, name, email) {
+  this.create = function (teamId, name, email, ui_preferences) {
     let path = 'create/' + teamId;
     const body = {
       name,
-      email
+      email,
+      ui_preferences
     };
     const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
     return createPromise.then(dataResolver);
