@@ -120,6 +120,17 @@ export function Investibles(client) {
   };
 
   /**
+   * Gets the investing and following users
+   * @param investibleId the id of the investible
+   * @returns {PromiseLike<T> | Promise<T>} users with invested_quantity
+   */
+  this.getWorkgroup = function (investibleId) {
+    const path = investibleId + '/users';
+    const getPromise = client.doGet(SUBDOMAIN, path);
+    return getPromise.then(dataResolver);
+  };
+
+  /**
    * Deletes investible with given id
    * @param investibleId id of the investible
    * @returns {*|PromiseLike<T>|Promise<T>} result of deleting investible
