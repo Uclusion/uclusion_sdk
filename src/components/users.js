@@ -163,28 +163,6 @@ export function Users(client) {
   };
 
   /**
-   * Transfers the given number of idea shares in the given market from one share holder to another
-   * @param userId the user to grant them to
-   * @param marketId the market to grant the idea shares in
-   * @param ideaSharesQuantity the quantity of idea shares to grant
-   * @param grantingUserId the share holder to transfer the idea shares from
-   * @param teamId Must be specified if permissions for the transfer come from the team
-   * @returns {PromiseLike<T> | Promise<T>} the result of the grant
-   */
-  this.transfer = function (grantingUserId, userId, marketId, ideaSharesQuantity, teamId) {
-    const body = {
-      quantity: ideaSharesQuantity,
-      granting_user_id: grantingUserId
-    };
-    if (teamId) {
-      body.team_id = teamId;
-    }
-    const path = userId + '/transfer/' + marketId;
-    const transferPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-    return transferPromise.then(dataResolver);
-  };
-
-  /**
    * Grants the given number of idea shares in the given market to the given user
    * @param userId the user to grant them to
    * @param marketId the market to grant the idea shares in
