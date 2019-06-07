@@ -32,12 +32,11 @@ export function Investibles(client) {
 
   /**
    * Creates a category
-   * @param name name of investible
-   * @param marketId market_id of the category
+   * @param name name of category
    * @returns {PromiseLike<T> | Promise<T>} resulting category
    */
-  this.createCategory = function (name, marketId) {
-    const path = 'category/' + marketId;
+  this.createCategory = function (name) {
+    const path = 'category';
     const body = {
       name: name
     };
@@ -48,11 +47,10 @@ export function Investibles(client) {
   /**
    * Deletes a category
    * @param name name of category
-   * @param marketId market_id of the category
    * @returns {PromiseLike<T> | Promise<T>} result of delete
    */
-  this.deleteCategory = function (name, marketId) {
-    const path = 'market/' + marketId + '/category/' + name;
+  this.deleteCategory = function (name) {
+    const path = 'category/' + name;
     const createPromise = client.doDelete(SUBDOMAIN, path, undefined);
     return createPromise.then(dataResolver);
   };
@@ -77,7 +75,6 @@ export function Investibles(client) {
 
   /**
    * Updates an investible with name, description, and categories
-   * @param marketId Market that owns this investible
    * @param investibleId the id of the investible updated
    * @param investibleName name of investible
    * @param investibleDescription description of investible
@@ -85,10 +82,9 @@ export function Investibles(client) {
    * @param labelList list of labels
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
-  this.updateInMarket = function (investibleId, marketId, investibleName, investibleDescription, categoryList,
+  this.updateInMarket = function (investibleId, investibleName, investibleDescription, categoryList,
                                   labelList) {
     const body = {
-      market_id: marketId,
       name: investibleName,
       description: investibleDescription,
       category_list: categoryList,
@@ -160,12 +156,11 @@ export function Investibles(client) {
   /**
    * Puts a copy of an investible into a market - for use by L3/L2 that cannot invest
    * @param investibleId the id of the investible to bind
-   * @param marketId the id of the market the investible will display in
    * @param categoryList
    * @returns {PromiseLike<T> | Promise<T>} copied investible result
    */
-  this.bindToMarket = function (investibleId, marketId, categoryList) {
-    const path = investibleId + '/bind/' + marketId;
+  this.bindToMarket = function (investibleId, categoryList) {
+    const path = investibleId + '/bind';
     const body = {
       category_list: categoryList
     };
@@ -255,12 +250,11 @@ export function Investibles(client) {
   };
 
   /**
-   * Lists comments associated with a market, and returns their IDs and updated times
-   * @param marketId the market to list comments for
+   * Lists comments associated with the current market and returns their IDs and updated times
    * @returns {PromiseLike<T | never> | Promise<T | never>}
    */
-  this.listCommentsByMarket = function (marketId) {
-    const path = 'list/market/' + marketId + '/comments';
+  this.listCommentsByMarket = function () {
+    const path = 'list/comments';
     const getPromise = client.doGet(SUBDOMAIN, path);
     return getPromise.then(dataResolver);
   };
@@ -268,12 +262,11 @@ export function Investibles(client) {
   /**
    * Fetches the given comments present in the given market. The maximum number of comments
    * that can be requested at one time is 100.
-   * @param marketId the id of the market to retrieve the comments from
    * @param commentIds list of the comment ids to retrieve. Max length of 100
    * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
    */
-  this.getMarketComments = function(marketId, commentIds){
-    let path = 'market/' + marketId + '/comments';
+  this.getMarketComments = function(commentIds){
+    let path = 'comments';
     let queryParams = {id: commentIds};
     const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
     return getPromise.then(dataResolver);
