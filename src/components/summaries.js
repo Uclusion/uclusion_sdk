@@ -17,12 +17,11 @@ export function Summaries(client){
   /**
    * Fetches the market summary data for the market.
    * The returned list will <i>not<i> be in sorted order
-   * @param marketId
    * @returns {PromiseLike<T> | Promise<T>} a promise resolving to a hash structure
    * of the form {'market_id': marketId, 'summaries':[summary array]}
    */
-  this.marketSummary = function(marketId){
-    const path = 'markets/' + marketId;
+  this.marketSummary = function(){
+    const path = 'get';
     const getPromise = client.doGet(SUBDOMAIN, path);
     return getPromise.then(dataResolver);
   }

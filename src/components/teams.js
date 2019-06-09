@@ -34,17 +34,16 @@ export function Teams(client) {
 
   /**
    * Follows or unfollows the given team
-   * @param marketId the market id to follow/unfollow in
    * @param teamId to follow/unfollow investments of
    * @param stopFollowing whether or not to STOP following the market.
    * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
    */
-  this.followTeam = function(teamId, marketId, stopFollowing){
+  this.followTeam = function (teamId, stopFollowing) {
     let body = {};
-    if(stopFollowing){
+    if (stopFollowing) {
       body.remove = true;
     }
-    const path = teamId + '/follow/' + marketId;
+    const path = teamId + '/follow';
     const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
     return followPromise.then(dataResolver);
   };
@@ -52,7 +51,6 @@ export function Teams(client) {
   /**
    * Allows a team to make investments in a market
    * @param teamId the id of the team making the investment
-   * @param marketId the id of the market to make the investment inspect
    * @param roleOptions object with the following form:
    * <ul>
    *  <li>allowedRoles: array</li>
@@ -60,8 +58,8 @@ export function Teams(client) {
    * </ul>
    * @returns {PromiseLike<T> | Promise<T>} the result of the bind
    */
-  this.bind = function (teamId, marketId, roleOptions) {
-    const path = teamId + '/bind/' + marketId;
+  this.bind = function (teamId, roleOptions) {
+    const path = teamId + '/bind';
     let body = {};
     if (roleOptions && roleOptions.allowedRoles) {
       body.allowed_roles = roleOptions.allowedRoles;
@@ -75,11 +73,10 @@ export function Teams(client) {
 
   /**
    * Allows anonymous access to a market
-   * @param marketId the id of the market to make the investment inspect
    * @returns {PromiseLike<T> | Promise<T>} the result of the bind
    */
-  this.bindAnonymous = function (marketId) {
-    const path = 'bind/' + marketId;
+  this.bindAnonymous = function () {
+    const path = 'bind';
     const createPromise = client.doPost(SUBDOMAIN, path, null, {});
     return createPromise.then(dataResolver);
   };
@@ -96,11 +93,10 @@ export function Teams(client) {
 
   /**
    * Lists all teams in a market
-   * @param marketId the id of the market to list teams of
    * @returns {PromiseLike<T> | Promise<T>}
    */
-  this.list = function (marketId) {
-    const path = 'list/' + marketId;
+  this.list = function () {
+    const path = 'list';
     const getPromise = client.doGet(SUBDOMAIN, path);
     return getPromise.then(dataResolver);
   };
@@ -111,24 +107,20 @@ export function Teams(client) {
    * @returns {PromiseLike<T> | Promise<T>} signed token allowing adding a user to this team
    */
   this.inviteToken = function (teamId) {
-      const path = 'invite/' + teamId;
-      const getPromise = client.doGet(SUBDOMAIN, path);
-      return getPromise.then(dataResolver);
+    const path = 'invite/' + teamId;
+    const getPromise = client.doGet(SUBDOMAIN, path);
+    return getPromise.then(dataResolver);
   };
 
   /**
    * Lists ROI
    * @param teamId Team to list ROI for
-   * @param marketId Market to list ROI for
    * @param resolutionId optional constraint
    * @returns {PromiseLike<T> | Promise<T>}
    */
-  this.listRoi = function (teamId, marketId, resolutionId) {
+  this.listRoi = function (teamId, resolutionId) {
     let path = 'roi/' + teamId;
-    let queryParams = { marketId: marketId };
-    if (resolutionId) {
-      queryParams.resolutionId = resolutionId;
-    }
+    const queryParams = { resolutionId };
     const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
     return getPromise.then(dataResolver);
   };
@@ -138,8 +130,8 @@ export function Teams(client) {
    * @param marketId The market to provide team summary information for
    * @returns {PromiseLike<T> | Promise<T>}
    */
-  this.mine = function (marketId) {
-    let path = 'mine/' + marketId;
+  this.mine = function () {
+    let path = 'mine';
     const getPromise = client.doGet(SUBDOMAIN, path);
     return getPromise.then(dataResolver);
   };

@@ -16,7 +16,6 @@ export function Markets(client){
 
     /**
      * Creates a new stage in the market provided.
-     * @param marketId the id of the market to create the stage in
      * @param stage_info a dict of stage creation information of the form
      *  { name: string, required <=>255 chars
      *    automatic_transition: optional dict of form {
@@ -31,9 +30,9 @@ export function Markets(client){
      *  }
      * @returns {PromiseLike<T | never> | Promise<T | never>} the created stage's info
      */
-    this.createStage = function(marketId, stageInfo){
+    this.createStage = function(stageInfo){
         const body = stageInfo;
-        const path = marketId + '/stage';
+        const path = 'stage';
         const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return createPromise.then(dataResolver);
     };
@@ -42,18 +41,17 @@ export function Markets(client){
     /**
       * Creates an investment in the given investible and market with the specified number
       * of idea ideaShares
-      * @param marketId the id of the market to make the investment inspect
-      * @param teamId the id of the team making the investment
+\      * @param teamId the id of the team making the investment
       * @param investibleId the id of the investible to invest
       * @param ideaSharesQuantity the number of idea shares to investible
       * @returns {PromiseLike<T> | Promise<T>} the result of the investment
       */
-    this.createInvestment = function(marketId, teamId, investibleId, ideaSharesQuantity){
+    this.createInvestment = function(teamId, investibleId, ideaSharesQuantity){
         const body = {
             quantity: ideaSharesQuantity,
             investible_id: investibleId
         };
-        const path = marketId + '/teams/' + teamId + '/invest';
+        const path = 'teams/' + teamId + '/invest';
         const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return createPromise.then(dataResolver);
     };
@@ -61,44 +59,41 @@ export function Markets(client){
     /**
      * Creates an investment in the given investible and market with the specified number
      * of idea ideaShares and categories
-     * @param marketId the id of the market to make the investment inspect
      * @param teamId the id of the team making the investment
      * @param investibleId the id of the investible to invest
      * @param ideaSharesQuantity the number of idea shares to investible
      * @param categoryList list of categories
      * @returns {PromiseLike<T> | Promise<T>} the result of the investment
      */
-    this.investAndBind = function(marketId, teamId, investibleId, ideaSharesQuantity, categoryList){
+    this.investAndBind = function(teamId, investibleId, ideaSharesQuantity, categoryList){
         const body = {
             quantity: ideaSharesQuantity,
             investible_id: investibleId,
             category_list: categoryList
         };
-        const path = marketId + '/teams/' + teamId + '/invest';
+        const path = 'teams/' + teamId + '/invest';
         const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return createPromise.then(dataResolver);
     };
 
     /**
       * Deletes an investment in the given investible and market
-      * @param marketId the id of the market to make the investment inspect
       * @param investmentId the id of the investible to invest inspect
       * @returns {PromiseLike<T> | Promise<T>} the result of the delete
       */
-    this.deleteInvestment = function(marketId, investmentId){
-        const path = marketId + '/investments/' + investmentId;
+    this.deleteInvestment = function(investmentId){
+        const path = 'investments/' + investmentId;
         const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, undefined);
         return deletePromise.then(dataResolver);
     };
 
     /**
      * Deletes all user investments in the given investible and market
-     * @param marketId the id of the market to make the investment inspect
      * @param investibleId the id of the investible to invest inspect
      * @returns {PromiseLike<T> | Promise<T>} the result of the delete
      */
-    this.deleteInvestments = function(marketId, investibleId){
-        const path = marketId + '/investible/' + investibleId;
+    this.deleteInvestments = function(investibleId){
+        const path = 'investible/' + investibleId;
         const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, undefined);
         return deletePromise.then(dataResolver);
     };
@@ -125,11 +120,10 @@ export function Markets(client){
 
     /**
      * Retrieves the market with the given Id.
-     * @param marketId the id of the market to return
      * @returns {PromiseLike<T> | Promise<T>} the result of the retrieval
      */
-    this.get = function(marketId){
-        const getPromise = client.doGet(SUBDOMAIN, marketId);
+    this.get = function(){
+        const getPromise = client.doGet(SUBDOMAIN, 'get');
         return getPromise.then(dataResolver);
     };
 
@@ -141,66 +135,61 @@ export function Markets(client){
      *  <li>trending_window: number, <b>required</b></li>
      *  <li>initial_stage_id: string, <b>required</b>: Id of the initial stage for the market</li>
      * </ul>
-     * @param marketId Market to update
      * @param marketUpdateOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the update
      */
-    this.updateMarket = function(marketId, marketUpdateOptions){
-        const updatePromise = client.doPatch(SUBDOMAIN, marketId, undefined, marketUpdateOptions);
+    this.updateMarket = function(marketUpdateOptions){
+        const updatePromise = client.doPatch(SUBDOMAIN, 'patch', undefined, marketUpdateOptions);
         return updatePromise.then(dataResolver);
     };
 
     /**
      * Deletes the given market from the system
-     * @param marketId the id of the market to delete
      * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved gives the result of the deletion
      *
      */
-    this.deleteMarket = function(marketId){
-        const getPromise = client.doDelete(SUBDOMAIN, marketId, undefined, undefined);
+    this.deleteMarket = function(){
+        const getPromise = client.doDelete(SUBDOMAIN, 'delete');
         return getPromise.then(dataResolver);
     };
 
     /**
      * Follows or unfollows the given market
-     * @param marketId the market id to follow/unfollow
      * @param stopFollowing whether or not to STOP following the market.
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
-    this.followMarket = function(marketId, stopFollowing){
+    this.followMarket = function(stopFollowing){
         let body = {};
         if(stopFollowing){
             body.remove = true;
         }
-        const path = 'follow/' + marketId;
+        const path = 'follow';
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
     };
 
     /**
      * Follows or unfollows the given stage
-     * @param marketId the market id the stage is in
      * @param stageId the market id to follow/unfollow
      * @param stopFollowing whether or not to STOP following the market.
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
-    this.followStage = function(stageId, marketId, stopFollowing){
+    this.followStage = function(stageId, stopFollowing){
         let body = {};
         if(stopFollowing){
             body.remove = true;
         }
-        const path = 'follow/' + marketId + '/stage/' + stageId;
+        const path = 'follow/stage/' + stageId;
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
     };
 
     /**
     * Lists all of the stages present in the market that the user has access too
-    * @param marketId the id of the market to list stages for
     * @returns {PromiseLike<T | never> | Promise<T | never>} the list of stages
     */
-    this.listStages = function(marketId) {
-      let path = marketId + '/stages';
+    this.listStages = function() {
+      let path = 'stages';
       const getPromise = client.doGet(SUBDOMAIN, path);
       return getPromise.then(dataResolver);
     };
@@ -208,14 +197,11 @@ export function Markets(client){
     /**
      * Lists ROI
      * @param resolutionId ID of an investible or investibles to list ROI
-     * @param marketId Market to list ROI for
-     * @param resolutionId optional constraint
      * @returns {PromiseLike<T> | Promise<T>}
      */
-    this.listRoi = function(marketId, resolutionId) {
+    this.listRoi = function(resolutionId) {
         let path = 'roi/' + resolutionId;
-        let queryParams = {marketId: marketId};
-        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
+        const getPromise = client.doGet(SUBDOMAIN, path);
         return getPromise.then(dataResolver);
     };
 
@@ -225,8 +211,8 @@ export function Markets(client){
      * @param investibleIds list of the investible id to retrieve
      * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
      */
-    this.getMarketInvestibles = function(marketId, investibleIds){
-        let path = marketId + '/investibles';
+    this.getMarketInvestibles = function(investibleIds){
+        let path = 'investibles';
         let queryParams = {id: investibleIds};
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
@@ -235,11 +221,10 @@ export function Markets(client){
     /**
      * This method allows the client to discover which investibles in its store have changed.
      * Here last_updated includes changes to the investible or investments in it.
-     * @param marketId Market to search
      * @returns {PromiseLike<T> | Promise<T>} list of categories, investible IDs and last_updated field
      */
-    this.listInvestibles = function (marketId) {
-        const path = 'list/' + marketId;
+    this.listInvestibles = function () {
+        const path = 'list';
         let queryParams = {type: 'investibles'};
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
@@ -247,13 +232,12 @@ export function Markets(client){
 
     /**
      * Lists the user's investments
-     * @param marketId the id of the market the investments are in
      * @param userId the id of the user to list investments for
      * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved contains the list of user investments
      * for the user and page we're on
      */
-    this.listUserInvestments = function (marketId, userId) {
-        const path = 'list/' + marketId;
+    this.listUserInvestments = function (userId) {
+        const path = 'list';
         let queryParams = {type: 'userInvestments', userId: userId };
 
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
@@ -264,13 +248,12 @@ export function Markets(client){
      * Summarizes the user's investments. Specifically, investments in a single investible
      * are summed over the investible. Because of this, detailed individual investment information is not
      * available
-     * @param marketId the id of the market the investments are in
      * @param userId the id of the user to summarize investments for
      * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved contains the list of user investments
      * for the user and page we're on
      */
-    this.summarizeUserInvestments = function (marketId, userId) {
-        const path = 'list/' + marketId;
+    this.summarizeUserInvestments = function (userId) {
+        const path = 'list';
         let queryParams = {type: 'userInvestmentsSummary', userId: userId };
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
