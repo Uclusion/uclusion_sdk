@@ -127,7 +127,6 @@ export function Teams(client) {
 
   /**
    * Lists all teams that the calling user is part of
-   * @param marketId The market to provide team summary information for
    * @returns {PromiseLike<T> | Promise<T>}
    */
   this.mine = function () {
