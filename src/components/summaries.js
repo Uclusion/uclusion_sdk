@@ -21,7 +21,7 @@ export function Summaries(client){
    * of the form {'market_id': marketId, 'summaries':[summary array]}
    */
   this.marketSummary = function(){
-    const path = 'get';
+    const path = 'markets';
     const getPromise = client.doGet(SUBDOMAIN, path);
     return getPromise.then(dataResolver);
   }
