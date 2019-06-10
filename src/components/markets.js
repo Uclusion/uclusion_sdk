@@ -139,7 +139,7 @@ export function Markets(client){
      * @returns {PromiseLike<T> | Promise<T>} the result of the update
      */
     this.updateMarket = function(marketUpdateOptions){
-        const updatePromise = client.doPatch(SUBDOMAIN, 'patch', undefined, marketUpdateOptions);
+        const updatePromise = client.doPatch(SUBDOMAIN, 'update', undefined, marketUpdateOptions);
         return updatePromise.then(dataResolver);
     };
 

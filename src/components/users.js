@@ -104,7 +104,10 @@ export function Users(client) {
     if (userId) {
       path += userId;
     }
-    let queryParams = { teamId };
+    let queryParams = {};
+    if (teamId) {
+      queryParams.teamId = teamId;
+    }
 
     const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
     return getPromise.then(dataResolver);
