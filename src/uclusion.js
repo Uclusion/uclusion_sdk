@@ -15,21 +15,34 @@ function Uclusion() {
    * @returns a promise that when resolved results in instantiated api client.
    */
   this.constructClient = (configuration) => {
-    let transportClient = new FetchClient({ baseURL: configuration.baseURL, authorizer: configuration.authorizer });
+    const transportClient = new FetchClient({ baseURL: configuration.baseURL, authorizer: configuration.authorizer });
     const authorizerPromise = configuration.authorizer.authorize();
     return authorizerPromise.then((userToken) => {
       //console.log("Got user token:" + userToken)
-      let apiClient = {
+      const apiClient = {
         users: new Users(transportClient),
         markets: new Markets(transportClient),
         investibles: new Investibles(transportClient),
         teams: new Teams(transportClient),
         summaries: new Summaries(transportClient),
-        sso: new SSO(transportClient),
       };
       return apiClient;
     });
   };
+
+  this.constructSSOClient = (configuration) => {
+    // sso calls are _not_ provided with uclusion tokens, hence we just return an empty token to the fetch client
+    const emptyAuthorizer = function(){
+      this.getToken = () => {
+        return '';
+      }
+    };
+
+    const transportClient = new FetchClient({ baseURL: configuration.baseURL, authorizer: emptyAuthorizer() });
+    return Promise.resolve({
+      sso: new SSO(transportClient)
+    });
+  }
 }
 
 let uclusion = new Uclusion();
