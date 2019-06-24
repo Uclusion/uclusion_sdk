@@ -16,7 +16,7 @@ function Uclusion() {
    */
   this.constructClient = (configuration) => {
     let transportClient = new FetchClient({ baseURL: configuration.baseURL, authorizer: configuration.authorizer });
-    let authorizerPromise = configuration.authorizer.authorize();
+    const authorizerPromise = configuration.authorizer.authorize();
     return authorizerPromise.then((userToken) => {
       //console.log("Got user token:" + userToken)
       let apiClient = {
