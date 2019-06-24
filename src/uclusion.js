@@ -3,7 +3,8 @@ import { Markets } from './components/markets.js';
 import { Investibles } from './components/investibles.js';
 import { Teams } from './components/teams.js';
 import { FetchClient } from './components/fetchClient.js';
-import { Summaries } from "./components/summaries";
+import { Summaries } from './components/summaries';
+import { SSO } from './components/sso';
 
 function Uclusion() {
 
@@ -24,6 +25,7 @@ function Uclusion() {
         investibles: new Investibles(transportClient),
         teams: new Teams(transportClient),
         summaries: new Summaries(transportClient),
+        sso: new SSO(transportClient),
       };
       return apiClient;
     });

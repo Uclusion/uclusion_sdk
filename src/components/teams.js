@@ -1,3 +1,5 @@
+import { dataResolver } from './utils';
+
 /**
  * Module for the teams api
  * @param client the configured fetch client
@@ -6,16 +8,6 @@
 export function Teams(client) {
 
   const SUBDOMAIN = 'teams';
-
-  /**
-   * Unpacks a result body and returns just the data portion
-   * @param result the result body
-   * @returns {*} the data portion of the body
-   */
-  const dataResolver = (result) => {
-    return result.data;
-  };
-
 
   /**
    * Creates a team

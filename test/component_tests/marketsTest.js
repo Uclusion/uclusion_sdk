@@ -23,6 +23,11 @@ app.get('/get', (request, response) => {
   response.json({ id: 'futures' });
 });
 
+
+app.get('/markets', (request, response) => {
+  response.json({ id: 'mymarks' });
+});
+
 app.patch('/update', (request, response) => {
   response.json({ id: 'fish', test_body: request.body });
 });

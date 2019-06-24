@@ -5,7 +5,7 @@ const { app, server } = serverCreator();
 import { Summaries } from '../../src/components/summaries.js';
 
 let summaries = null;
-app.get('/get', (request, response) => {
+app.get('/markets', (request, response) => {
   response.json({ summaries: [] });
 });
 

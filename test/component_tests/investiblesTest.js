@@ -48,7 +48,7 @@ app.get('/list/comments', (request, response) => {
   response.json({ comments: 'some comments' });
 });
 
-app.patch('/meat', (request, response) => {
+app.patch('/myInvest', (request, response) => {
   response.json({ success_message: 'updated', test_body: request.body });
 });
 
@@ -230,7 +230,7 @@ describe('Investibles', () => {
 
   describe('#doUpdateMarketInvestible', () => {
     it('should update the investible without error', () => {
-      let promise = investibles.updateInMarket('meat', 'foo', 'mydesc', ['a']);
+      let promise = investibles.updateInMarket('myInvest', 'foo', 'mydesc', ['a']);
       promise.then((result) => {
         assert(result.success_message === 'updated', 'Should have returned the proper success message');
         assert(result.test_body.name === 'foo', 'Should have put the name in the body');

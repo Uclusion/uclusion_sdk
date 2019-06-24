@@ -1,3 +1,5 @@
+import { dataResolver } from './utils';
+
 /**
  * Module representing the summaries api
  * @param client the configured fetch client
@@ -5,14 +7,8 @@
  */
 export function Summaries(client){
 
-  const SUBDOMAIN='summaries';
+  const SUBDOMAIN = 'summaries';
 
-  /**
-   * Unpacks a result body and returns just the data portion
-   * @param result the result body
-   * @returns {*} the data portion of the body
-   */
-  const dataResolver = (result) => { return result.data };
 
   /**
    * Fetches the market summary data for the market.
