@@ -125,10 +125,11 @@ export function Markets(client){
     /**
      * Updates a market with the given options. Options is an object with the following form
      * <ul>
-     *  <li>name : string, <b>required</b></li>
-     *  <li>description: string, <b>required</b></li>
-     *  <li>trending_window: number, <b>required</b></li>
-     *  <li>initial_stage_id: string, <b>required</b>: Id of the initial stage for the market</li>
+     *  <li>name : string</li>
+     *  <li>description: string</li>
+     *  <li>trending_window: number</li>
+     *  <li>active: boolean</li>
+     *  <li>initial_stage_id: string: Id of the initial stage for the market</li>
      * </ul>
      * @param marketUpdateOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the update
