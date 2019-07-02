@@ -52,26 +52,6 @@ export function Markets(client){
     };
 
     /**
-     * Creates an investment in the given investible and market with the specified number
-     * of idea ideaShares and categories
-     * @param teamId the id of the team making the investment
-     * @param investibleId the id of the investible to invest
-     * @param ideaSharesQuantity the number of idea shares to investible
-     * @param categoryList list of categories
-     * @returns {PromiseLike<T> | Promise<T>} the result of the investment
-     */
-    this.investAndBind = function(teamId, investibleId, ideaSharesQuantity, categoryList){
-        const body = {
-            quantity: ideaSharesQuantity,
-            investible_id: investibleId,
-            category_list: categoryList
-        };
-        const path = 'teams/' + teamId + '/invest';
-        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
-        return createPromise.then(dataResolver);
-    };
-
-    /**
       * Deletes an investment in the given investible and market
       * @param investmentId the id of the investible to invest inspect
       * @returns {PromiseLike<T> | Promise<T>} the result of the delete
@@ -103,7 +83,6 @@ export function Markets(client){
      *  <li>new_team_grant: number of shares to grant to a new team when they enter the account</li>
      *  <li>new_user_grant: number of shares to grant to a new team when they enter the account</li>
      *  <li>investment_bonus_threshold: number of shares the user has to invest to cross into an "active" user</li>
-     *  <li>default_categories: bool controlling whether to create default categories or not</li>
      * </ul>
      * @param marketOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
@@ -217,7 +196,7 @@ export function Markets(client){
     /**
      * This method allows the client to discover which investibles in its store have changed.
      * Here last_updated includes changes to the investible or investments in it.
-     * @returns {PromiseLike<T> | Promise<T>} list of categories, investible IDs and last_updated field
+     * @returns {PromiseLike<T> | Promise<T>} list of investible IDs and last_updated field
      */
     this.listInvestibles = function () {
         const path = 'list';

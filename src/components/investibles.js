@@ -24,63 +24,17 @@ export function Investibles(client) {
   };
 
   /**
-   * Creates a category
-   * @param name name of category
-   * @returns {PromiseLike<T> | Promise<T>} resulting category
-   */
-  this.createCategory = function (name) {
-    const path = 'category';
-    const body = {
-      name: name
-    };
-    const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
-    return createPromise.then(dataResolver);
-  };
-
-  /**
-   * Deletes a category
-   * @param name name of category
-   * @returns {PromiseLike<T> | Promise<T>} result of delete
-   */
-  this.deleteCategory = function (name) {
-    const path = 'category/' + name;
-    const createPromise = client.doDelete(SUBDOMAIN, path, undefined);
-    return createPromise.then(dataResolver);
-  };
-
-  /**
    * Updates an investible with name, description, and categories
    * @param investibleId the id of the investible updated
    * @param investibleName name of investible
    * @param investibleDescription description of investible
-   * @param categoryList list of categories
-   * @returns {PromiseLike<T> | Promise<T>} result of updating investible
-   */
-  this.update = function (investibleId, investibleName, investibleDescription, categoryList) {
-    const body = {
-      name: investibleName,
-      description: investibleDescription,
-      category_list: categoryList
-    };
-    const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
-    return updatePromise.then(dataResolver);
-  };
-
-  /**
-   * Updates an investible with name, description, and categories
-   * @param investibleId the id of the investible updated
-   * @param investibleName name of investible
-   * @param investibleDescription description of investible
-   * @param categoryList list of categories
    * @param labelList list of labels
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
-  this.updateInMarket = function (investibleId, investibleName, investibleDescription, categoryList,
-                                  labelList) {
+  this.update = function (investibleId, investibleName, investibleDescription, labelList) {
     const body = {
       name: investibleName,
       description: investibleDescription,
-      category_list: categoryList,
       label_list: labelList
     };
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
@@ -147,21 +101,6 @@ export function Investibles(client) {
   };
 
   /**
-   * Puts a copy of an investible into a market - for use by L3/L2 that cannot invest
-   * @param investibleId the id of the investible to bind
-   * @param categoryList
-   * @returns {PromiseLike<T> | Promise<T>} copied investible result
-   */
-  this.bindToMarket = function (investibleId, categoryList) {
-    const path = investibleId + '/bind';
-    const body = {
-      category_list: categoryList
-    };
-    const bindPromise = client.doPost(SUBDOMAIN, path, undefined, body);
-    return bindPromise.then(dataResolver);
-  };
-
-  /**
    * Creates a comment for an investible
    * @param investibleId the id of the investible to create the comment for
    * @param body html body of the comment
@@ -223,23 +162,6 @@ export function Investibles(client) {
     const path = 'state/' + investibleId;
     const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, stateOptions);
     return updatePromise.then(dataResolver);
-  };
-
-  /**
-   * Listed investibles that a user has which are not bound to a market (ie draft or template)
-   * @param pageSize Maximum number of templates to return
-   * @param lastEvaluated Optional investible_id last evaluated for pagination
-   * @returns {PromiseLike<T> | Promise<T>}
-   */
-  this.listTemplates = function (pageSize, lastEvaluated) {
-    let queryParams = {
-      pageSize: pageSize
-    };
-    if (lastEvaluated) {
-      queryParams.lastEvaluated = lastEvaluated;
-    }
-    const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
-    return getPromise.then(dataResolver);
   };
 
   /**
