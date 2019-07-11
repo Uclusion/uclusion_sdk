@@ -105,19 +105,6 @@ export function Teams(client) {
   };
 
   /**
-   * Lists ROI
-   * @param teamId Team to list ROI for
-   * @param resolutionId optional constraint
-   * @returns {PromiseLike<T> | Promise<T>}
-   */
-  this.listRoi = function (teamId, resolutionId) {
-    let path = 'roi/' + teamId;
-    const queryParams = { resolutionId };
-    const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
-    return getPromise.then(dataResolver);
-  };
-
-  /**
    * Lists all teams that the calling user is part of
    * @returns {PromiseLike<T> | Promise<T>}
    */

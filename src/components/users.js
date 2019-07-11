@@ -126,7 +126,7 @@ export function Users(client) {
    * @param teamId team to add the user to
    * @param name name of the user
    * @param email email of the user
-   * @param Optional string argument containing any ui preferences
+   * @param ui_preferences Optional string argument containing any ui preferences
    * @returns {PromiseLike<T> | Promise<T>} created user
    */
   this.create = function (teamId, name, email, ui_preferences) {

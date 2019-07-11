@@ -38,39 +38,20 @@ export function Markets(client){
       * of idea ideaShares
 \      * @param teamId the id of the team making the investment
       * @param investibleId the id of the investible to invest
-      * @param ideaSharesQuantity the number of idea shares to investible
+      * @param ideaSharesQuantity the number of idea shares for this user to be invested total in the investible
+      * @param currentIdeaSharesQuantity the number of idea shares this user currently has invested in this investible
+      * @param teamId
       * @returns {PromiseLike<T> | Promise<T>} the result of the investment
       */
-    this.createInvestment = function(teamId, investibleId, ideaSharesQuantity){
+    this.updateInvestment = function(teamId, investibleId, ideaSharesQuantity, currentIdeaSharesQuantity){
         const body = {
             quantity: ideaSharesQuantity,
+            former_quantity: currentIdeaSharesQuantity,
             investible_id: investibleId
         };
         const path = 'teams/' + teamId + '/invest';
         const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return createPromise.then(dataResolver);
-    };
-
-    /**
-      * Deletes an investment in the given investible and market
-      * @param investmentId the id of the investible to invest inspect
-      * @returns {PromiseLike<T> | Promise<T>} the result of the delete
-      */
-    this.deleteInvestment = function(investmentId){
-        const path = 'investments/' + investmentId;
-        const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, undefined);
-        return deletePromise.then(dataResolver);
-    };
-
-    /**
-     * Deletes all user investments in the given investible and market
-     * @param investibleId the id of the investible to invest inspect
-     * @returns {PromiseLike<T> | Promise<T>} the result of the delete
-     */
-    this.deleteInvestments = function(investibleId){
-        const path = 'investible/' + investibleId;
-        const deletePromise = client.doDelete(SUBDOMAIN, path, undefined, undefined);
-        return deletePromise.then(dataResolver);
     };
 
     /**
@@ -82,7 +63,6 @@ export function Markets(client){
      *  <li>manual_roi: boolean</li>
      *  <li>new_team_grant: number of shares to grant to a new team when they enter the account</li>
      *  <li>new_user_grant: number of shares to grant to a new team when they enter the account</li>
-     *  <li>investment_bonus_threshold: number of shares the user has to invest to cross into an "active" user</li>
      * </ul>
      * @param marketOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
@@ -170,17 +150,6 @@ export function Markets(client){
     };
 
     /**
-     * Lists ROI
-     * @param resolutionId ID of an investible or investibles to list ROI
-     * @returns {PromiseLike<T> | Promise<T>}
-     */
-    this.listRoi = function(resolutionId) {
-        let path = 'roi/' + resolutionId;
-        const getPromise = client.doGet(SUBDOMAIN, path);
-        return getPromise.then(dataResolver);
-    };
-
-    /**
      * Fetches requested market investibles from the given market
      * @param marketId the id of the market to retrieve the investible in
      * @param investibleIds list of the investible id to retrieve
@@ -201,35 +170,6 @@ export function Markets(client){
     this.listInvestibles = function () {
         const path = 'list';
         let queryParams = {type: 'investibles'};
-        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
-        return getPromise.then(dataResolver);
-    };
-
-    /**
-     * Lists the user's investments
-     * @param userId the id of the user to list investments for
-     * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved contains the list of user investments
-     * for the user and page we're on
-     */
-    this.listUserInvestments = function (userId) {
-        const path = 'list';
-        let queryParams = {type: 'userInvestments', userId: userId };
-
-        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
-        return getPromise.then(dataResolver);
-    };
-
-    /**
-     * Summarizes the user's investments. Specifically, investments in a single investible
-     * are summed over the investible. Because of this, detailed individual investment information is not
-     * available
-     * @param userId the id of the user to summarize investments for
-     * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved contains the list of user investments
-     * for the user and page we're on
-     */
-    this.summarizeUserInvestments = function (userId) {
-        const path = 'list';
-        let queryParams = {type: 'userInvestmentsSummary', userId: userId };
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };

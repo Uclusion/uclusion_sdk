@@ -52,28 +52,6 @@ export function Investibles(client) {
   };
 
   /**
-   * Gets the investing teams and amounts of the investible with given id
-   * @param investibleId the id of the investible
-   * @returns {PromiseLike<T> | Promise<T>} investing teams and invested_quantity
-   */
-  this.getInvestingTeams = function (investibleId) {
-    const path = investibleId + '/teams';
-    const getPromise = client.doGet(SUBDOMAIN, path);
-    return getPromise.then(dataResolver);
-  };
-
-  /**
-   * Gets the investing and following users
-   * @param investibleId the id of the investible
-   * @returns {PromiseLike<T> | Promise<T>} users with invested_quantity
-   */
-  this.getWorkgroup = function (investibleId) {
-    const path = investibleId + '/users';
-    const getPromise = client.doGet(SUBDOMAIN, path);
-    return getPromise.then(dataResolver);
-  };
-
-  /**
    * Deletes investible with given id
    * @param investibleId id of the investible
    * @returns {*|PromiseLike<T>|Promise<T>} result of deleting investible
