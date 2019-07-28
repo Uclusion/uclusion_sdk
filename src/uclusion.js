@@ -1,7 +1,6 @@
 import { Users } from './components/users.js';
 import { Markets } from './components/markets.js';
 import { Investibles } from './components/investibles.js';
-import { Teams } from './components/teams.js';
 import { FetchClient } from './components/fetchClient.js';
 import { Summaries } from './components/summaries';
 import { SSO } from './components/sso';
@@ -18,15 +17,12 @@ function Uclusion() {
     const transportClient = new FetchClient({ baseURL: configuration.baseURL, authorizer: configuration.authorizer });
     const authorizerPromise = configuration.authorizer.authorize();
     return authorizerPromise.then((userToken) => {
-      //console.log("Got user token:" + userToken)
-      const apiClient = {
+      return {
         users: new Users(transportClient),
         markets: new Markets(transportClient),
         investibles: new Investibles(transportClient),
-        teams: new Teams(transportClient),
         summaries: new Summaries(transportClient),
       };
-      return apiClient;
     });
   };
 

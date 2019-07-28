@@ -21,7 +21,7 @@ export function Markets(client){
      *    allows_investment: boolean, required. If automatic_transition present, then must be true
      *    allows_refunds: boolean, required
      *    visible_to_roles. array of length >=1 drawn from the set of {MarketAnonymousUser, MarketUser,
-     *    MarketTeamAdmin, MarketManager} Duplicate values are ignored
+     *    MarketManager} Duplicate values are ignored
      *  }
      * @returns {PromiseLike<T | never> | Promise<T | never>} the created stage's info
      */
@@ -34,23 +34,19 @@ export function Markets(client){
 
 
     /**
-      * Creates an investment in the given investible and market with the specified number
-      * of idea ideaShares
-\      * @param teamId the id of the team making the investment
+      * Creates an investment in the given investible and market with the specified number of idea ideaShares
       * @param investibleId the id of the investible to invest
       * @param ideaSharesQuantity the number of idea shares for this user to be invested total in the investible
       * @param currentIdeaSharesQuantity the number of idea shares this user currently has invested in this investible
-      * @param teamId
       * @returns {PromiseLike<T> | Promise<T>} the result of the investment
       */
-    this.updateInvestment = function(teamId, investibleId, ideaSharesQuantity, currentIdeaSharesQuantity){
+    this.updateInvestment = function(investibleId, ideaSharesQuantity, currentIdeaSharesQuantity){
         const body = {
             quantity: ideaSharesQuantity,
             former_quantity: currentIdeaSharesQuantity,
             investible_id: investibleId
         };
-        const path = 'teams/' + teamId + '/invest';
-        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+        const createPromise = client.doPost(SUBDOMAIN, 'invest', undefined, body);
         return createPromise.then(dataResolver);
     };
 
@@ -59,10 +55,9 @@ export function Markets(client){
      * <ul>
      *  <li>name : string, <b>required</b></li>
      *  <li>description: string, <b>required</b></li>
-     *  <li>trending_window: number</li>
+     *  <li>expiration_minutes: number</li>
      *  <li>manual_roi: boolean</li>
-     *  <li>new_team_grant: number of shares to grant to a new team when they enter the account</li>
-     *  <li>new_user_grant: number of shares to grant to a new team when they enter the account</li>
+     *  <li>new_user_grant: number of shares to grant to a new user entering the account</li>
      * </ul>
      * @param marketOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
@@ -86,7 +81,7 @@ export function Markets(client){
      * <ul>
      *  <li>name : string</li>
      *  <li>description: string</li>
-     *  <li>trending_window: number</li>
+     *  <li>expiration_minutes: number</li>
      *  <li>active: boolean</li>
      *  <li>initial_stage_id: string: Id of the initial stage for the market</li>
      * </ul>

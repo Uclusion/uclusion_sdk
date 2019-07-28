@@ -7,7 +7,7 @@ import { Markets } from '../../src/components/markets.js';
 
 let markets = null;
 
-app.post('/teams/MyTeam/invest', (request, response) => {
+app.post('/invest', (request, response) => {
   response.json({ userid: 'myUser', test_body: request.body });
 });
 
@@ -79,7 +79,7 @@ describe('Market', () => {
 
   describe('#doCreateInvestment', () => {
     it('should create an investment', () => {
-      let promise = markets.createInvestment('MyTeam', 'NewInvestment', 500);
+      let promise = markets.createInvestment('NewInvestment', 500);
       promise.then((result) => {
         assert(result.userid === 'myUser', 'Did not return the proper user id from the result');
         assert(result.test_body.quantity === 500, 'Did not pass the proper quantity in the body');
@@ -90,7 +90,7 @@ describe('Market', () => {
 
   describe('#doInvestAndBind', () => {
     it('should invest and bind', () => {
-      let promise = markets.investAndBind('MyTeam', 'NewInvestment', 500, ['foo', 'bar']);
+      let promise = markets.investAndBind('NewInvestment', 500, ['foo', 'bar']);
       promise.then((result) => {
         assert(result.userid === 'myUser', 'Did not return the proper user id from the result');
         assert(result.test_body.quantity === 500, 'Did not pass the proper quantity in the body');

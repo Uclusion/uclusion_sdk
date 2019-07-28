@@ -105,7 +105,7 @@ export function SSO(client){
 
     /**
      * Initial user creation. This method does not use an authorization header.
-     * @param creationToken Signed token containing teamId and possibly other information
+     * @param creationToken Signed token
      * @param name of user creating the account
      * @param email of user creating the account for later login
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability
@@ -121,7 +121,7 @@ export function SSO(client){
     };
 
     /**
-     * Initial user creation on a team created from email domain. This method does not use an authorization header.
+     * Initial user creation. This method does not use an authorization header.
      * @param marketId market signing up for
      * @param name of user creating the account
      * @param email of user creating the account for later login
@@ -140,8 +140,6 @@ export function SSO(client){
      * Redirects to an OIDC authorization with parameters on the redirect.
      * <ul>
      *  <li>account_name: string</li>
-     *  <li>team_name: string</li>
-     *  <li>team_description: string</li>
      *  <li>op_endpoint_base_url: string</li>
      *  <li>uclusion_client_id: string</li>
      *  <li>redirect_url: string</li>
@@ -156,7 +154,7 @@ export function SSO(client){
 
     /**
      * Logs in after an external product authorization. This method does not use an authorization header.
-     * @param externalAuthToken external token with user identity and team info
+     * @param externalAuthToken external token with user identity
      * @param state token with all information passed from externalAuthRedirect
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
      * automatically applied
@@ -211,10 +209,9 @@ export function SSO(client){
      * @param destinationUrl page to send the user back to after authorization
      * @param redirectUrl The url to redirect the user to after auth. Only valid in dev envs
      * @param referringUserId Optional magic link referring user ID
-     * @param referringTeamId Optional magic link referring team ID
      * @returns {PromiseLike<T> | Promise<T>} a redirect to product authorizaton with correct query params
      */
-    this.externalAuthRedirect = function(marketId, destinationUrl, redirectUrl, referringUserId, referringTeamId) {
+    this.externalAuthRedirect = function(marketId, destinationUrl, redirectUrl, referringUserId) {
         const body = {
             destination_page: destinationUrl,
             redirect_url: redirectUrl,
@@ -222,9 +219,6 @@ export function SSO(client){
         };
         if (referringUserId) {
             body.referring_user_id = referringUserId;
-        }
-        if (referringTeamId) {
-            body.referring_team_id = referringTeamId;
         }
         const externalPrePromise = client.doPost(SUBDOMAIN, 'ssoprelogin', undefined, body);
         return externalPrePromise.then(dataResolver);
