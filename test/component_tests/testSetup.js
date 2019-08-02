@@ -5,25 +5,16 @@ global.fetch = fetch;
 
 import { FetchClient } from '../../src/components/fetchClient.js';
 
-const testAuthorizer = {
-    authorize: () => {
-        return new Promise((resolve, reject) => {
-            resolve("foo");
-        })
-    },
-    reauthorize: () => {
-        return authorize();
-    },
+const testTokenManager = {
     getToken: () => {
-        return "foo";
+        return Promise.resolve("foo");
     }
 };
-
 
 let defaultConfig = {
     baseURL: 'http://localhost',
     headers: {},
-    authorizer: testAuthorizer,
+    tokenManager: testTokenManager,
     domainMunger: (url, domain) => { return url} //don't do the sub domain addition
 };
 

@@ -4,24 +4,16 @@ global.fetch = fetch;
 
 import assert from 'assert';
 
-const testAuthorizer = {
-    authorize: () => {
-        return new Promise((resolve, reject) => {
-            resolve("foo");
-        })
-    },
-    reauthorize: () => {
-        return authorize();
-    },
+const testTokenManager = {
     getToken: () => {
-        return "foo";
+        return Promise.resolve("foo");
     }
 };
 
 let testConfig = {
     baseURL: 'https://www.google.com',
     headers: {},
-    authorizer: testAuthorizer,
+    tokenManager: testTokenManager,
     domainMunger: (url, domain) => { return url} //don't do the sub domain additionxx`
 };
 

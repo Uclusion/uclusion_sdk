@@ -112,49 +112,14 @@ describe('Investibles', () => {
     });
   });
 
-  describe('#doCreateCategory', () => {
-    it('should create category without error', () => {
-      assert(server.listening);
-      let promise = investibles.createCategory('my category name');
-      promise.then((result) => {
-        assert(result.test_body.name === 'my category name', 'Did not pass the correct name in body');
-      }).catch((error) => {
-        console.error(error);
-      });
-    });
-  });
-
-  describe('#doDeleteCategory', () => {
-    it('should delete category without error', () => {
-      assert(server.listening);
-      let promise = investibles.deleteCategory('steak sauce');
-      promise.then((result) => {
-        assert(result.success_message === 'Category deleted', 'Did not delete category');
-      }).catch((error) => {
-        console.error(error);
-      });
-    });
-  });
 
   describe('#doUpdate', () => {
     it('should update investible without error', () => {
-      let promise = investibles.update('asdf3', 'investiblesName', 'this is description', ['foo', 'bar']);
+      let promise = investibles.update('asdf3', 'investiblesName', 'this is description');
       return promise.then((result) => {
         //console.log(result);
         assert(result.test_body.name === 'investiblesName', 'Did not pass the correct name in body');
         assert(result.test_body.description === 'this is description', 'Did not pass the correct description in body');
-        assert(JSON.stringify(result.test_body.category_list) === JSON.stringify(['foo', 'bar']), 'Did not pass the correct category list in body');
-      }).catch((error) => {
-        console.error(error);
-      });
-    });
-  });
-
-  describe('#doBindInvestible', () => {
-    it('should bind investible without error', () => {
-      let promise = investibles.bindToMarket('foo', ['cat1', 'cat2']);
-      return promise.then((result) => {
-        assert(JSON.stringify(result.test_body.category_list) === JSON.stringify(['cat1', 'cat2']), 'Did not pass the correct category list in body');
       }).catch((error) => {
         console.error(error);
       });

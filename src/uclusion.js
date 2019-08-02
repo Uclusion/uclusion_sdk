@@ -26,18 +26,8 @@ function Uclusion() {
   };
 
   this.constructSSOClient = (configuration) => {
-    // sso calls are _not_ provided with uclusion tokens, hence we just return an empty token to the fetch client
-    function EmptyAuthorizer() {
-/*      this.authorize = () => {
-        return Promise.resolve('');
-      };
-*/
-      this.getToken = () => {
-        return '';
-      };
-    }
-
-    const transportClient = new FetchClient({ ...configuration, authorizer: new EmptyAuthorizer()});
+    //we don't use tokens for SSO, so just zero it out
+    const transportClient = new FetchClient({ ...configuration, tokenManager: null});
     return Promise.resolve(new SSO(transportClient));
   }
 }
