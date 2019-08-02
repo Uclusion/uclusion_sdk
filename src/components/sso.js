@@ -87,18 +87,20 @@ export function SSO(client){
     /**
      * Initial account creation. This method does not use an authorization header.
      * @param accountName Name of account
-     * @param name of user creating the account
-     * @param email of user creating the account for later login
+     * @param idToken OIDC ID token with user identity
      * @param tier - Free, Advanced, etc.
+     * @param disableExisting - true if want any existing account disabled instead of error
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability
      */
-    this.cognitoAccountCreate = function(accountName, name, email, tier) {
+    this.cognitoAccountCreate = function(accountName, idToken, tier, disableExisting) {
         const body = {
             account_name: accountName,
-            name: name,
-            email: email,
+            id_token: idToken,
             tier: tier
         };
+        if (disableExisting) {
+            body.disable_existing = disableExisting;
+        }
         const cognitoCreatePromise = client.doPost(SUBDOMAIN, 'cognitocreate', undefined, body);
         return cognitoCreatePromise.then(dataResolver);
     };

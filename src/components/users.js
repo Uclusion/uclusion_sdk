@@ -79,24 +79,6 @@ export function Users(client) {
   };
 
   /**
-   * Creates a user
-   * @param name name of the user
-   * @param email email of the user
-   * @param ui_preferences Optional string argument containing any ui preferences
-   * @returns {PromiseLike<T> | Promise<T>} created user
-   */
-  this.create = function (name, email, ui_preferences) {
-    let path = 'create';
-    const body = {
-      name,
-      email,
-      ui_preferences
-    };
-    const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
-    return createPromise.then(dataResolver);
-  };
-
-  /**
    * Deletes the current user from uclusion
    * @param reason why the user is deleting themselves
    * @returns {PromiseLike<T> | Promise<T>} the result of the delete
