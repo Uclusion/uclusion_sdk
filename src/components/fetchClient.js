@@ -3,10 +3,7 @@ export function FetchClient(passedConfig){
     let configuration = Object.assign({}, passedConfig);
 
     let responseHandler = (response) => {
-        // if we're 401 we're unauthorized so tell the authorizer to reauthorize us and abandon the current call
-        if (response.status === 401){
-            configuration.authorizer.reauthorize() // no page or dest url since I don't have it handy
-        } else if (!response.ok) {
+        if (!response.ok) {
             throw response; //give the response to upstream code
         }
         if (isJson(response)) {
@@ -39,7 +36,7 @@ export function FetchClient(passedConfig){
             for (var pair of response.headers.entries()){
                 let key = pair[0];
                 let value = pair[1];
-                if (key.toLowerCase() == 'content-type' && value.toLowerCase().indexOf("json") != -1){
+                if (key.toLowerCase() === 'content-type' && value.toLowerCase().indexOf('json') != -1) {
                     return true;
                 }
             }
@@ -82,7 +79,7 @@ export function FetchClient(passedConfig){
 
     let headersConstructor = (headers) => {
         let newHeaders = Object.assign({}, headers);
-        newHeaders['Authorization'] = configuration.authorizer.getToken();
+        newHeaders['Authorization'] = configuration.tokenManager.getToken();
         //console.log(newHeaders);
         return newHeaders;
     };

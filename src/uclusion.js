@@ -14,8 +14,7 @@ function Uclusion() {
    * @returns a promise that when resolved results in instantiated api client.
    */
   this.constructClient = (configuration) => {
-    const transportClient = new FetchClient({ baseURL: configuration.baseURL, authorizer: configuration.authorizer });
-    const authorizerPromise = configuration.authorizer.authorize();
+    const transportClient = new FetchClient({ ...configuration });
     return authorizerPromise.then((userToken) => {
       return {
         users: new Users(transportClient),
