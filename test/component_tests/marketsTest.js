@@ -23,11 +23,6 @@ app.get('/get', (request, response) => {
   response.json({ id: 'futures' });
 });
 
-
-app.get('/markets', (request, response) => {
-  response.json({ id: 'mymarks' });
-});
-
 app.patch('/update', (request, response) => {
   response.json({ id: 'fish', test_body: request.body });
 });
@@ -156,17 +151,6 @@ describe('Market', () => {
     });
   });
 
-  describe('#doListRoi', () => {
-    it('should get the Roi without error', () => {
-      let promise = markets.listRoi( 'aresolutionid');
-      promise.then((result) => {
-        //console.log(JSON.stringify(result));
-        assert(result.sentinel === 'foo', 'Should have returned proper sentinel');
-      }).catch((error) => {
-        console.error(error);
-      });
-    });
-  });
 
   describe('#doGetMarketInvestibles', () => {
     it('should get the investibled without error', () => {

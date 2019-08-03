@@ -3,10 +3,7 @@ export function FetchClient(passedConfig){
     let configuration = Object.assign({}, passedConfig);
 
     let responseHandler = (response) => {
-        // if we're 401 we're unauthorized so tell the authorizer to reauthorize us and abandon the current call
-        if (response.status === 401){
-            configuration.authorizer.reauthorize() // no page or dest url since I don't have it handy
-        } else if (!response.ok) {
+        if (!response.ok) {
             throw response; //give the response to upstream code
         }
         if (isJson(response)) {
@@ -39,7 +36,7 @@ export function FetchClient(passedConfig){
             for (var pair of response.headers.entries()){
                 let key = pair[0];
                 let value = pair[1];
-                if (key.toLowerCase() == 'content-type' && value.toLowerCase().indexOf("json") != -1){
+                if (key.toLowerCase() === 'content-type' && value.toLowerCase().indexOf('json') != -1) {
                     return true;
                 }
             }
@@ -81,69 +78,72 @@ export function FetchClient(passedConfig){
     };
 
     let headersConstructor = (headers) => {
-        let newHeaders = Object.assign({}, headers);
-        newHeaders['Authorization'] = configuration.authorizer.getToken();
-        //console.log(newHeaders);
-        return newHeaders;
+        return Promise.resolve(Object.assign({}, headers))
+            .then((newHeaders) => {
+                if (configuration.tokenManager){
+                    return configuration.tokenManager.getToken()
+                        .then((token) => {
+                            return {...newHeaders, Authorization: token }
+                        });
+                }
+                return newHeaders;
+            });
     };
 
     /**
      * Syntactic sugar over fetch get
+     * @param subdomain the subdomain of the api we're calling
      * @param path the path relative to the base url
      * @param queryParams a query params object representing the query portion of the url
      * @returns a promise which will resolve to the result of the get call
      */
     this.doGet = function (subdomain, path, queryParams) {
-        let url = urlConstructor(subdomain, path, queryParams);
-        const headers = headersConstructor(configuration.headers);
-        //console.log(headers);
-        let promise = fetch(url, {method: 'GET', headers: headers}).then(responseHandler);
-        return promise;
+        const url = urlConstructor(subdomain, path, queryParams);
+        return headersConstructor(configuration.headers)
+            .then(headers => fetch(url, {method: 'GET', headers}).then(responseHandler));
     };
 
     /**
      * Syntactic sugar over fetch delete
+     * @param subdomain the subdomain of the api we're calling
      * @param path the path relative to the base url
      * @param queryParams a query params object representing the query portion of the url
-     * @param body any method body relevant to the call
      * @returns a promise which will resolve to the result of the DELETE call
      */
     this.doDelete = function(subdomain, path, queryParams) {
-        let url = urlConstructor(subdomain, path, queryParams);
-        const headers = headersConstructor(configuration.headers);
-        //console.log(headers);
-        let promise = fetch(url, {method: 'DELETE', headers: headers}).then(responseHandler);
-        return promise;
+        const url = urlConstructor(subdomain, path, queryParams);
+        return headersConstructor(configuration.headers)
+            .then(headers => fetch(url, {method: 'DELETE', headers}).then(responseHandler));
     };
 
     /**
      * Syntactic sugar over the fetch post
+     * @param subdomain the subdomain of the api we're calling
      * @param path the path relative to the base url
      * @param queryParams a query params object representing the query portion of the url
-     * @param body any body relevant to the call as a js object
+     * @param bodyData any body relevant to the call as a js object
      * @returns a promise which will resolve to the result of the POST call
      */
-    this.doPost = function(subdomain, path, queryParams, body) {
-        let url = urlConstructor(subdomain, path, queryParams);
-        const headers = headersConstructor(configuration.headers);
-        //console.log(headers);
-        let promise = fetch(url, {method: 'POST', body: JSON.stringify(body), headers: headers}).then(responseHandler);
-        return promise;
+    this.doPost = function(subdomain, path, queryParams, bodyData) {
+        const body = JSON.stringify(bodyData);
+        const url = urlConstructor(subdomain, path, queryParams);
+        return headersConstructor(configuration.headers)
+            .then(headers => fetch(url, {method: 'POST', body, headers}).then(responseHandler));
     };
 
     /**
      * Syntactic sugar over fetch patch
+     * @param subdomain the subdomain of the api we're calling
      * @param path the path relative to the base url
      * @param queryParams a query params object representing the query portion of the url
-     * @param body any body relevant to the call
+     * @param bodyData any body relevant to the call
      * @returns a promise which will resolve to the result of the PATCH call
      */
-    this.doPatch = function(subdomain, path, queryParams, body) {
-        let url = urlConstructor(subdomain, path, queryParams);
-        let headers = headersConstructor(configuration.headers);
-        //console.log(headers);
-        let promise = fetch(url, {method: 'PATCH', body: JSON.stringify(body), headers: headers}).then(responseHandler);
-        return promise;
+    this.doPatch = function(subdomain, path, queryParams, bodyData) {
+        const body = JSON.stringify(bodyData);
+        const url = urlConstructor(subdomain, path, queryParams);
+        return headersConstructor(configuration.headers)
+            .then(headers => fetch(url, {method: 'PATCH', body, headers}).then(responseHandler));
     };
 }
 
