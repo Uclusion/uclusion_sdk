@@ -168,6 +168,17 @@ export function Markets(client){
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };
+
+    /**
+     * Lists users in a market
+     * @returns {PromiseLike<T> | Promise<T>} list of users including name and email
+     */
+    this.listUsers = function () {
+        const path = 'list';
+        let queryParams = {type: 'users'};
+        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
+        return getPromise.then(dataResolver);
+    };
 }
 
 export default Markets;
