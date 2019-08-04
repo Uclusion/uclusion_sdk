@@ -15,12 +15,12 @@ function Uclusion() {
      */
     this.constructClient = (configuration) => {
         const transportClient = new FetchClient({...configuration});
-        return {
+        return Promise.resolve({
             users: new Users(transportClient),
             markets: new Markets(transportClient),
             investibles: new Investibles(transportClient),
             summaries: new Summaries(transportClient),
-        };
+        })  ;
     };
 
     this.constructSSOClient = (configuration) => {
