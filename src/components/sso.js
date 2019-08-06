@@ -22,6 +22,7 @@ export function SSO(client){
 
     /**
      * Logs in after an account holder Cognito identification. This method does not use an authorization header.
+     * Logs in after an account holder Cognito identification. This method does not use an authorization header.
      * @param idToken Cognito ID token with user identity
      * @param accountId an account ID of the user
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
@@ -194,14 +195,14 @@ export function SSO(client){
         return marketLoginInfoPromise.then(dataResolver);
     };
 
-
     /**
-     * Information about available market logins for the email in the idToken. This method does not use an authorization header.
+     * Information about available market logins for the identity in the idToken. This method does not use an authorization header.
      * @param idToken Cognito ID token
+     * @param active do we want active markets
      * @returns {PromiseLike<T> | Promise<T>} a dictionary of login info keyed by market IDs
      */
-    this.emailLoginInfo = function(idToken) {
-        const loginsInfoPromise = client.doGet(SUBDOMAIN, 'info', {idToken});
+    this.availableMarkets = function(idToken, active) {
+        const loginsInfoPromise = client.doGet(SUBDOMAIN, 'info', {idToken, active});
         return loginsInfoPromise.then(dataResolver);
     };
 
