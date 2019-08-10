@@ -79,15 +79,36 @@ export function Users(client) {
   };
 
   /**
-   * Deletes the current user from uclusion
-   * @param reason why the user is deleting themselves
+   * Gets a user's own messages
+   * @returns {PromiseLike<T> | Promise<T>} list of messages
+   */
+  this.getMessages = function () {
+    let path = 'messages';
+    const getPromise = client.doGet(SUBDOMAIN, path);
+    return getPromise.then(dataResolver);
+  };
+
+  /**
+   * Sends a small message to another user but cannot send again till that message is manually acknowledged
+   * @param userId user to poke
+   * @param text message the poked user receives - 235 character max
+   * @returns {PromiseLike<T> | Promise<T>} the result of the poke
+   */
+  this.poke = function(userId, text){
+    const body = {
+      text: text
+    };
+    const path = 'poke/' + userId;
+    const pokePromise = client.doPost(SUBDOMAIN, path, undefined, body);
+    return pokePromise.then(dataResolver);
+  };
+
+  /**
+   * Removes the current user from the logged into market
    * @returns {PromiseLike<T> | Promise<T>} the result of the delete
    */
-  this.delete = function (reason) {
-    const body = {
-      reason
-    };
-    const deletePromise = client.doDelete(SUBDOMAIN, 'delete', undefined, body);
+  this.delete = function () {
+    const deletePromise = client.doDelete(SUBDOMAIN, 'delete');
     return deletePromise.then(dataResolver);
   };
 
@@ -104,6 +125,22 @@ export function Users(client) {
     const path = userId + '/grant';
     const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
     return grantPromise.then(dataResolver);
+  };
+
+  /**
+   * Removes a message from a user's unacknowledged list of notifications
+   * @param objectId the object_id of the message to acknowledge
+   * @param type the type of object_id
+   * @returns {PromiseLike<T> | Promise<T>} the result of the acknowledge
+   */
+  this.acknowledge = function (objectId, type) {
+    const body = {
+      object_id: objectId,
+      type: type
+    };
+    const path = 'ack';
+    const ackPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+    return ackPromise.then(dataResolver);
   };
 }
 
