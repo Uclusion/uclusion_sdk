@@ -101,13 +101,18 @@ export function Investibles(client) {
    * Updates a comment
    * @param commentId the id of the comment to update
    * @param body html body of the comment
-   * @returns {PromiseLike<T> | Promise<T>} resolution_id result
+   * @param isResolved Whether to resolve comment or not
+   * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
-  this.updateComment = function (commentId, body) {
+  this.updateComment = function (commentId, body, isResolved) {
     const path = 'comment/' + commentId;
-    const msgBody = {
-      body: body
-    };
+    const msgBody = {};
+    if (body) {
+      msgBody.body = body;
+    }
+    if (isResolved) {
+      msgBody.is_resolved = isResolved;
+    }
     const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
   };
