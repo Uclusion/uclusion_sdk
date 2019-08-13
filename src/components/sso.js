@@ -22,16 +22,13 @@ export function SSO(client){
 
     /**
      * Logs in after an account holder Cognito identification. This method does not use an authorization header.
-     * Logs in after an account holder Cognito identification. This method does not use an authorization header.
      * @param idToken Cognito ID token with user identity
-     * @param accountId an account ID of the user
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
      * automatically applied
      */
-    this.accountCognitoLogin = function(idToken, accountId) {
+    this.accountCognitoLogin = function(idToken) {
         const body = {
-            id_token: idToken,
-            account_id: accountId
+            id_token: idToken, d
         };
         const cognitoLoginPromise = client.doPost(SUBDOMAIN, 'cognito', undefined, body);
         return cognitoLoginPromise.then(dataResolver);
@@ -103,39 +100,6 @@ export function SSO(client){
             body.disable_existing = disableExisting;
         }
         const cognitoCreatePromise = client.doPost(SUBDOMAIN, 'cognitocreate', undefined, body);
-        return cognitoCreatePromise.then(dataResolver);
-    };
-
-    /**
-     * Initial user creation. This method does not use an authorization header.
-     * @param creationToken Signed token
-     * @param name of user creating the account
-     * @param email of user creating the account for later login
-     * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability
-     */
-    this.cognitoUserCreate = function(name, email, creationToken) {
-        const body = {
-            name: name,
-            email: email,
-            creation_token: creationToken,
-        };
-        const cognitoCreatePromise = client.doPost(SUBDOMAIN, 'usercreate', undefined, body);
-        return cognitoCreatePromise.then(dataResolver);
-    };
-
-    /**
-     * Initial user creation. This method does not use an authorization header.
-     * @param marketId market signing up for
-     * @param name of user creating the account
-     * @param email of user creating the account for later login
-     * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability
-     */
-    this.cognitoUserSignup = function(marketId, name, email) {
-        const body = {
-            name: name,
-            email: email
-        };
-        const cognitoCreatePromise = client.doPost(SUBDOMAIN, marketId, undefined, body);
         return cognitoCreatePromise.then(dataResolver);
     };
 
