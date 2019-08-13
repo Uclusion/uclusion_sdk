@@ -28,7 +28,7 @@ export function SSO(client){
      */
     this.accountCognitoLogin = function(idToken) {
         const body = {
-            id_token: idToken, d
+            id_token: idToken,
         };
         const cognitoLoginPromise = client.doPost(SUBDOMAIN, 'cognito', undefined, body);
         return cognitoLoginPromise.then(dataResolver);
