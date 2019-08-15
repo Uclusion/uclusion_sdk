@@ -24,6 +24,18 @@ export function Investibles(client) {
   };
 
   /**
+   * Copies an investible
+   * @param investibleId id of investible to copy
+   * @param marketId id of the market to copy into
+   * @returns {PromiseLike<T> | Promise<T>} id of created investible
+   */
+  this.copy = function (investibleId, marketId) {
+    const path = 'copy/' + investibleId + '/tomarket/' + marketId;
+    const copyPromise = client.doPost(SUBDOMAIN, path);
+    return copyPromise.then(dataResolver);
+  };
+
+  /**
    * Updates an investible with name, description, and categories
    * @param investibleId the id of the investible updated
    * @param investibleName name of investible
