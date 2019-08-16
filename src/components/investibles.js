@@ -92,13 +92,13 @@ export function Investibles(client) {
 
   /**
    * Creates a comment for an investible
-   * @param investibleId the id of the investible to create the comment for
+   * @param investibleId the id of the investible to create the comment for or null for market level
    * @param body html body of the comment
    * @param replyId comment_id of the parent comment
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
   this.createComment = function (investibleId, body, replyId) {
-    const path = investibleId + '/comment';
+    const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
     };
