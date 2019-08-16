@@ -83,6 +83,7 @@ export function Markets(client){
      *  <li>description: string</li>
      *  <li>expiration_minutes: number</li>
      *  <li>active: boolean</li>
+     *  <li>lock: boolean</li>
      *  <li>initial_stage_id: string: Id of the initial stage for the market</li>
      * </ul>
      * @param marketUpdateOptions the options for the market
