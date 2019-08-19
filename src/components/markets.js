@@ -120,6 +120,15 @@ export function Markets(client){
     };
 
     /**
+     * Updates the visited_at of the market indicating context viewed
+     * @returns {PromiseLike<T> | Promise<T>} {visited_at: visited_at}
+     */
+    this.viewed = function(){
+        const viewedPromise = client.doPatch(SUBDOMAIN, 'viewed');
+        return viewedPromise.then(dataResolver);
+    };
+
+    /**
      * Follows or unfollows the given stage
      * @param stageId the market id to follow/unfollow
      * @param stopFollowing whether or not to STOP following the market.
