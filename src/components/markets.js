@@ -129,6 +129,17 @@ export function Markets(client){
     };
 
     /**
+     * Updates the visited_at of the investible
+     * @param investibleId the id of the investible
+     * @returns {PromiseLike<T> | Promise<T>} {visited_at: visited_at}
+     */
+    this.viewedInvestible = function (investibleId) {
+        const path = 'viewed/' + investibleId;
+        const viewedPromise = client.doPatch(SUBDOMAIN, path);
+        return viewedPromise.then(dataResolver);
+    };
+
+    /**
      * Follows or unfollows the given stage
      * @param stageId the market id to follow/unfollow
      * @param stopFollowing whether or not to STOP following the market.

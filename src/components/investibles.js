@@ -91,17 +91,6 @@ export function Investibles(client) {
   };
 
   /**
-   * Updates the visited_at of the investible
-   * @param investibleId the id of the investible
-   * @returns {PromiseLike<T> | Promise<T>} {visited_at: visited_at}
-   */
-  this.viewed = function (investibleId) {
-    const path = 'viewed/' + investibleId;
-    const viewedPromise = client.doPatch(SUBDOMAIN, path);
-    return viewedPromise.then(dataResolver);
-  };
-
-  /**
    * Creates a comment for an investible
    * @param investibleId the id of the investible to create the comment for or null for market level
    * @param body html body of the comment
