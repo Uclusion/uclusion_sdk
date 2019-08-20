@@ -87,15 +87,19 @@ export function SSO(client){
      * @param accountName Name of account
      * @param idToken OIDC ID token with user identity
      * @param tier - Free, Advanced, etc.
+     * @param retentionDays - number of days to retain a market after it closes
      * @param disableExisting - true if want any existing account disabled instead of error
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability
      */
-    this.cognitoAccountCreate = function(accountName, idToken, tier, disableExisting) {
+    this.cognitoAccountCreate = function(accountName, idToken, tier, retentionDays, disableExisting) {
         const body = {
             account_name: accountName,
             id_token: idToken,
             tier: tier
         };
+        if (retentionDays) {
+            body.retention_days = retentionDays;
+        }
         if (disableExisting) {
             body.disable_existing = disableExisting;
         }
