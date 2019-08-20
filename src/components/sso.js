@@ -97,7 +97,7 @@ export function SSO(client){
             id_token: idToken,
             tier: tier
         };
-        if (retentionDays) {
+        if (retentionDays >= 0) {
             body.retention_days = retentionDays;
         }
         if (disableExisting) {
