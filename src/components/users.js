@@ -65,20 +65,6 @@ export function Users(client) {
   };
 
   /**
-   * Gets a user's presences
-   * @param userId which can be empty to get yourself
-   * @returns {PromiseLike<T> | Promise<T>} the user's information
-   */
-  this.getPresences = function (userId) {
-    let path = 'presences/';
-    if (userId) {
-      path += userId;
-    }
-    const getPromise = client.doGet(SUBDOMAIN, path);
-    return getPromise.then(dataResolver);
-  };
-
-  /**
    * Gets a user's own messages
    * @returns {PromiseLike<T> | Promise<T>} list of messages
    */

@@ -166,11 +166,10 @@ export function SSO(client){
     /**
      * Information about available market logins for the identity in the idToken. This method does not use an authorization header.
      * @param idToken Cognito ID token
-     * @param active do we want active markets
      * @returns {PromiseLike<T> | Promise<T>} a dictionary of login info keyed by market IDs
      */
-    this.availableMarkets = function(idToken, active) {
-        const loginsInfoPromise = client.doGet(SUBDOMAIN, 'info', {idToken, active});
+    this.availableMarkets = function(idToken) {
+        const loginsInfoPromise = client.doGet(SUBDOMAIN, 'info', {idToken});
         return loginsInfoPromise.then(dataResolver);
     };
 
