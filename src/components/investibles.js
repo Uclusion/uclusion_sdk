@@ -95,15 +95,19 @@ export function Investibles(client) {
    * @param investibleId the id of the investible to create the comment for or null for market level
    * @param body html body of the comment
    * @param replyId comment_id of the parent comment
+   * @param isOfficial - moderator can add a comment which appears in the summary
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function (investibleId, body, replyId) {
+  this.createComment = function (investibleId, body, replyId, isOfficial) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
     };
     if (replyId) {
-      msgBody.replyId = replyId;
+      msgBody.reply_id = replyId;
+    }
+    if (isOfficial) {
+      msgBody.is_official = isOfficial;
     }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
