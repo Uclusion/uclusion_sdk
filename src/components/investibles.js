@@ -96,9 +96,10 @@ export function Investibles(client) {
    * @param body html body of the comment
    * @param replyId comment_id of the parent comment
    * @param isOfficial - moderator can add a comment which appears in the summary
+   * @param isOpenIssue - this is an issue instead of just a comment
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function (investibleId, body, replyId, isOfficial) {
+  this.createComment = function (investibleId, body, replyId, isOfficial, isOpenIssue) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
@@ -108,6 +109,9 @@ export function Investibles(client) {
     }
     if (isOfficial) {
       msgBody.is_official = isOfficial;
+    }
+    if (isOpenIssue) {
+      msgBody.is_resolved = false;
     }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);

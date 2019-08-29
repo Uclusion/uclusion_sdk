@@ -75,7 +75,7 @@ export function Users(client) {
   };
 
   /**
-   * Sends a small message to another user but cannot send again till that message is manually acknowledged
+   * Sends a small message to another user but cannot send again till that message is acknowledged
    * @param userId user to poke
    * @param text message the poked user receives - 235 character max
    * @returns {PromiseLike<T> | Promise<T>} the result of the poke
@@ -111,22 +111,6 @@ export function Users(client) {
     const path = userId + '/grant';
     const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
     return grantPromise.then(dataResolver);
-  };
-
-  /**
-   * Removes a message from a user's unacknowledged list of notifications
-   * @param objectId the object_id of the message to acknowledge
-   * @param type the type of object_id
-   * @returns {PromiseLike<T> | Promise<T>} the result of the acknowledge
-   */
-  this.acknowledge = function (objectId, type) {
-    const body = {
-      object_id: objectId,
-      type: type
-    };
-    const path = 'ack';
-    const ackPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-    return ackPromise.then(dataResolver);
   };
 }
 
