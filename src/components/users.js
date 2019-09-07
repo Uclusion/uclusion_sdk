@@ -26,6 +26,48 @@ export function Users(client) {
   };
 
   /**
+   * Adds lists of user IDs to a market. Each list max 100 length.
+   * @param participantsList list of user IDs to add as participants
+   * @param observersList list of user IDs to add as observers
+   * @returns {PromiseLike<T> | Promise<T>} success or failure of users add
+   */
+  this.addUsers = function (participantsList, observersList) {
+    const body = {
+      observers_list: observersList,
+      participants_list: participantsList
+    };
+    const addPromise = client.doPatch(SUBDOMAIN, 'add', undefined, body);
+    return addPromise.then(dataResolver);
+  };
+
+  /**
+   * Adds user ID to a working group. User can have max 100 working group memberships.
+   * @param userId user ID to add as participant or observer
+   * @param isObserver whether new participant is observer
+   * @returns {PromiseLike<T> | Promise<T>} success or failure of user add
+   */
+  this.addUserToWorkingGroup = function (userId, isObserver) {
+    const path = 'add/' + userId;
+    const body = {};
+    if (isObserver) {
+      body.is_observer = isObserver;
+    }
+    const addPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+    return addPromise.then(dataResolver);
+  };
+
+  /**
+   * Removes user ID from a working group.
+   * @param userId user ID to add as participant or observer
+   * @returns {PromiseLike<T> | Promise<T>} success or failure of user remove
+   */
+  this.removeUserFromWorkingGroup = function (userId) {
+    const path = 'remove/' + userId;
+    const removePromise = client.doPatch(SUBDOMAIN, path);
+    return removePromise.then(dataResolver);
+  };
+
+  /**
    * Updates another user. Options is an object with the following form
    * <ul>
    *  <li>name : string</li>
@@ -37,7 +79,7 @@ export function Users(client) {
    * @returns {PromiseLike<T> | Promise<T>} the result of the update
    */
   this.updateUser = function (userId, userOptions) {
-    let path = 'update/' + userId;
+    const path = 'update/' + userId;
     const body = {};
     if (userOptions.name) {
       body.name = userOptions.name;
@@ -65,6 +107,16 @@ export function Users(client) {
   };
 
   /**
+   * Gets working group and user IDs and names for an acccount
+   * @returns {PromiseLike<T> | Promise<T>} dictionary of users, working_groups for the account logged into
+   */
+  this.getAddressBook = function () {
+    let path = 'address';
+    const getPromise = client.doGet(SUBDOMAIN, path);
+    return getPromise.then(dataResolver);
+  };
+
+  /**
    * Gets a user's own messages
    * @returns {PromiseLike<T> | Promise<T>} list of messages
    */
@@ -87,15 +139,6 @@ export function Users(client) {
     const path = 'poke/' + userId;
     const pokePromise = client.doPost(SUBDOMAIN, path, undefined, body);
     return pokePromise.then(dataResolver);
-  };
-
-  /**
-   * Removes the current user from the logged into market
-   * @returns {PromiseLike<T> | Promise<T>} the result of the delete
-   */
-  this.delete = function () {
-    const deletePromise = client.doDelete(SUBDOMAIN, 'delete');
-    return deletePromise.then(dataResolver);
   };
 
   /**

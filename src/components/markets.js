@@ -166,6 +166,16 @@ export function Markets(client){
     };
 
     /**
+     * Lists all of the working groups cloned from a market
+     * @returns {PromiseLike<T | never> | Promise<T | never>} the list of stages
+     */
+    this.listWorkingGroup = function() {
+        let path = 'status';
+        const getPromise = client.doGet(SUBDOMAIN, path);
+        return getPromise.then(dataResolver);
+    };
+
+    /**
      * Fetches requested market investibles from the given market
      * @param marketId the id of the market to retrieve the investible in
      * @param investibleIds list of the investible id to retrieve
