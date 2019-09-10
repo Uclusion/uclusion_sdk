@@ -110,8 +110,8 @@ export function Investibles(client) {
     if (isOfficial) {
       msgBody.is_official = isOfficial;
     }
-    if (isOpenIssue) {
-      msgBody.is_resolved = false;
+    if (isOpenIssue !== undefined) {
+      msgBody.is_resolved = isOpenIssue;
     }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
