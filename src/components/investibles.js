@@ -91,6 +91,21 @@ export function Investibles(client) {
   };
 
   /**
+   * Historically comments lived in the investible, so create and
+   * get all comments in a market in this service.
+   * Creates a comment for the
+   * @param body the html body of the comment
+   * @param replyId comment id of the parent comment
+   * @param isOfficial moderator can add a comment which appears in the summary
+   * @param isOpenIssue is an issue instead of just a comment
+   * @returns {*}
+   */
+  this.createMarketComment = function (body, replyId, isOfficial, isOpenIssue) {
+    return createComment(undefined, body, replyId, isOfficial, isOpenIssue);
+  };
+
+
+  /**
    * Creates a comment for an investible
    * @param investibleId the id of the investible to create the comment for or null for market level
    * @param body html body of the comment
@@ -178,7 +193,9 @@ export function Investibles(client) {
   };
 
   /**
-   * Fetches the given comments present in the given market. The maximum number of comments
+   * Historically comments lived in the investible services, so we create and fetch all comments
+   * in this service.
+   * Fetches the given comments present in on an object of the given market. The maximum number of comments
    * that can be requested at one time is 100.
    * @param commentIds list of the comment ids to retrieve. Max length of 100
    * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
