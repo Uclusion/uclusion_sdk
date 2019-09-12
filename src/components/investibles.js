@@ -101,7 +101,7 @@ export function Investibles(client) {
    * @returns {*}
    */
   this.createMarketComment = function (body, replyId, isOfficial, isOpenIssue) {
-    return createComment(undefined, body, replyId, isOfficial, isOpenIssue);
+    return this.createComment(undefined, body, replyId, isOfficial, isOpenIssue);
   };
 
 
