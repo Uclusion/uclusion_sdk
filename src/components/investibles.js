@@ -117,17 +117,11 @@ export function Investibles(client) {
   this.createComment = function (investibleId, body, replyId, isOfficial, isOpenIssue) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
-      body: body
+      body,
+      reply_id: replyId,
+      is_official: isOfficial,
+      is_resolved: isOpenIssue
     };
-    if (replyId) {
-      msgBody.reply_id = replyId;
-    }
-    if (isOfficial) {
-      msgBody.is_official = isOfficial;
-    }
-    if (isOpenIssue !== undefined) {
-      msgBody.is_resolved = isOpenIssue;
-    }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
   };
