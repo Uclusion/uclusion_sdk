@@ -126,7 +126,7 @@ export function Investibles(client) {
       msgBody.is_official = isOfficial;
     }
     if (isOpenIssue !== undefined) {
-      msgBody.is_resolved = isOpenIssue;
+      msgBody.is_resolved = !isOpenIssue;
     }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
