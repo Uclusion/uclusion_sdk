@@ -111,10 +111,10 @@ export function Investibles(client) {
    * @param body html body of the comment
    * @param replyId comment_id of the parent comment
    * @param isOfficial - moderator can add a comment which appears in the summary
-   * @param isOpenIssue - this is an issue instead of just a comment
+   * @param isIssue - this is an issue instead of just a comment
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function (investibleId, body, replyId, isOfficial, isOpenIssue) {
+  this.createComment = function (investibleId, body, replyId, isOfficial, isIssue) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
@@ -125,8 +125,8 @@ export function Investibles(client) {
     if (isOfficial) {
       msgBody.is_official = isOfficial;
     }
-    if (isOpenIssue !== undefined) {
-      msgBody.is_resolved = isOpenIssue;
+    if (isIssue) {
+      msgBody.is_resolved = false;
     }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
@@ -136,7 +136,7 @@ export function Investibles(client) {
    * Updates a comment
    * @param commentId the id of the comment to update
    * @param body html body of the comment
-   * @param isResolved Whether to resolve comment or not
+   * @param isResolved Whether to resolve comment or unresolve comment
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function (commentId, body, isResolved) {
@@ -145,7 +145,7 @@ export function Investibles(client) {
     if (body) {
       msgBody.body = body;
     }
-    if (isResolved) {
+    if (isResolved !== undefined) {
       msgBody.is_resolved = isResolved;
     }
     const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
