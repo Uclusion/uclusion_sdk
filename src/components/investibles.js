@@ -24,6 +24,19 @@ export function Investibles(client) {
   };
 
   /**
+   * Shares an investible from another dialog
+   * @param investibleId ID of the investible to share with another dialog
+   * @returns {PromiseLike<T> | Promise<T>} result of creating an investible in this dialog
+   */
+  this.share = function (investibleId) {
+    const body = {
+      investible_id: investibleId
+    };
+    const sharePromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
+    return sharePromise.then(dataResolver);
+  };
+
+  /**
    * Copies an investible
    * @param investibleId id of investible to copy
    * @param marketId id of the market to copy into
