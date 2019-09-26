@@ -174,6 +174,16 @@ export function SSO(client){
     };
 
     /**
+     * Gets a user's own messages
+     * @param idToken Cognito ID token
+     * @returns {PromiseLike<T> | Promise<T>} list of messages
+     */
+    this.getMessages = function (idToken) {
+        const getPromise = client.doGet(SUBDOMAIN, 'messages', {idToken});
+        return getPromise.then(dataResolver);
+    };
+
+    /**
      * Redirects to a product authorization with parameters on the redirect.
      * @param marketId market ID that will be given access to after login
      * @param destinationUrl page to send the user back to after authorization

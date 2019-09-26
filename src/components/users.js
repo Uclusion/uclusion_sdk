@@ -117,16 +117,6 @@ export function Users(client) {
   };
 
   /**
-   * Gets a user's own messages
-   * @returns {PromiseLike<T> | Promise<T>} list of messages
-   */
-  this.getMessages = function () {
-    let path = 'messages';
-    const getPromise = client.doGet(SUBDOMAIN, path);
-    return getPromise.then(dataResolver);
-  };
-
-  /**
    * Sends a small message to another user but cannot send again till that message is acknowledged
    * @param userId user to poke
    * @param text message the poked user receives - 235 character max
