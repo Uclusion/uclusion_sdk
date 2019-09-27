@@ -220,6 +220,22 @@ export function Investibles(client) {
     return getPromise.then(dataResolver);
   };
 
+    /**
+     * Asks the server for the metadata of where to store a file of content type and content length.
+     * Return value includes the path, url, metadata, and necessary fields that must be present
+     * @param contentType content type of the file
+     * @param contentLength size of the file in bytes
+     * @returns {PromiseLike<T | never> | Promise<T | never>}
+     */
+  this.getFileUploadData = function(contentType, contentLength) {
+    const path = 'upload';
+    const body = {
+        content_type: contentType,
+        content_length: contentLength
+    };
+    const postPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+    return postPromise.then(dataResolver);
+  }
 
 }
 
