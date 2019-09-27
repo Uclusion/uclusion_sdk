@@ -121,21 +121,31 @@ export function Markets(client){
 
     /**
      * Updates the visited_at of the market indicating context viewed
+     * @param isPresent true if arriving on page and false if leaving
      * @returns {PromiseLike<T> | Promise<T>} {visited_at: visited_at}
      */
-    this.viewed = function(){
-        const viewedPromise = client.doPatch(SUBDOMAIN, 'viewed');
+    this.viewed = function(isPresent){
+        const body = {};
+        if(isPresent !== undefined){
+            body.is_present = isPresent;
+        }
+        const viewedPromise = client.doPatch(SUBDOMAIN, 'viewed', undefined, body);
         return viewedPromise.then(dataResolver);
     };
 
     /**
      * Updates the visited_at of the investible
      * @param investibleId the id of the investible
+     * @param isPresent true if arriving on page and false if leaving
      * @returns {PromiseLike<T> | Promise<T>} {visited_at: visited_at}
      */
-    this.viewedInvestible = function (investibleId) {
+    this.viewedInvestible = function (investibleId, isPresent) {
+        const body = {};
+        if(isPresent !== undefined){
+            body.is_present = isPresent;
+        }
         const path = 'viewed/' + investibleId;
-        const viewedPromise = client.doPatch(SUBDOMAIN, path);
+        const viewedPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return viewedPromise.then(dataResolver);
     };
 
@@ -146,7 +156,7 @@ export function Markets(client){
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
     this.followStage = function(stageId, stopFollowing){
-        let body = {};
+        const body = {};
         if(stopFollowing){
             body.remove = true;
         }
