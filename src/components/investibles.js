@@ -237,6 +237,15 @@ export function Investibles(client) {
     return postPromise.then(dataResolver);
   };
 
+  this.refreshFileToken = function(oldToken) {
+    const path = 'refresh_file_token';
+    const body = {
+      old_token: oldToken,
+    };
+    const postPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+    return postPromise.then(dataResolver);
+  }
+
 }
 
 export default Investibles;
