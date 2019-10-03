@@ -28,6 +28,13 @@ function Uclusion() {
         const transportClient = new FetchClient({...configuration, tokenManager: null});
         return Promise.resolve(new SSO(transportClient));
     };
+
+    this.constructFilesClient = (configuration) => {
+        const transportClient = new FetchClient({...configuration});
+        return Promise.resolve({
+            files: new Files(transportClient)
+        });
+    }
 }
 
 let uclusion = new Uclusion();
