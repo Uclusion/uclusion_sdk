@@ -100,7 +100,11 @@ export function FetchClient(passedConfig){
     this.doGet = function (subdomain, path, queryParams) {
         const url = urlConstructor(subdomain, path, queryParams);
         return headersConstructor(configuration.headers)
-            .then(headers => fetch(url, {method: 'GET', headers}).then(responseHandler));
+            .then(headers => {
+                console.log(headers);
+                const opts = {method: 'GET', headers, mode: configuration.mode};
+                return fetch(url, opts).then(responseHandler)
+            });
     };
 
     /**
@@ -113,7 +117,10 @@ export function FetchClient(passedConfig){
     this.doDelete = function(subdomain, path, queryParams) {
         const url = urlConstructor(subdomain, path, queryParams);
         return headersConstructor(configuration.headers)
-            .then(headers => fetch(url, {method: 'DELETE', headers}).then(responseHandler));
+            .then(headers => {
+                const opts = {method: 'DELETE', headers, mode: configuration.mode};
+                return fetch(url, opts).then(responseHandler)
+            });
     };
 
     /**
@@ -128,7 +135,10 @@ export function FetchClient(passedConfig){
         const body = JSON.stringify(bodyData);
         const url = urlConstructor(subdomain, path, queryParams);
         return headersConstructor(configuration.headers)
-            .then(headers => fetch(url, {method: 'POST', body, headers}).then(responseHandler));
+            .then(headers => {
+                const opts = {method: 'POST', headers, mode: configuration.mode, body};
+                return fetch(url, opts).then(responseHandler)
+            });
     };
 
     /**
@@ -143,7 +153,10 @@ export function FetchClient(passedConfig){
         const body = JSON.stringify(bodyData);
         const url = urlConstructor(subdomain, path, queryParams);
         return headersConstructor(configuration.headers)
-            .then(headers => fetch(url, {method: 'PATCH', body, headers}).then(responseHandler));
+            .then(headers => {
+                const opts = {method: 'PATCH', headers, mode: configuration.mode, body};
+                return fetch(url, opts).then(responseHandler)
+            });
     };
 }
 

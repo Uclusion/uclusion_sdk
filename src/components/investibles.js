@@ -235,7 +235,13 @@ export function Investibles(client) {
     };
     const postPromise = client.doPost(SUBDOMAIN, path, undefined, body);
     return postPromise.then(dataResolver);
-  }
+  };
+
+  this.getFile = function(path) {
+    const assetPath = `assets/${path}`;
+    const getPromise = client.doGet(SUBDOMAIN, assetPath);
+    return getPromise; // do not modify binary data;
+  };
 
 }
 
