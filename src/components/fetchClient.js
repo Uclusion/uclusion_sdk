@@ -13,6 +13,11 @@ export function FetchClient(passedConfig){
             });
             return json;
         }
+        if (passedConfig.responseAsBlob) {
+            return response.blob().then((blob) => {
+                return {status: response.status, blob};
+            });
+        }
         //todo make sure it's actually text
         return response.text().then((text) => {
             return {status: response.status, body: text}
