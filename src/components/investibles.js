@@ -12,13 +12,17 @@ export function Investibles(client) {
    * Creates an investible
    * @param investibleName name of investible
    * @param investibleDescription description of investible
+   * @param uploadedFiles the metadata about files uploaded to this investible
    * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
    */
-  this.create = function (investibleName, investibleDescription) {
+  this.create = function (investibleName, investibleDescription, uploadedFiles) {
     const body = {
       name: investibleName,
       description: investibleDescription
     };
+    if (uploadedFiles) {
+      body.uploaded_files = uploadedFiles;
+    }
     const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
     return createPromise.then(dataResolver);
   };
@@ -111,10 +115,11 @@ export function Investibles(client) {
    * @param replyId comment id of the parent comment
    * @param isOfficial moderator can add a comment which appears in the summary
    * @param isOpenIssue is an issue instead of just a comment
+   * @param uploadedFiles the file upload metadata
    * @returns {*}
    */
-  this.createMarketComment = function (body, replyId, isOfficial, isOpenIssue) {
-    return this.createComment(undefined, body, replyId, isOfficial, isOpenIssue);
+  this.createMarketComment = function (body, replyId, isOfficial, isOpenIssue, uploadedFiles) {
+    return this.createComment(undefined, body, replyId, isOfficial, isOpenIssue, uploadedFiles);
   };
 
 
@@ -125,9 +130,10 @@ export function Investibles(client) {
    * @param replyId comment_id of the parent comment
    * @param isOfficial - moderator can add a comment which appears in the summary
    * @param isIssue - this is an issue instead of just a comment
+   * @param uploadedFiles the file upload metadata
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function (investibleId, body, replyId, isOfficial, isIssue) {
+  this.createComment = function (investibleId, body, replyId, isOfficial, isIssue, uploadedFiles) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
@@ -141,6 +147,9 @@ export function Investibles(client) {
     if (isIssue) {
       msgBody.is_resolved = false;
     }
+    if (uploadedFiles) {
+      msgBody.uploaded_files = uploadedFiles;
+    }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
   };
@@ -150,9 +159,10 @@ export function Investibles(client) {
    * @param commentId the id of the comment to update
    * @param body html body of the comment
    * @param isResolved Whether to resolve comment or unresolve comment
+   * @param uploadedFiles the file upload metadata
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
-  this.updateComment = function (commentId, body, isResolved) {
+  this.updateComment = function (commentId, body, isResolved, uploadedFiles) {
     const path = 'comment/' + commentId;
     const msgBody = {};
     if (body) {
@@ -160,6 +170,9 @@ export function Investibles(client) {
     }
     if (isResolved !== undefined) {
       msgBody.is_resolved = isResolved;
+    }
+    if (uploadedFiles) {
+      msgBody.uploaded_files = uploadedFiles;
     }
     const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
