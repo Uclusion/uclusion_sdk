@@ -67,7 +67,7 @@ export function Investibles(client) {
       description: investibleDescription,
       label_list: labelList,
     };
-    if (!Array.isArray(uploadedFiles) || !uploadedFiles.length) {
+    if (Array.isArray(uploadedFiles) && uploadedFiles.length) {
       body.uploaded_files = uploadedFiles;
     }
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
