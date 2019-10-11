@@ -58,7 +58,7 @@ export function Investibles(client) {
    * @param investibleName name of investible
    * @param investibleDescription description of investible
    * @param labelList list of labels
-   * @param uploaded_files the u
+   * @param uploadedFiles the files to upload
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
   this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles) {
@@ -67,8 +67,8 @@ export function Investibles(client) {
       description: investibleDescription,
       label_list: labelList,
     };
-    if (uploadedFiles) {
-      body['uploaded_files'] = uploadedFiles;
+    if (!Array.isArray(uploadedFiles) || !uploadedFiles.length) {
+      body.uploaded_files = uploadedFiles;
     }
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
     return updatePromise.then(dataResolver);
