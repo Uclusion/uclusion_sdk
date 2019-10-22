@@ -132,6 +132,19 @@ export function Users(client) {
   };
 
   /**
+   * Associates a user with the Slack user with that nonce
+   * @param nonce of the Slack user already stored
+   * @returns {PromiseLike<T> | Promise<T>} the result of the registration
+   */
+  this.register = function(nonce){
+    const body = {
+      nonce: nonce
+    };
+    const registerPromise = client.doPost(SUBDOMAIN, 'slack', undefined, body);
+    return registerPromise.then(dataResolver);
+  };
+
+  /**
    * Use to remove notifications whose resolution depends on user presence
    * @param objectId of the notification
    * @param aType type of the notification
