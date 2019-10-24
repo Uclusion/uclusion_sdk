@@ -122,7 +122,7 @@ export function Investibles(client) {
    * @returns {*}
    */
   this.createMarketComment = function (body, replyId, commentType, uploadedFiles) {
-    return this.createComment(undefined, body, replyId, isOfficial, isOpenIssue, uploadedFiles);
+    return this.createComment(undefined, body, replyId, commentType, uploadedFiles);
   };
 
 
@@ -138,9 +138,11 @@ export function Investibles(client) {
   this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
-      body: body,
-      comment_type: commentType
+      body: body
     };
+    if (commentType) {
+      msgBody.comment_type = commentType;
+    }
     if (replyId) {
       msgBody.reply_id = replyId;
     }
