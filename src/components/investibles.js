@@ -117,12 +117,11 @@ export function Investibles(client) {
    * Creates a comment for the
    * @param body the html body of the comment
    * @param replyId comment id of the parent comment
-   * @param isOfficial moderator can add a comment which appears in the summary
-   * @param isOpenIssue is an issue instead of just a comment
+   * @param commentType QUESTION, ISSUE, SUGGEST, JUSTIFY
    * @param uploadedFiles the file upload metadata
    * @returns {*}
    */
-  this.createMarketComment = function (body, replyId, isOfficial, isOpenIssue, uploadedFiles) {
+  this.createMarketComment = function (body, replyId, commentType, uploadedFiles) {
     return this.createComment(undefined, body, replyId, isOfficial, isOpenIssue, uploadedFiles);
   };
 
@@ -132,24 +131,18 @@ export function Investibles(client) {
    * @param investibleId the id of the investible to create the comment for or null for market level
    * @param body html body of the comment
    * @param replyId comment_id of the parent comment
-   * @param isOfficial - moderator can add a comment which appears in the summary
-   * @param isIssue - this is an issue instead of just a comment
+   * @param commentType QUESTION, ISSUE, SUGGEST, JUSTIFY
    * @param uploadedFiles the file upload metadata
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function (investibleId, body, replyId, isOfficial, isIssue, uploadedFiles) {
+  this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
-      body: body
+      body: body,
+      comment_type: commentType
     };
     if (replyId) {
       msgBody.reply_id = replyId;
-    }
-    if (isOfficial) {
-      msgBody.is_official = isOfficial;
-    }
-    if (isIssue) {
-      msgBody.is_resolved = false;
     }
     if (uploadedFiles) {
       msgBody.uploaded_files = uploadedFiles;
