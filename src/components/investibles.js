@@ -69,13 +69,15 @@ export function Investibles(client) {
   this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, assignments) {
     const body = {
       name: investibleName,
-      description: investibleDescription,
-      label_list: labelList,
+      description: investibleDescription
     };
+    if (Array.isArray(labelList)) {
+        body.label_list = labelList;
+    }
     if (Array.isArray(uploadedFiles) && uploadedFiles.length) {
       body.uploaded_files = uploadedFiles;
     }
-    if (assignments) {
+    if (Array.isArray(assignments)) {
       body.assignments = assignments;
     }
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
