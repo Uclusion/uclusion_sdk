@@ -13,15 +13,19 @@ export function Investibles(client) {
    * @param investibleName name of investible
    * @param investibleDescription description of investible
    * @param uploadedFiles the metadata about files uploaded to this investible
+   * @param assignments set of user IDs
    * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
    */
-  this.create = function (investibleName, investibleDescription, uploadedFiles) {
+  this.create = function (investibleName, investibleDescription, uploadedFiles, assignments) {
     const body = {
       name: investibleName,
       description: investibleDescription
     };
     if (uploadedFiles) {
       body.uploaded_files = uploadedFiles;
+    }
+    if (assignments) {
+      body.assignments = assignments;
     }
     const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
     return createPromise.then(dataResolver);
@@ -59,9 +63,10 @@ export function Investibles(client) {
    * @param investibleDescription description of investible
    * @param labelList list of labels
    * @param uploadedFiles the files to upload
+   * @param assignments set of user IDs
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
-  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles) {
+  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, assignments) {
     const body = {
       name: investibleName,
       description: investibleDescription,
@@ -69,6 +74,9 @@ export function Investibles(client) {
     };
     if (Array.isArray(uploadedFiles) && uploadedFiles.length) {
       body.uploaded_files = uploadedFiles;
+    }
+    if (assignments) {
+      body.assignments = assignments;
     }
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
     return updatePromise.then(dataResolver);
