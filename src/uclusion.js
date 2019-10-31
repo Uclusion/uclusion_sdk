@@ -4,7 +4,6 @@ import {Investibles} from './components/investibles.js';
 import {FetchClient} from './components/fetchClient.js';
 import {Summaries} from './components/summaries';
 import {SSO} from './components/sso';
-import {Files} from './components/files';
 
 function Uclusion() {
 
@@ -20,8 +19,7 @@ function Uclusion() {
             users: new Users(transportClient),
             markets: new Markets(transportClient),
             investibles: new Investibles(transportClient),
-            summaries: new Summaries(transportClient),
-        })  ;
+        });
     };
 
     this.constructSSOClient = (configuration) => {
@@ -30,12 +28,11 @@ function Uclusion() {
         return Promise.resolve(new SSO(transportClient));
     };
 
-    this.constructFilesClient = (configuration) => {
-        const transportClient = new FetchClient({...configuration});
-        return Promise.resolve({
-            files: new Files(transportClient)
-        });
-    }
+    this.constructSummariesClient = (configuration) => {
+        //we don't use tokens for SSO, so just zero it out
+        const transportClient = new FetchClient({...configuration, tokenManager: null});
+        return Promise.resolve(new Summaries(transportClient));
+    };
 }
 
 let uclusion = new Uclusion();
