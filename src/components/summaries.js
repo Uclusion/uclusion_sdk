@@ -9,16 +9,14 @@ export function Summaries(client){
 
   const SUBDOMAIN = 'summaries';
 
-
   /**
-   * Fetches the market summary data for the market.
-   * The returned list will <i>not<i> be in sorted order
-   * @returns {PromiseLike<T> | Promise<T>} a promise resolving to a hash structure
-   * of the form {'market_id': marketId, 'summaries':[summary array]}
+   * Information about versions of all markets and notifications available to the identity in the idToken.
+   * This method does not use an authorization header.
+   * @param idToken Cognito ID token
+   * @returns {PromiseLike<T> | Promise<T>} a dictionary of login info keyed by market IDs
    */
-  this.marketSummary = function(){
-    const path = 'markets';
-    const getPromise = client.doGet(SUBDOMAIN, path);
-    return getPromise.then(dataResolver);
-  }
+  this.versions = function(idToken) {
+    const versionsPromise = client.doGet(SUBDOMAIN, 'versions', {idToken});
+    return versionsPromise.then(dataResolver);
+  };
 }
