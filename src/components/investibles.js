@@ -85,6 +85,31 @@ export function Investibles(client) {
   };
 
   /**
+   * Locks an investible for name and description
+   * @param investibleId the id of the investible locked
+   * @param breakLock whether or not to ignore the existing lock
+   * @returns {PromiseLike<T> | Promise<T>} the base investible
+   */
+  this.lock = function (investibleId, breakLock) {
+    const body = {};
+    if (breakLock) {
+      body.break_lock = breakLock;
+    }
+    const lockPromise = client.doPatch(SUBDOMAIN, 'lock/'+investibleId, undefined, body);
+    return lockPromise.then(dataResolver);
+  };
+
+  /**
+   * Unlocks an investible
+   * @param investibleId the id of the investible unlocked
+   * @returns {PromiseLike<T> | Promise<T>} the result of unlocking
+   */
+  this.unlock = function (investibleId) {
+    const unlockPromise = client.doPatch(SUBDOMAIN, 'unlock/'+investibleId);
+    return unlockPromise.then(dataResolver);
+  };
+
+  /**
    * Gets the investible with given id
    * @param investibleId the id of the investible
    * @returns {PromiseLike<T> | Promise<T>} result of getting investible
