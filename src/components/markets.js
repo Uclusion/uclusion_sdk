@@ -59,6 +59,7 @@ export function Markets(client){
      *  <li>manual_roi: boolean</li>
      *  <li>new_user_grant: number of shares to grant to a new user entering the account</li>
      *  <li>uploaded_files: list of uploaded files
+     *  <li>market_type: one of PLANNING, DECISION, or INITIATIVE
      * </ul>
      * @param marketOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create

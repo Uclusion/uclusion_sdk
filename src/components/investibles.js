@@ -285,10 +285,15 @@ export function Investibles(client) {
     return postPromise.then(dataResolver);
   };
 
-  this.refreshFileToken = function(oldToken) {
-    const path = 'refresh_file_token';
+  /**
+   * Refreshes the file tokens prpvided
+   * @param oldTokens the old tokens you need refreshed
+   * @return {PromiseLike<T | never> | Promise<T | never>}
+   */
+  this.refreshFileTokens = function(oldTokens) {
+    const path = 'refresh_file_tokens';
     const body = {
-      old_token: oldToken,
+      old_tokens: oldTokens,
     };
     const postPromise = client.doPost(SUBDOMAIN, path, undefined, body);
     return postPromise.then(dataResolver);
