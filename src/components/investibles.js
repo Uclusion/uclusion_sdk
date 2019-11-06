@@ -179,6 +179,7 @@ export function Investibles(client) {
       msgBody.comment_type = commentType;
     }
     if (replyId) {
+      msgBody.comment_type = 'REPLY';
       msgBody.reply_id = replyId;
     }
     if (uploadedFiles) {
