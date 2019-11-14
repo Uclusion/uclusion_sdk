@@ -154,16 +154,6 @@ export function SSO(client){
     };
 
     /**
-     * Information about available types of login for this market. This method does not use an authorization header.
-     * @param marketId Market ID of a market to check for anonymous and Cognito logins availability
-     * @returns {PromiseLike<T> | Promise<T>} a dictionary of login info
-     */
-    this.marketLoginInfo = function(marketId) {
-        const marketLoginInfoPromise = client.doGet(SUBDOMAIN, marketId, undefined);
-        return marketLoginInfoPromise.then(dataResolver);
-    };
-
-    /**
      * Gets a user's own messages
      * @param idToken Cognito ID token
      * @returns {PromiseLike<T> | Promise<T>} list of messages
