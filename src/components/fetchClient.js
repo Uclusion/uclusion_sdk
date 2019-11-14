@@ -106,7 +106,7 @@ export function FetchClient(passedConfig){
         const url = urlConstructor(subdomain, path, queryParams);
         return headersConstructor(configuration.headers)
             .then(headers => {
-                console.log(headers);
+                // console.log(headers);
                 const opts = {method: 'GET', headers, mode: configuration.mode};
                 return fetch(url, opts).then(responseHandler)
             });
