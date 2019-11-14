@@ -38,14 +38,18 @@ export function Markets(client){
       * @param investibleId the id of the investible to invest
       * @param ideaSharesQuantity the number of idea shares for this user to be invested total in the investible
       * @param currentIdeaSharesQuantity the number of idea shares this user currently has invested in this investible
+      * @param maxBudget answer to how long a planning market investible can be worked on and still have ROI
       * @returns {PromiseLike<T> | Promise<T>} the result of the investment
       */
-    this.updateInvestment = function(investibleId, ideaSharesQuantity, currentIdeaSharesQuantity){
+    this.updateInvestment = function(investibleId, ideaSharesQuantity, currentIdeaSharesQuantity, maxBudget){
         const body = {
             quantity: ideaSharesQuantity,
             former_quantity: currentIdeaSharesQuantity,
             investible_id: investibleId
         };
+        if (maxBudget) {
+            body.max_budget = maxBudget;
+        }
         const createPromise = client.doPost(SUBDOMAIN, 'invest', undefined, body);
         return createPromise.then(dataResolver);
     };
