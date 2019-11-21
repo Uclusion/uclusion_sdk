@@ -38,20 +38,35 @@ export function Markets(client){
       * @param investibleId the id of the investible to invest
       * @param ideaSharesQuantity the number of idea shares for this user to be invested total in the investible
       * @param currentIdeaSharesQuantity the number of idea shares this user currently has invested in this investible
+      * @param reasonCommentId the comment ID of the reason given - if any
       * @param maxBudget answer to how long a planning market investible can be worked on and still have ROI
       * @returns {PromiseLike<T> | Promise<T>} the result of the investment
       */
-    this.updateInvestment = function(investibleId, ideaSharesQuantity, currentIdeaSharesQuantity, maxBudget){
+    this.updateInvestment = function(investibleId, ideaSharesQuantity, currentIdeaSharesQuantity, reasonCommentId,
+                                     maxBudget) {
         const body = {
             quantity: ideaSharesQuantity,
             former_quantity: currentIdeaSharesQuantity,
             investible_id: investibleId
         };
+        if (reasonCommentId) {
+            body.comment_id = reasonCommentId;
+        }
         if (maxBudget) {
             body.max_budget = maxBudget;
         }
-        const createPromise = client.doPost(SUBDOMAIN, 'invest', undefined, body);
-        return createPromise.then(dataResolver);
+        const updatePromise = client.doPost(SUBDOMAIN, 'invest', undefined, body);
+        return updatePromise.then(dataResolver);
+    };
+
+    /**
+     * Removes an investment
+     * @param investibleId of the investible to remove for the calling user
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.removeInvestment = function(investibleId) {
+        const deletePromise = client.doDelete(SUBDOMAIN, 'invest/' + investibleId);
+        return deletePromise.then(dataResolver);
     };
 
     /**
