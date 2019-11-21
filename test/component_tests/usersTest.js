@@ -3,12 +3,12 @@ import { serverCreator, clientCreator } from './testSetup';
 
 const { app, server } = serverCreator();
 
-app.get('/get/1234', (request, response) => {
-  response.json({ id: '1234' });
+app.delete('/leave', (request, response) => {
+  response.json({success_message: 'Left'});
 });
 
-app.delete('/delete', (request, response) => {
-  response.json({ success_message: 'User deleted' });
+app.get('/get/1234', (request, response) => {
+  response.json({ id: '1234' });
 });
 
 app.patch('/update', (request, response) => {
@@ -44,11 +44,11 @@ describe('Users', () => {
     });
   });
 
-  describe('#doDelete', () => {
+  describe('#doLeave', () => {
     it('should delete without error', () => {
-      users.delete('I hate uclusion so I\'m deleting myself')
+      users.leave('I hate uclusion so I\'m leaving')
         .then((result) => {
-          assert(result.success_message === 'User deleted');
+          assert(result.success_message === 'Left');
         }).catch((error) => {
         console.error(error);
       });

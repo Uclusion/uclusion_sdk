@@ -41,32 +41,6 @@ export function Users(client) {
   };
 
   /**
-   * Adds user ID to a working group. User can have max 100 working group memberships.
-   * @param userId user ID to add as participant or observer
-   * @param isObserver whether new participant is observer
-   * @returns {PromiseLike<T> | Promise<T>} success or failure of user add
-   */
-  this.addUserToWorkingGroup = function (userId, isObserver) {
-    const path = 'add/' + userId;
-    const body = {};
-    if (isObserver) {
-      body.is_observer = isObserver;
-    }
-    const addPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-    return addPromise.then(dataResolver);
-  };
-
-  /**
-   * Removes user ID from a working group.
-   * @param userId user ID to add as participant or observer
-   * @returns {PromiseLike<T> | Promise<T>} success or failure of user remove
-   */
-  this.removeUserFromWorkingGroup = function (userId) {
-    const path = 'remove/' + userId;
-    const removePromise = client.doPatch(SUBDOMAIN, path);
-    return removePromise.then(dataResolver);
-  };
-
   /**
    * Updates another user. Options is an object with the following form
    * <ul>
@@ -89,6 +63,17 @@ export function Users(client) {
     }
     const updatePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
     return updatePromise.then(dataResolver);
+  };
+
+  /**
+   * Leaves the market. All investments, and permissions for the
+   * current user will be removed.
+   * @returns {PromiseLike<T> | Promise<T>}
+   */
+  this.leave = function () {
+    let path = 'leave';
+    const leavePromise = client.doDelete(SUBDOMAIN, path);
+    return leavePromise.then(dataResolver);
   };
 
   /**
