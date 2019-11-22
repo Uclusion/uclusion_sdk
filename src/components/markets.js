@@ -117,6 +117,29 @@ export function Markets(client){
     };
 
     /**
+     * Locks a market for name and description changes
+     * @param breakLock whether or not to ignore the existing lock
+     * @returns {PromiseLike<T> | Promise<T>} the base market
+     */
+    this.lock = function (breakLock) {
+        const body = {};
+        if (breakLock) {
+            body.break_lock = breakLock;
+        }
+        const lockPromise = client.doPatch(SUBDOMAIN, 'lock', undefined, body);
+        return lockPromise.then(dataResolver);
+    };
+
+    /**
+     * Unlocks a market for name and description changes
+     * @returns {PromiseLike<T> | Promise<T>} the result of unlocking
+     */
+    this.unlock = function () {
+        const unlockPromise = client.doPatch(SUBDOMAIN, 'unlock');
+        return unlockPromise.then(dataResolver);
+    };
+
+    /**
      * Deletes the given market from the system
      * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved gives the result of the deletion
      *
