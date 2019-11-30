@@ -30,7 +30,7 @@ function Uclusion() {
     };
 
     this.constructSummariesClient = (configuration) => {
-        //we don't use tokens for SSO, so just zero it out
+        //we don't use tokens for versions, so just zero it out
         const transportClient = new FetchClient({...configuration, tokenManager: null});
         return Promise.resolve(new Summaries(transportClient));
     };
