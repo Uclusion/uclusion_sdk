@@ -19,6 +19,7 @@ function Uclusion() {
             users: new Users(transportClient),
             markets: new Markets(transportClient),
             investibles: new Investibles(transportClient),
+            summaries: new Summaries(transportClient),
         });
     };
 
