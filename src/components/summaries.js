@@ -19,4 +19,13 @@ export function Summaries(client){
     const versionsPromise = client.doGet(SUBDOMAIN, 'versions', {idToken});
     return versionsPromise.then(dataResolver);
   };
+
+  /**
+   * Lists all of the summary data for the last year
+   * @returns {PromiseLike<T | never> | Promise<T | never>} the list of summaries
+   */
+  this.getMarketSummary = function() {
+    const getPromise = client.doGet(SUBDOMAIN, 'markets');
+    return getPromise.then(dataResolver);
+  };
 }
