@@ -66,17 +66,6 @@ export function Users(client) {
   };
 
   /**
-   * Leaves the market. All investments, and permissions for the
-   * current user will be removed.
-   * @returns {PromiseLike<T> | Promise<T>}
-   */
-  this.leave = function () {
-    let path = 'leave';
-    const leavePromise = client.doDelete(SUBDOMAIN, path);
-    return leavePromise.then(dataResolver);
-  };
-
-  /**
    * Gets a user's definition given it's ID or null for invoking user
    * @param userId which can be null to get yourself
    * @returns {PromiseLike<T> | Promise<T>} the user's information
