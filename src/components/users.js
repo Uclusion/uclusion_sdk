@@ -26,15 +26,18 @@ export function Users(client) {
   };
 
   /**
-   * Adds lists of user IDs to a market. Each list max 100 length.
-   * @param participantsList list of user IDs to add as participants
-   * @param observersList list of user IDs to add as observers
+   * Adds lists of participants to a market. Participants of form:
+   * <ul>
+   *  <li>user_id : string</li>
+   *  <li>account_id: string</li>
+   *  <li>is_observer: bool</li>
+   * </ul>
+   * @param participants list max 50 length
    * @returns {PromiseLike<T> | Promise<T>} success or failure of users add
    */
-  this.addUsers = function (participantsList, observersList) {
+  this.addUsers = function (participants) {
     const body = {
-      observers_list: observersList,
-      participants_list: participantsList
+      participants: participants
     };
     const addPromise = client.doPatch(SUBDOMAIN, 'add', undefined, body);
     return addPromise.then(dataResolver);
