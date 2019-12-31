@@ -216,7 +216,7 @@ export function SSO(client){
         const body = {
             code
         };
-        const verifyPromise = client.doPost(SUBDOMAIN, 'verifyemail');
+        const verifyPromise = client.doPost(SUBDOMAIN, 'verifyemail', undefined, body);
         return verifyPromise.then(dataResolver);
     }
 
