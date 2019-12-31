@@ -203,6 +203,21 @@ export function SSO(client){
         }
         const signupPromise = client.doPost(SUBDOMAIN, 'signup', undefined, body);
         return signupPromise.then(dataResolver);
+    };
+
+    /**
+     * Verifies the code the user presents.
+     * The returned promise will have two keys "user_account" containing the account info, and "redirect"
+     * containing a redirect partial url or the empty string
+     * @param code the code we want to verify
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.verifyEmail = function(code) {
+        const body = {
+            code
+        };
+        const verifyPromise = client.doPost(SUBDOMAIN, 'verifyemail');
+        return verifyPromise.then(dataResolver);
     }
 
 }
