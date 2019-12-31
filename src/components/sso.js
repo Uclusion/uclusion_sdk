@@ -184,6 +184,26 @@ export function SSO(client){
         return externalPrePromise.then(dataResolver);
     };
 
+    /**
+     * Signs the user up to the service.
+     * @param name The name of the user
+     * @param email The email of the user
+     * @param password The password of the user
+     * @param redirect an optional param of where the user wants to go after the signup process is complete
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.userSignup = function(name, email, password, redirect) {
+        const body = {
+            name,
+            email,
+            password,
+        };
+        if (redirect) {
+            body['redirect'] = redirect;
+        }
+        const signupPromise = client.doPost(SUBDOMAIN, 'signup', undefined, body);
+        return signupPromise.then(dataResolver);
+    }
 
 }
 
