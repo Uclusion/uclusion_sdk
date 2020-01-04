@@ -174,14 +174,19 @@ export function Markets(client){
     };
 
     /**
-     * Follows or unfollows the given market
+     * Follows or unfollows the given market.
+     * If market type is planning, you may optionally pass a user id and change another
+     * user's in the markets follow settings
      * @param stopFollowing whether or not to STOP following the market.
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
-    this.followMarket = function(stopFollowing){
+    this.followMarket = function(stopFollowing, userId){
         let body = {};
         if(stopFollowing){
             body.remove = true;
+        }
+        if(userId) {
+            body.userId = userId;
         }
         const path = 'follow';
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
