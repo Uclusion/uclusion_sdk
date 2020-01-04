@@ -186,7 +186,7 @@ export function Markets(client){
             body.remove = true;
         }
         if(userId) {
-            body.userId = userId;
+            body.user_id = userId;
         }
         const path = 'follow';
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
