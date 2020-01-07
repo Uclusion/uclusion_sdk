@@ -10,17 +10,30 @@ export function Users(client) {
   const SUBDOMAIN = 'users';
 
   /**
-   * Updates the current user with the given name
-   * @param name the new name of the user
-   * @param ui_preferences Optional String argument: ui_preferences any UI preferences to update.
+   * Updates the current user with the given name. Options is an object with the following form
+   * <ul>
+   *  <li>name : string</li>
+   *  <li>ui_preferences: dictionary</li>
+   *  <li>slackEnabled: bool</li>
+   *  <li>emailEnabled: bool</li>
+   * </ul>
    * Will overwrite any existing value
    * @returns {PromiseLike<T> | Promise<T>} the result of the update
    */
-  this.update = function (name, ui_preferences) {
-    const body = {
-      name,
-      ui_preferences
-    };
+  this.update = function (userOptions) {
+    const body = {};
+    if (userOptions.name) {
+      body.name = userOptions.name;
+    }
+    if (userOptions.uiPreferences) {
+      body.ui_preferences = userOptions.uiPreferences;
+    }
+    if (userOptions.slackEnabled) {
+      body.slack_enabled = userOptions.slackEnabled;
+    }
+    if (userOptions.emailEnabled) {
+      body.email_enabled = userOptions.emailEnabled;
+    }
     const updatePromise = client.doPatch(SUBDOMAIN, 'update', undefined, body);
     return updatePromise.then(dataResolver);
   };
@@ -48,7 +61,6 @@ export function Users(client) {
    * Updates another user. Options is an object with the following form
    * <ul>
    *  <li>name : string</li>
-   *  <li>defaultMarketId: string</li>
    *  <li>accountRole: enum</li>
    * </ul>
    * @param userId user_id of the user to update
