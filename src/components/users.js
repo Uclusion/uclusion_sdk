@@ -57,6 +57,22 @@ export function Users(client) {
   };
 
   /**
+   * Invites lists of participants to a market. Participants of form:
+   * <ul>
+   *  <li>email : string</li>
+   * </ul>
+   * @param participants list max 50 length
+   * @returns {PromiseLike<T> | Promise<T>} success or failure of users invite
+   */
+  this.inviteUsers = function (participants) {
+    const body = {
+      participants: participants
+    };
+    const addPromise = client.doPost(SUBDOMAIN, 'invite', undefined, body);
+    return addPromise.then(dataResolver);
+  };
+
+  /**
   /**
    * Updates another user. Options is an object with the following form
    * <ul>
