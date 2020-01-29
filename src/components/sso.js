@@ -181,6 +181,24 @@ export function SSO(client){
     };
 
     /**
+     * Resends the verification email to the user.
+     * @param email The email of the user
+     * @param redirect an optional param of where the user wants to go after the signup process is complete
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+    this.resendVerification = function(email, redirect) {
+        const body = {
+            email,
+        };
+        if (redirect) {
+            body['redirect'] = redirect;
+        }
+        const resendPromise = client.doPost(SUBDOMAIN, 'resendVerification', undefined, body);
+        return resendPromise.then(dataResolver);
+    };
+
+
+    /**
      * Verifies the code the user presents.
      * The returned promise will have two keys "user_account" containing the account info, and "redirect"
      * containing a redirect partial url or the empty string
