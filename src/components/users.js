@@ -59,7 +59,8 @@ export function Users(client) {
   /**
    * Invites lists of participants to a market. Participants of form:
    * <ul>
-   *  <li>email : string</li>
+   *  <li>email: string</li>
+   *  <li>is_observer: bool</li>
    * </ul>
    * @param participants list max 50 length
    * @returns {PromiseLike<T> | Promise<T>} success or failure of users invite
