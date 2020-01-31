@@ -38,14 +38,18 @@ export function SSO(client){
      * Logs in after a market holder Cognito identification. This method does not use an authorization header.
      * @param idToken Cognito ID token with user identity
      * @param marketId a market ID of the user
+     * @param isObserver whether or not is observer
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
      * automatically applied
      */
-    this.marketCognitoLogin = function(idToken, marketId) {
+    this.marketCognitoLogin = function(idToken, marketId, isObserver) {
         const body = {
             id_token: idToken,
             market_id: marketId
         };
+        if (isObserver !== undefined) {
+            body.is_participant = !isObserver;
+        }
         const cognitoLoginPromise = client.doPost(SUBDOMAIN, 'cognito', undefined, body);
         return cognitoLoginPromise.then(dataResolver);
     };
