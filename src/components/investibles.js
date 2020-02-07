@@ -244,16 +244,6 @@ export function Investibles(client) {
   };
 
   /**
-   * Lists comments associated with the current market and returns their IDs and updated times
-   * @returns {PromiseLike<T | never> | Promise<T | never>}
-   */
-  this.listCommentsByMarket = function () {
-    const path = 'list/comments';
-    const getPromise = client.doGet(SUBDOMAIN, path);
-    return getPromise.then(dataResolver);
-  };
-
-  /**
    * Historically comments lived in the investible services, so we create and fetch all comments
    * in this service.
    * Fetches the given comments present in on an object of the given market. The maximum number of comments

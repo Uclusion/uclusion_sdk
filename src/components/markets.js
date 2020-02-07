@@ -9,29 +9,6 @@ export function Markets(client){
 
     const SUBDOMAIN = 'markets';
 
-    /**
-     * Creates a new stage in the market provided.
-     * @param stage_info a dict of stage creation information of the form
-     *  { name: string, required <=>255 chars
-     *    automatic_transition: optional dict of form {
-     *        additional_investment: number , min 1
-     *        next_stage: string, id of some other stage
-     *    }
-     *    appears_in_market_summary: boolean, required
-     *    allows_investment: boolean, required. If automatic_transition present, then must be true
-     *    allows_refunds: boolean, required
-     *    visible_to_roles. array of length >=1 drawn from the set of {MarketAnonymousUser, MarketUser,
-     *    MarketManager} Duplicate values are ignored
-     *  }
-     * @returns {PromiseLike<T | never> | Promise<T | never>} the created stage's info
-     */
-    this.createStage = function(stageInfo){
-        const body = stageInfo;
-        const path = 'stage';
-        const createPromise = client.doPost(SUBDOMAIN, path, undefined, body);
-        return createPromise.then(dataResolver);
-    };
-
 
     /**
       * Creates an investment in the given investible and market with the specified number of idea ideaShares
@@ -221,25 +198,12 @@ export function Markets(client){
 
     /**
      * Fetches requested market investibles from the given market
-     * @param marketId the id of the market to retrieve the investible in
      * @param investibleIds list of the investible id to retrieve
      * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
      */
     this.getMarketInvestibles = function(investibleIds){
         let path = 'investibles';
         let queryParams = {id: investibleIds};
-        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
-        return getPromise.then(dataResolver);
-    };
-
-    /**
-     * This method allows the client to discover which investibles in its store have changed.
-     * Here last_updated includes changes to the investible or investments in it.
-     * @returns {PromiseLike<T> | Promise<T>} list of investible IDs and last_updated field
-     */
-    this.listInvestibles = function () {
-        const path = 'list';
-        let queryParams = {type: 'investibles'};
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };

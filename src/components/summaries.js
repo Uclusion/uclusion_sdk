@@ -10,13 +10,29 @@ export function Summaries(client){
   const SUBDOMAIN = 'summaries';
 
   /**
-   * Information about versions of all markets and notifications available to the identity in the idToken.
+   * Information about versions of all market objects available to the identity in the idToken.
+   * This method does not use an authorization header.
+   * @param idToken Cognito ID token
+   * @param versionsString the version on to provide delta from
+   * @returns {PromiseLike<T> | Promise<T>} a dictionary of login info keyed by market IDs
+   */
+  this.versions = function(idToken, versionsString) {
+    const queryParams = {idToken};
+    if (versionsString) {
+      queryParams.versionsString = versionsString;
+    }
+    const versionsPromise = client.doGet(SUBDOMAIN, 'versions', queryParams);
+    return versionsPromise.then(dataResolver);
+  };
+
+  /**
+   * Information about notifications available to the identity in the idToken.
    * This method does not use an authorization header.
    * @param idToken Cognito ID token
    * @returns {PromiseLike<T> | Promise<T>} a dictionary of login info keyed by market IDs
    */
-  this.versions = function(idToken) {
-    const versionsPromise = client.doGet(SUBDOMAIN, 'versions', {idToken});
+  this.notifications = function(idToken) {
+    const versionsPromise = client.doGet(SUBDOMAIN, 'notify', {idToken});
     return versionsPromise.then(dataResolver);
   };
 
