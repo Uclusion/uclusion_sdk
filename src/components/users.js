@@ -31,6 +31,9 @@ export function Users(client) {
     if (userOptions.slackEnabled) {
       body.slack_enabled = userOptions.slackEnabled;
     }
+    if (userOptions.slackDelay) {
+      body.slack_delay = userOptions.slackDelay;
+    }
     if (userOptions.emailEnabled) {
       body.email_enabled = userOptions.emailEnabled;
     }
