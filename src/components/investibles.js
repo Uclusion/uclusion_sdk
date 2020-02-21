@@ -74,7 +74,7 @@ export function Investibles(client) {
     if (Array.isArray(labelList)) {
         body.label_list = labelList;
     }
-    if (Array.isArray(uploadedFiles) && uploadedFiles.length) {
+    if (Array.isArray(uploadedFiles) && uploadedFiles.length > 0) {
       body.uploaded_files = uploadedFiles;
     }
     if (Array.isArray(assignments)) {
