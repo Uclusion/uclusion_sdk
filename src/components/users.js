@@ -101,17 +101,11 @@ export function Users(client) {
   };
 
   /**
-   * Gets a user's definition given it's ID or null for invoking user
-   * @param userId which can be null to get yourself
+   * Gets a user's definition
    * @returns {PromiseLike<T> | Promise<T>} the user's information
    */
-  this.get = function (userId) {
-    let path = 'get/';
-    if (userId) {
-      path += userId;
-    }
-
-    const getPromise = client.doGet(SUBDOMAIN, path);
+  this.get = function () {
+    const getPromise = client.doGet(SUBDOMAIN, 'get');
     return getPromise.then(dataResolver);
   };
 
