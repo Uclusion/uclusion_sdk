@@ -143,6 +143,17 @@ export function SSO(client){
     };
 
     /**
+     * Gets market info without logging in
+     * @param idToken Cognito ID token
+     * @param marketId ID of the market to get
+     * @returns {PromiseLike<T> | Promise<T>} market info
+     */
+    this.getMarketInfo = function (idToken, marketId) {
+        const getPromise = client.doGet(SUBDOMAIN, 'messages', {idToken, marketId});
+        return getPromise.then(dataResolver);
+    };
+
+    /**
      * Redirects to a product authorization with parameters on the redirect.
      * @param marketId market ID that will be given access to after login
      * @param destinationUrl page to send the user back to after authorization
