@@ -149,7 +149,7 @@ export function SSO(client){
      * @returns {PromiseLike<T> | Promise<T>} market info
      */
     this.getMarketInfo = function (idToken, marketId) {
-        const getPromise = client.doGet(SUBDOMAIN, 'messages', {idToken, marketId});
+        const getPromise = client.doGet(SUBDOMAIN, 'info', {idToken, marketId});
         return getPromise.then(dataResolver);
     };
 
