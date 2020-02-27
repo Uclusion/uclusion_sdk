@@ -14,9 +14,11 @@ export function Investibles(client) {
    * @param investibleDescription description of investible
    * @param uploadedFiles the metadata about files uploaded to this investible
    * @param assignments set of user IDs
+   * @param estimate days estimate
    * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
    */
-  this.create = function (investibleName, investibleDescription, uploadedFiles, assignments) {
+  this.create = function (investibleName, investibleDescription, uploadedFiles, assignments,
+                          estimate) {
     const body = {
       name: investibleName,
       description: investibleDescription
@@ -26,6 +28,9 @@ export function Investibles(client) {
     }
     if (assignments) {
       body.assignments = assignments;
+    }
+    if (estimate) {
+      body.days_estimate = estimate;
     }
     const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
     return createPromise.then(dataResolver);
@@ -64,9 +69,11 @@ export function Investibles(client) {
    * @param labelList list of labels
    * @param uploadedFiles the files to upload
    * @param assignments set of user IDs
+   * @param estimate days estimate
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
-  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, assignments) {
+  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, assignments,
+                          estimate) {
     const body = {
       name: investibleName,
       description: investibleDescription
@@ -79,6 +86,9 @@ export function Investibles(client) {
     }
     if (Array.isArray(assignments)) {
       body.assignments = assignments;
+    }
+    if (estimate) {
+      body.days_estimate = estimate;
     }
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
     return updatePromise.then(dataResolver);
