@@ -137,6 +137,15 @@ export function Users(client) {
     return registerPromise.then(dataResolver);
   };
 
+  this.startSubscription = function(paymentId, tier) {
+    const body = {
+      payment_id: paymentId,
+      tier,
+    };
+    const subscribePromise = client.doPost(SUBDOMAIN, 'start_subscription', undefined, body);
+    return subscribePromise.then(dataResolver);
+  };
+
   /**
    * Use to remove notifications whose resolution depends on user presence
    * @param objectId of the notification
