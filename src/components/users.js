@@ -170,10 +170,14 @@ export function Users(client) {
    * Use to remove notifications whose resolution depends on user presence
    * @param objectId of the notification
    * @param aType type of the notification
+   * @param pokeType type of poke if applicable
    * @returns {PromiseLike<T> | Promise<T>} the result of the delete
    */
-  this.removeNotification = function(objectId, aType){
-    const path = 'notification/' + aType + '/' + objectId;
+  this.removeNotification = function(objectId, aType, pokeType){
+    let path = 'notification/' + aType + '/' + objectId;
+    if (pokeType) {
+      path += '/' + pokeType;
+    }
     const removePromise = client.doDelete(SUBDOMAIN, path);
     return removePromise.then(dataResolver);
   };
