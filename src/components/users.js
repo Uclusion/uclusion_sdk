@@ -137,11 +137,31 @@ export function Users(client) {
     return registerPromise.then(dataResolver);
   };
 
-  this.startSubscription = function(paymentId, tier) {
+  /**
+   * Updates the payment information for the user
+   * @param paymentId
+   * @returns {PromiseLike<T> | Promise<T>}
+   */
+  this.updatePaymentInfo = function(paymentId) {
     const body = {
       payment_id: paymentId,
+    };
+    const updatePromise = client.doPost(SUBDOMAIN, 'update_payment', undefined, body);
+    return updatePromise.then(dataResolver);
+  };
+
+  /**
+   * Starts a subscription
+   * @param paymentId optional id if the payment has already been made
+   * @param tier the tier we're upgrading to
+   */
+  this.startSubscription = function(tier, paymentId) {
+    const body = {
       tier,
     };
+    if (paymentId) {
+      body.payment_id = paymentId;
+    }
     const subscribePromise = client.doPost(SUBDOMAIN, 'start_subscription', undefined, body);
     return subscribePromise.then(dataResolver);
   };
