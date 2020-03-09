@@ -124,6 +124,16 @@ export function Users(client) {
   };
 
   /**
+   * Cancels a user's subscription. If you are a member of an organization
+   * and your account is _not_ the billing account for an organization,
+   * then bad things will happen (at best an exception).
+   */
+  this.cancelSubscription = function () {
+    const postPromise = client.doPost(SUBDOMAIN, path, 'cancel_subscription');
+    return postPromise.then(dataResolver);
+  };
+
+  /**
    * Sends a small message to another user but cannot send again till that message is acknowledged
    * @param userId user to poke
    * @param text message the poked user receives - 235 character max
