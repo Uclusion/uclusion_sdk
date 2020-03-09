@@ -16,6 +16,8 @@ export function Users(client) {
    *  <li>ui_preferences: dictionary</li>
    *  <li>slackEnabled: bool</li>
    *  <li>emailEnabled: bool</li>
+   *  <li>emailDelay: non negative integer</li>
+   *  <li>slackDelay: non negative integer</li>
    * </ul>
    * Will overwrite any existing value
    * @returns {PromiseLike<T> | Promise<T>} the result of the update
@@ -33,6 +35,9 @@ export function Users(client) {
     }
     if (userOptions.slackDelay) {
       body.slack_delay = userOptions.slackDelay;
+    }
+    if (userOptions.emailDelay) {
+      body.email_delay = userOptions.emailDelay;
     }
     if (userOptions.emailEnabled) {
       body.email_enabled = userOptions.emailEnabled;
