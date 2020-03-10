@@ -129,8 +129,8 @@ export function Users(client) {
    * then bad things will happen (at best an exception).
    */
   this.cancelSubscription = function () {
-    const postPromise = client.doPost(SUBDOMAIN, path, 'cancel_subscription');
-    return postPromise.then(dataResolver);
+    const deletePromise = client.doDelete(SUBDOMAIN, 'cancel_subscription');
+    return deletePromise.then(dataResolver);
   };
 
   /**
