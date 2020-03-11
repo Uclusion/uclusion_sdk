@@ -139,7 +139,10 @@ export function Users(client) {
    * @returns {PromiseLike<T> | Promise<T>}
    */
   this.restartSubscription = function (paymentId) {
-    const postPromise = client.doPost(SUBDOMAIN, 'restart_subscription');
+    body = {
+      payment_id: paymentId,
+    };
+    const postPromise = client.doPost(SUBDOMAIN, 'restart_subscription', undefined, body);
     return postPromise.then(dataResolver);
   };
 
