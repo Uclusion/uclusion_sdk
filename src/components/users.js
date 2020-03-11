@@ -134,6 +134,16 @@ export function Users(client) {
   };
 
   /**
+   * Restarts a subscription
+   * @param paymentId the id returned from the payment processor
+   * @returns {PromiseLike<T> | Promise<T>}
+   */
+  this.restartSubscription = function (paymentId) {
+    const postPromise = client.doPost(SUBDOMAIN, 'restart_subscription');
+    return postPromise.then(dataResolver);
+  };
+
+  /**
    * Sends a small message to another user but cannot send again till that message is acknowledged
    * @param userId user to poke
    * @param text message the poked user receives - 235 character max
