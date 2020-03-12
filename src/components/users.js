@@ -124,6 +124,15 @@ export function Users(client) {
   };
 
   /**
+   * Gets all the invoices for the user's account
+   * @returns {PromiseLike<T> | Promise<T>}
+   */
+  this.getInvoices = function () {
+    const getPromise = client.doGet(SUBDOMAIN, 'payment_invoices');
+    return getPromise.then(dataResolver);
+  };
+
+  /**
    * Cancels a user's subscription. If you are a member of an organization
    * and your account is _not_ the billing account for an organization,
    * then bad things will happen (at best an exception).
@@ -139,7 +148,7 @@ export function Users(client) {
    * @returns {PromiseLike<T> | Promise<T>}
    */
   this.restartSubscription = function (paymentId) {
-    body = {
+    const body = {
       payment_id: paymentId,
     };
     const postPromise = client.doPost(SUBDOMAIN, 'restart_subscription', undefined, body);
