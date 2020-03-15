@@ -220,7 +220,7 @@ export function Users(client) {
    * @returns {PromiseLike<T> | Promise<T>} the result of the delete
    */
   this.removeNotification = function(objectId, aType, pokeType){
-    const path = 'notification/' + aType + '/' + objectId + '/' + pokeType;
+    const path = 'removepoke/' + aType + '/' + objectId + '/' + pokeType;
     const removePromise = client.doDelete(SUBDOMAIN, path);
     return removePromise.then(dataResolver);
   };
