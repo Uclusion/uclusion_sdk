@@ -233,7 +233,7 @@ export function Users(client) {
   this.removePageNotifications = function(investibleId){
     let path = 'notification';
     if (investibleId) {
-      path += '/' + investibleId;
+      path = 'investiblenotification/' + investibleId;
     }
     const removePromise = client.doDelete(SUBDOMAIN, path);
     return removePromise.then(dataResolver);
