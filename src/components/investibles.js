@@ -205,9 +205,10 @@ export function Investibles(client) {
    * @param body html body of the comment
    * @param isResolved Whether to resolve comment or unresolve comment
    * @param uploadedFiles the file upload metadata
+   * @param commentType comment type
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
-  this.updateComment = function (commentId, body, isResolved, uploadedFiles) {
+  this.updateComment = function (commentId, body, isResolved, uploadedFiles, commentType) {
     const path = 'comment/' + commentId;
     const msgBody = {};
     if (body) {
@@ -218,6 +219,9 @@ export function Investibles(client) {
     }
     if (uploadedFiles) {
       msgBody.uploaded_files = uploadedFiles;
+    }
+    if (commentType) {
+      msgBody.comment_type = commentType;
     }
     const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
