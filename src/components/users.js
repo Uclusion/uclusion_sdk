@@ -82,6 +82,22 @@ export function Users(client) {
   };
 
   /**
+   * Bans or unbans a user from the market. A banned user can't login, and the authorizer
+   * will reject their calls when it's cache expires
+   * @param userId the user id to ban from the market
+   * @param isBanned boolean if they are banned
+   * @returns {PromiseLike<T> | Promise<T>}
+   */
+  this.banUser = function(userId, isBanned) {
+    const path = 'ban/' + userId;
+    const body = {
+      is_banned: isBanned,
+    };
+    const banPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+    return banPromise.then(dataResolver);
+  };
+
+  /**
   /**
    * Updates another user. Options is an object with the following form
    * <ul>
