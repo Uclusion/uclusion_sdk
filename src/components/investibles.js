@@ -62,18 +62,16 @@ export function Investibles(client) {
   };
 
   /**
-   * Updates an investible with name, description, and categories
+   * Updates an investible with name, description, and categories - requires a lock
    * @param investibleId the id of the investible updated
    * @param investibleName name of investible
    * @param investibleDescription description of investible
    * @param labelList list of labels
    * @param uploadedFiles the files to upload
-   * @param assignments set of user IDs
    * @param estimate days estimate
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
-  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, assignments,
-                          estimate) {
+  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate) {
     const body = {
       name: investibleName,
       description: investibleDescription
@@ -84,12 +82,23 @@ export function Investibles(client) {
     if (Array.isArray(uploadedFiles) && uploadedFiles.length > 0) {
       body.uploaded_files = uploadedFiles;
     }
-    if (Array.isArray(assignments)) {
-      body.assignments = assignments;
-    }
     if (estimate) {
       body.days_estimate = estimate;
     }
+    const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
+    return updatePromise.then(dataResolver);
+  };
+
+  /**
+   * Updates an investible's assignments - does not require a lock
+   * @param investibleId the id of the investible updated
+   * @param assignments set of user IDs
+   * @returns {PromiseLike<T> | Promise<T>} result of updating investible
+   */
+  this.updateAssignments = function (investibleId, assignments) {
+    const body = {
+      assignments: assignments,
+    };
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
     return updatePromise.then(dataResolver);
   };
