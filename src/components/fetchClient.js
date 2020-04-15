@@ -2,6 +2,26 @@ export function FetchClient(passedConfig){
 
     let configuration = Object.assign({}, passedConfig);
 
+    /**
+     * Function that retries a call exactly once if
+     * either the response code is not OK, or
+     * if the result is catch block
+     */
+    let retryingFetch = (url, opts) => {
+        return fetch(url, opts)
+          .then((response) => {
+                if (!response.ok) {
+                    return fetch(url, opts);
+                }
+                return response;
+            }
+          ).catch((error) => {
+              // have to retry here too
+              return fetch(url, opts);
+          });
+    };
+
+
     let responseHandler = (response) => {
         if (!response.ok) {
             throw response; //give the response to upstream code
@@ -108,7 +128,7 @@ export function FetchClient(passedConfig){
             .then(headers => {
                 // console.log(headers);
                 const opts = {method: 'GET', headers, mode: configuration.mode};
-                return fetch(url, opts).then(responseHandler)
+                return retryingFetch(url, opts).then(responseHandler)
             });
     };
 
@@ -124,7 +144,7 @@ export function FetchClient(passedConfig){
         return headersConstructor(configuration.headers)
             .then(headers => {
                 const opts = {method: 'DELETE', headers, mode: configuration.mode};
-                return fetch(url, opts).then(responseHandler)
+                return retryingFetch(url, opts).then(responseHandler)
             });
     };
 
@@ -142,7 +162,7 @@ export function FetchClient(passedConfig){
         return headersConstructor(configuration.headers)
             .then(headers => {
                 const opts = {method: 'POST', headers, mode: configuration.mode, body};
-                return fetch(url, opts).then(responseHandler)
+                return retryingFetch(url, opts).then(responseHandler)
             });
     };
 
@@ -160,7 +180,7 @@ export function FetchClient(passedConfig){
         return headersConstructor(configuration.headers)
             .then(headers => {
                 const opts = {method: 'PATCH', headers, mode: configuration.mode, body};
-                return fetch(url, opts).then(responseHandler)
+                return retryingFetch(url, opts).then(responseHandler)
             });
     };
 }
