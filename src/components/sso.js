@@ -184,6 +184,9 @@ export function SSO(client){
         const body = {
             ...signupData,
         };
+        if (!body.phone || phone.length === 0) {
+            delete body['phone']; // don't send phone if it's not present
+        }
         if (redirect) {
             body['redirect'] = redirect;
         }
