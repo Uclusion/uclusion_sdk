@@ -176,17 +176,13 @@ export function SSO(client){
 
     /**
      * Signs the user up to the service.
-     * @param name The name of the user
-     * @param email The email of the user
-     * @param password The password of the user
+     * @param signupData, the name, email, password, and phone number of the user
      * @param redirect an optional param of where the user wants to go after the signup process is complete
      * @returns {PromiseLike<T> | Promise<T>}
      */
-    this.userSignup = function(name, email, password, redirect) {
+    this.userSignup = function(signupData, redirect) {
         const body = {
-            name,
-            email,
-            password,
+            ...signupData,
         };
         if (redirect) {
             body['redirect'] = redirect;
