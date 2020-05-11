@@ -2,10 +2,16 @@ export function FetchClient(passedConfig){
 
     let configuration = Object.assign({}, passedConfig);
 
+    /**
+     * See https://developers.google.com/web/updates/2017/09/abortable-fetch
+     * Without a timeout the versions promise chain can hang and in general bad things
+     * @param opts
+     * @returns {{signal: AbortSignal}}
+     */
     function createAbort(opts) {
         const controller = new AbortController();
         setTimeout(() => controller.abort(), 10000);
-        opts.signal = controller.signal;
+        return { ...opts, signal: controller.signal};
     }
 
     /**
@@ -14,10 +20,7 @@ export function FetchClient(passedConfig){
      * if the result is catch block
      */
     let retryingFetch = (url, opts) => {
-        // See https://developers.google.com/web/updates/2017/09/abortable-fetch
-        // Without a timeout the versions promise chain can hang and in general bad things
-        createAbort(opts);
-        return fetch(url, opts)
+        return fetch(url, createAbort(opts))
           .then((response) => {
                 if (!response.ok) {
                     return fetch(url, opts);
@@ -26,8 +29,7 @@ export function FetchClient(passedConfig){
             }
           ).catch((error) => {
             // have to retry here too
-            createAbort(opts);
-            return fetch(url, opts);
+            return fetch(url, createAbort(opts));
           });
     };
 
