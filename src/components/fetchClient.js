@@ -8,6 +8,11 @@ export function FetchClient(passedConfig){
      * if the result is catch block
      */
     let retryingFetch = (url, opts) => {
+        // See https://developers.google.com/web/updates/2017/09/abortable-fetch
+        // Without a timeout the versions promise chain can hang and in general bad things
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), 10000);
+        opts.signal = controller.signal;
         return fetch(url, opts)
           .then((response) => {
                 if (!response.ok) {
