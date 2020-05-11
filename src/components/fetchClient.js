@@ -2,6 +2,12 @@ export function FetchClient(passedConfig){
 
     let configuration = Object.assign({}, passedConfig);
 
+    function createAbort(opts) {
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), 10000);
+        opts.signal = controller.signal;
+    }
+
     /**
      * Function that retries a call exactly once if
      * either the response code is not OK, or
@@ -10,9 +16,7 @@ export function FetchClient(passedConfig){
     let retryingFetch = (url, opts) => {
         // See https://developers.google.com/web/updates/2017/09/abortable-fetch
         // Without a timeout the versions promise chain can hang and in general bad things
-        const controller = new AbortController();
-        setTimeout(() => controller.abort(), 10000);
-        opts.signal = controller.signal;
+        createAbort(opts);
         return fetch(url, opts)
           .then((response) => {
                 if (!response.ok) {
@@ -21,8 +25,9 @@ export function FetchClient(passedConfig){
                 return response;
             }
           ).catch((error) => {
-              // have to retry here too
-              return fetch(url, opts);
+            // have to retry here too
+            createAbort(opts);
+            return fetch(url, opts);
           });
     };
 
