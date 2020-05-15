@@ -55,6 +55,26 @@ export function SSO(client){
     };
 
     /**
+     * Logs in after a market holder Cognito identification on an invite.
+     * @param idToken Cognito ID token with user identity
+     * @param marketToken invite token being followed
+     * @param isObserver whether or not is observer
+     * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
+     * automatically applied
+     */
+    this.marketInviteLogin = function(idToken, marketToken, isObserver) {
+        const body = {
+            id_token: idToken,
+            market_token: marketToken
+        };
+        if (isObserver !== undefined) {
+            body.is_participant = !isObserver;
+        }
+        const cognitoLoginPromise = client.doPost(SUBDOMAIN, 'cognito', undefined, body);
+        return cognitoLoginPromise.then(dataResolver);
+    };
+
+    /**
      * Redirects to an OIDC authorization with parameters on the redirect.
      * @param marketId account ID that will be given access to after login
      * @param destinationUrl page to send the user back to after authorization
@@ -143,13 +163,23 @@ export function SSO(client){
     };
 
     /**
-     * Gets market info without logging in
+     * Gets market info without logging into market
      * @param idToken Cognito ID token
      * @param marketId ID of the market to get
      * @returns {PromiseLike<T> | Promise<T>} market info
      */
     this.getMarketInfo = function (idToken, marketId) {
         const getPromise = client.doGet(SUBDOMAIN, 'info', {idToken, marketId});
+        return getPromise.then(dataResolver);
+    };
+
+    /**
+     * Gets market info without logging in
+     * @param marketToken market invite capability
+     * @returns {PromiseLike<T> | Promise<T>} market info
+     */
+    this.getMarketInfoForToken = function (marketToken) {
+        const getPromise = client.doGet(SUBDOMAIN, 'marketinfo', {marketToken});
         return getPromise.then(dataResolver);
     };
 
