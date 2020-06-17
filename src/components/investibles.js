@@ -281,6 +281,22 @@ export function Investibles(client) {
     return getPromise.then(dataResolver);
   };
 
+  /**
+   * Adds attachments to the given investible
+   * @param investibleId the id of the investible to add attachments to
+   * @param files the files to add (represented as a browser file object such
+   * as you get from a file upload form)
+   * @returns {Promise<any>}
+   */
+  this.addAttachments = function(investibleId, files){
+    const path = `/${investibleId}/add_attachments`;
+    const body = {
+        files,
+    };
+    const patchPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+    return patchPromise.then(dataResolver);
+  }
+
     /**
      * Asks the server for the metadata of where to store a file of content type and content length.
      * Return value includes the path, url, metadata, and necessary fields that must be present
