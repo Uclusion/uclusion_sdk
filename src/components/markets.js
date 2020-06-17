@@ -213,6 +213,19 @@ export function Markets(client){
         const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
         return getPromise.then(dataResolver);
     };
+
+    /**
+     * Attaches files to the market
+     * @param attachments
+     */
+    this.addAttachments = function(files) {
+        const path = 'add_attachments';
+        const body = {
+            files,
+        };
+        const patchPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        return patchPromise.then(dataResolver);
+    }
 }
 
 export default Markets;
