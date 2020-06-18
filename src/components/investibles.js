@@ -289,7 +289,7 @@ export function Investibles(client) {
    * @returns {Promise<any>}
    */
   this.addAttachments = function(investibleId, files){
-    const path = `/${investibleId}/add_attachments`;
+    const path = `${investibleId}/add_attachments`;
     const body = {
         files,
     };
