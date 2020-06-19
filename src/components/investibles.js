@@ -302,14 +302,18 @@ export function Investibles(client) {
      * Return value includes the path, url, metadata, and necessary fields that must be present
      * @param contentType content type of the file
      * @param contentLength size of the file in bytes
+     * @param originalName the original name of the file on the user's system (optional)
      * @returns {PromiseLike<T | never> | Promise<T | never>}
      */
-  this.getFileUploadData = function(contentType, contentLength) {
+  this.getFileUploadData = function(contentType, contentLength, originalName) {
     const path = 'upload';
     const body = {
         content_type: contentType,
         content_length: contentLength
     };
+    if (!_.isEmpty(originalName)) {
+      body.original_name = originalName;
+    }
     const postPromise = client.doPost(SUBDOMAIN, path, undefined, body);
     return postPromise.then(dataResolver);
   };
