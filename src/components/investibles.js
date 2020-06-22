@@ -297,6 +297,21 @@ export function Investibles(client) {
     return patchPromise.then(dataResolver);
   }
 
+  /**
+   * Removes the attachments corresponding to the list of paths provided
+   * @param investibleId the investible to delete the paths from
+   * @param pathsToDelete and array of paths to delete
+   * @returns {Promise<any>}
+   */
+  this.deleteAttachments = function(investibleId, pathsToDelete) {
+    const path = `${investibleId}/delete_attachments`;
+    const body = {
+      files: pathsToDelete,
+    };
+    const patchPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+    return patchPromise.then(dataResolver);
+  }
+
     /**
      * Asks the server for the metadata of where to store a file of content type and content length.
      * Return value includes the path, url, metadata, and necessary fields that must be present
