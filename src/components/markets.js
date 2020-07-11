@@ -214,6 +214,15 @@ export function Markets(client){
         return getPromise.then(dataResolver);
     };
 
+    this.deleteAttachments = function(files) {
+        const path = 'delete_attachments';
+        const body = {
+            files,
+        };
+        const patchPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        return patchPromise.then(dataResolver);
+    }
+
     /**
      * Attaches files to the market
      * @param attachments
