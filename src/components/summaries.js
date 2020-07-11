@@ -13,15 +13,28 @@ export function Summaries(client){
    * Information about versions of all market objects available to the identity in the idToken.
    * This method does not use an authorization header.
    * @param idToken Cognito ID token
-   * @param versionsString the version on to provide delta from
-   * @returns {PromiseLike<T> | Promise<T>} a dictionary of login info keyed by market IDs
+   * @param idList the ids to retrieve object signatures for
+   * @returns {PromiseLike<T> | Promise<T>} {'signatures'}
    */
-  this.versions = function(idToken, versionsString) {
+  this.versions = function(idToken, idList) {
+    const queryParams = {idToken, id: idList};
+    const versionsPromise = client.doGet(SUBDOMAIN, 'versions', queryParams);
+    return versionsPromise.then(dataResolver);
+  };
+
+  /**
+   * Lists of dirty objects available to the identity in the idToken.
+   * This method does not use an authorization header.
+   * @param idToken Cognito ID token
+   * @param versionsString the version on to provide delta from
+   * @returns {PromiseLike<T> | Promise<T>} {'global_version', 'background', 'foreground', 'account', 'banned'}
+   */
+  this.idList = function(idToken, versionsString) {
     const queryParams = {idToken};
     if (versionsString) {
       queryParams.versionsString = versionsString;
     }
-    const versionsPromise = client.doGet(SUBDOMAIN, 'versions', queryParams);
+    const versionsPromise = client.doGet(SUBDOMAIN, 'versioned', queryParams);
     return versionsPromise.then(dataResolver);
   };
 
