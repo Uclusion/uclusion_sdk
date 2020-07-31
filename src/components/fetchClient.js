@@ -10,7 +10,7 @@ export function FetchClient(passedConfig){
      */
     function createAbort(opts) {
         const controller = new AbortController();
-        setTimeout(() => controller.abort(), 10000);
+        setTimeout(() => controller.abort(), 60000);
         return { ...opts, signal: controller.signal};
     }
 
