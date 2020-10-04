@@ -30,16 +30,16 @@ export function Users(client) {
     if (userOptions.uiPreferences) {
       body.ui_preferences = userOptions.uiPreferences;
     }
-    if (userOptions.emailDelay !== undefined) {
+    if (userOptions.slackEnabled !== undefined) {
       body.slack_enabled = userOptions.slackEnabled;
     }
-    if (userOptions.emailDelay !== undefined) {
+    if (userOptions.slackDelay !== undefined) {
       body.slack_delay = userOptions.slackDelay;
     }
     if (userOptions.emailDelay !== undefined) {
       body.email_delay = userOptions.emailDelay;
     }
-    if (userOptions.emailDelay !== undefined) {
+    if (userOptions.emailEnabled !== undefined) {
       body.email_enabled = userOptions.emailEnabled;
     }
     const updatePromise = client.doPatch(SUBDOMAIN, 'update', undefined, body);
