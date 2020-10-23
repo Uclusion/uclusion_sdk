@@ -72,10 +72,13 @@ export function Investibles(client) {
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
   this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate) {
-    const body = {
-      name: investibleName,
-      description: investibleDescription
-    };
+    const body = {};
+    if (investibleName) {
+      body.name = investibleName;
+    }
+    if (investibleDescription) {
+      body.description = investibleDescription;
+    }
     if (Array.isArray(labelList)) {
         body.label_list = labelList;
     }
