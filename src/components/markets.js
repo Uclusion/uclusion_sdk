@@ -171,7 +171,7 @@ export function Markets(client){
 
     /**
      * Follows or unfollows the given stage
-     * @param stageId the market id to follow/unfollow
+     * @param stageId the stage id to follow/unfollow
      * @param stopFollowing whether or not to STOP following the market.
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
@@ -181,6 +181,22 @@ export function Markets(client){
             body.remove = true;
         }
         const path = 'follow/stage/' + stageId;
+        const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        return followPromise.then(dataResolver);
+    };
+
+    /**
+     * Updates stage properties
+     * @param stageId the stage id to update
+     * @param allowedInvestibles number of investibles a stage can hold per person.
+     * @returns {PromiseLike<T> | Promise<T>} the updated stage
+     */
+    this.updateStage = function(stageId, allowedInvestibles){
+        const body = {};
+        if (allowedInvestibles !== undefined) {
+            body.allowed_investibles = allowedInvestibles;
+        }
+        const path = 'stage/' + stageId;
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
     };
