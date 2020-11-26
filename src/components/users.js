@@ -204,6 +204,19 @@ export function Users(client) {
   };
 
   /**
+   * Validates the passed in promo code to see if it can be used
+   * @param promoCode the promo code to validate
+   * @returns {PromiseLike<any> | Promise<any>}
+   */
+  this.validatePromoCode = function(promoCode) {
+    const body = {
+      promo_code: promoCode
+    };
+    const validatePromise = client.doPost(SUBDOMAIN, 'validate_promo_code', undefined, body)
+    return validatePromise.then(dataResolver);
+  }
+
+  /**
    * Updates the payment information for the user
    * @param paymentId
    * @returns {PromiseLike<T> | Promise<T>}
