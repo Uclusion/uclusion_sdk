@@ -161,12 +161,16 @@ export function Users(client) {
   /**
    * Restarts a subscription
    * @param paymentId the id returned from the payment processor
+   * @param promoCode any promo code we have
    * @returns {PromiseLike<T> | Promise<T>}
    */
-  this.restartSubscription = function (paymentId) {
+  this.restartSubscription = function (paymentId, promoCode) {
     const body = {
       payment_id: paymentId,
     };
+    if (promoCode) {
+      body.promo_code = promoCode;
+    }
     const postPromise = client.doPost(SUBDOMAIN, 'restart_subscription', undefined, body);
     return postPromise.then(dataResolver);
   };
@@ -216,13 +220,17 @@ export function Users(client) {
    * Starts a subscription
    * @param paymentId optional id if the payment has already been made
    * @param tier the tier we're upgrading to
+   * @param promoCode any promo code we have
    */
-  this.startSubscription = function(tier, paymentId) {
+  this.startSubscription = function(tier, paymentId, promoCode) {
     const body = {
       tier,
     };
     if (paymentId) {
       body.payment_id = paymentId;
+    }
+    if (promoCode) {
+      body.promo_code = promoCode;
     }
     const subscribePromise = client.doPost(SUBDOMAIN, 'start_subscription', undefined, body);
     return subscribePromise.then(dataResolver);
