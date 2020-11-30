@@ -158,6 +158,22 @@ export function Users(client) {
     return deletePromise.then(dataResolver);
   };
 
+
+  /**
+   * Adds a promotion code to the users subscription. No useful data
+   * is returned, but there's a success message if you need it
+   * @param promoCode the promo code to add
+   * @returns {PromiseLike<T> | Promise<T>}
+   */
+  this.addPromoToSubscription = function (promoCode) {
+    const body = {
+      promo_code: promoCode,
+    };
+
+    const addPromise = client.doPost(SUBDOMAIN, 'add_promo_to_sub', undefined, body);
+    return addPromise.then(dataResolver);
+  };
+
   /**
    * Restarts a subscription
    * @param paymentId the id returned from the payment processor
