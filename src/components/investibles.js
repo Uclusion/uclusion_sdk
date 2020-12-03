@@ -190,15 +190,19 @@ export function Investibles(client) {
    * @param replyId comment_id of the parent comment
    * @param commentType QUESTION, ISSUE, SUGGEST, JUSTIFY
    * @param uploadedFiles the file upload metadata
+   * @param notificationType over rides normal notification level
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles) {
+  this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles, notificationType) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
     };
     if (commentType) {
       msgBody.comment_type = commentType;
+    }
+    if (notificationType) {
+      msgBody.notification_type = notificationType;
     }
     if (replyId) {
       msgBody.comment_type = 'REPLY';
@@ -218,9 +222,10 @@ export function Investibles(client) {
    * @param isResolved Whether to resolve comment or unresolve comment
    * @param uploadedFiles the file upload metadata
    * @param commentType comment type
+   * @param notificationType over rides normal notification level
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
-  this.updateComment = function (commentId, body, isResolved, uploadedFiles, commentType) {
+  this.updateComment = function (commentId, body, isResolved, uploadedFiles, commentType, notificationType) {
     const path = 'comment/' + commentId;
     const msgBody = {};
     if (body) {
@@ -228,6 +233,9 @@ export function Investibles(client) {
     }
     if (isResolved !== undefined) {
       msgBody.is_resolved = isResolved;
+    }
+    if (notificationType) {
+      msgBody.notification_type = notificationType;
     }
     if (uploadedFiles) {
       msgBody.uploaded_files = uploadedFiles;
