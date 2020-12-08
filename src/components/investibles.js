@@ -15,10 +15,11 @@ export function Investibles(client) {
    * @param uploadedFiles the metadata about files uploaded to this investible
    * @param assignments set of user IDs
    * @param estimate days estimate
+   * @param labelList list of labels to apply on create
    * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
    */
   this.create = function (investibleName, investibleDescription, uploadedFiles, assignments,
-                          estimate) {
+                          estimate, labelList) {
     const body = {
       name: investibleName,
       description: investibleDescription
@@ -31,6 +32,9 @@ export function Investibles(client) {
     }
     if (estimate) {
       body.days_estimate = estimate;
+    }
+    if (labelList) {
+      body.label_list = labelList;
     }
     const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
     return createPromise.then(dataResolver);
