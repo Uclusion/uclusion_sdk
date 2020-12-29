@@ -119,6 +119,8 @@ workflows:
           filters: # required since `deploy` has tag filters AND requires `build`
             tags:
               only: /disable.*/
+            branches:
+              ignore: /.*/
       - deploy:
           requires:
             - build

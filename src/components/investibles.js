@@ -97,6 +97,20 @@ export function Investibles(client) {
   };
 
   /**
+   * @param investibleId - comments will move to this investible ID
+   * @param commentIds
+   * @returns list of comments
+   */
+  this.moveComments = function (investibleId, commentIds) {
+    const path = 'move/' + investibleId;
+    const body = {
+      comment_ids: commentIds
+    };
+    const movePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+    return movePromise.then(dataResolver);
+  };
+
+  /**
    * Updates an investible's assignments - does not require a lock
    * @param investibleId the id of the investible updated
    * @param assignments set of user IDs
