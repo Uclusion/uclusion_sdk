@@ -4,9 +4,6 @@
 #
 version: 2.1
 
-orbs:
-    hello: circleci/hello-build@0.0.5
-
 defaults: &defaults
   working_directory: ~/repo
   docker:
@@ -110,9 +107,6 @@ jobs:
           command: npm publish
 
 workflows:
-  hello:
-    jobs:
-      - hello/hello-build
   build-deploy:
     jobs:
       - build:
