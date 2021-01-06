@@ -24,7 +24,7 @@ export function Investibles(client) {
       name: investibleName,
       description: investibleDescription
     };
-    if (uploadedFiles) {
+    if (Array.isArray(uploadedFiles)) {
       body.uploaded_files = uploadedFiles;
     }
     if (assignments) {
@@ -180,10 +180,11 @@ export function Investibles(client) {
    * @param replyId comment id of the parent comment
    * @param commentType QUESTION, ISSUE, SUGGEST, JUSTIFY
    * @param uploadedFiles the file upload metadata
+   * @param list of people mentioned in the comment
    * @returns {*}
    */
-  this.createMarketComment = function (body, replyId, commentType, uploadedFiles) {
-    return this.createComment(undefined, body, replyId, commentType, uploadedFiles);
+  this.createMarketComment = function (body, replyId, commentType, uploadedFiles, mentions) {
+    return this.createComment(undefined, body, replyId, commentType, uploadedFiles, mentions);
   };
 
 
@@ -194,10 +195,11 @@ export function Investibles(client) {
    * @param replyId comment_id of the parent comment
    * @param commentType QUESTION, ISSUE, SUGGEST, JUSTIFY
    * @param uploadedFiles the file upload metadata
+   * @param mentions list of people mentioned in the comment
    * @param notificationType over rides normal notification level
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles, notificationType) {
+  this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles, mentions, notificationType) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
@@ -212,8 +214,11 @@ export function Investibles(client) {
       msgBody.comment_type = 'REPLY';
       msgBody.reply_id = replyId;
     }
-    if (uploadedFiles) {
+    if (Array.isArray(uploadedFiles)) {
       msgBody.uploaded_files = uploadedFiles;
+    }
+    if (Array.isArray(mentions)) {
+      msgBody.mentions = mentions;
     }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
@@ -229,7 +234,7 @@ export function Investibles(client) {
    * @param notificationType over rides normal notification level
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
-  this.updateComment = function (commentId, body, isResolved, uploadedFiles, commentType, notificationType) {
+  this.updateComment = function (commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType) {
     const path = 'comment/' + commentId;
     const msgBody = {};
     if (body) {
@@ -241,8 +246,12 @@ export function Investibles(client) {
     if (notificationType) {
       msgBody.notification_type = notificationType;
     }
-    if (uploadedFiles) {
+    if (Array.isArray(uploadedFiles)) {
       msgBody.uploaded_files = uploadedFiles;
+    }
+
+    if (Array.isArray(mentions)) {
+      msgBody.mentions = mentions;
     }
     if (commentType) {
       msgBody.comment_type = commentType;
