@@ -19,7 +19,7 @@ export function Investibles(client) {
    * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
    */
   this.create = function (investibleName, investibleDescription, uploadedFiles, assignments,
-                          estimate, labelList) {
+                          estimate, labelList, requiredReviewers, requiredApprovers) {
     const body = {
       name: investibleName,
       description: investibleDescription
@@ -35,6 +35,12 @@ export function Investibles(client) {
     }
     if (labelList) {
       body.label_list = labelList;
+    }
+    if (Array.isArray(requiredReviewers)) {
+      body.required_reviewers = requiredReviewers;
+    }
+    if (Array.isArray(requiredApprovers)) {
+      body.required_approvers = requiredApprovers;
     }
     const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
     return createPromise.then(dataResolver);
@@ -75,7 +81,7 @@ export function Investibles(client) {
    * @param estimate days estimate
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
-  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate) {
+  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate, requiredReviewers, requiredApprovers) {
     const body = {};
     if (investibleName) {
       body.name = investibleName;
@@ -86,8 +92,14 @@ export function Investibles(client) {
     if (Array.isArray(labelList)) {
         body.label_list = labelList;
     }
-    if (Array.isArray(uploadedFiles) && uploadedFiles.length > 0) {
+    if (Array.isArray(uploadedFiles)) {
       body.uploaded_files = uploadedFiles;
+    }
+    if (Array.isArray(requiredReviewers)) {
+      body.required_reviewers = requiredReviewers;
+    }
+    if (Array.isArray(requiredApprovers)) {
+      body.required_approvers = requiredApprovers
     }
     if (estimate) {
       body.days_estimate = estimate;
