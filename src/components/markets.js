@@ -189,12 +189,16 @@ export function Markets(client){
      * Updates stage properties
      * @param stageId the stage id to update
      * @param allowedInvestibles number of investibles a stage can hold per person.
+     * @param daysVisible number of days an investible will appear in Verified stage
      * @returns {PromiseLike<T> | Promise<T>} the updated stage
      */
-    this.updateStage = function(stageId, allowedInvestibles){
+    this.updateStage = function(stageId, allowedInvestibles, daysVisible){
         const body = {};
         if (allowedInvestibles !== undefined) {
             body.allowed_investibles = allowedInvestibles;
+        }
+        if (daysVisible !== undefined) {
+            body.days_visible = daysVisible;
         }
         const path = 'stage/' + stageId;
         const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
