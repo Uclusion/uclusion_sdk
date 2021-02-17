@@ -16,10 +16,13 @@ export function Investibles(client) {
    * @param assignments set of user IDs
    * @param estimate days estimate
    * @param labelList list of labels to apply on create
+   * @param requiredReviewers
+   * @param requiredApprovers
+   * @param stageId - initial stage to create the investible in
    * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
    */
   this.create = function (investibleName, investibleDescription, uploadedFiles, assignments,
-                          estimate, labelList, requiredReviewers, requiredApprovers) {
+                          estimate, labelList, requiredReviewers, requiredApprovers, stageId) {
     const body = {
       name: investibleName,
       description: investibleDescription
@@ -41,6 +44,9 @@ export function Investibles(client) {
     }
     if (Array.isArray(requiredApprovers)) {
       body.required_approvers = requiredApprovers;
+    }
+    if (stageId) {
+      body.stage_id = stageId;
     }
     const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
     return createPromise.then(dataResolver);
