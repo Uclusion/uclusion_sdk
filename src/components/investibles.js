@@ -11,8 +11,8 @@ export function Investibles(client) {
   /**
    * Creates an investible
    * @param addInfo of form
-   * investibleName name of investible
-   * investibleDescription description of investible
+   * name name of investible
+   * description description of investible
    * uploadedFiles the metadata about files uploaded to this investible
    * assignments set of user IDs
    * estimate days estimate
@@ -23,12 +23,14 @@ export function Investibles(client) {
    * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
    */
   this.create = function (addInfo) {
-    const { investibleName, investibleDescription, uploadedFiles, assignments,
-      estimate, labelList, requiredReviewers, requiredApprovers, stageId } = addInfo;
+    const { name, description, uploadedFiles, assignments, estimate, labelList, requiredReviewers, requiredApprovers,
+      stageId } = addInfo;
     const body = {
-      name: investibleName,
-      description: investibleDescription
+      name: name
     };
+    if (description) {
+      body.description = description;
+    }
     if (Array.isArray(uploadedFiles)) {
       body.uploaded_files = uploadedFiles;
     }
