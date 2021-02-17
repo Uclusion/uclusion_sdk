@@ -10,19 +10,21 @@ export function Investibles(client) {
 
   /**
    * Creates an investible
-   * @param investibleName name of investible
-   * @param investibleDescription description of investible
-   * @param uploadedFiles the metadata about files uploaded to this investible
-   * @param assignments set of user IDs
-   * @param estimate days estimate
-   * @param labelList list of labels to apply on create
-   * @param requiredReviewers
-   * @param requiredApprovers
-   * @param stageId - initial stage to create the investible in
+   * @param addInfo of form
+   * investibleName name of investible
+   * investibleDescription description of investible
+   * uploadedFiles the metadata about files uploaded to this investible
+   * assignments set of user IDs
+   * estimate days estimate
+   * labelList list of labels to apply on create
+   * requiredReviewers
+   * requiredApprovers
+   * stageId - initial stage to create the investible in
    * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
    */
-  this.create = function (investibleName, investibleDescription, uploadedFiles, assignments,
-                          estimate, labelList, requiredReviewers, requiredApprovers, stageId) {
+  this.create = function (addInfo) {
+    const { investibleName, investibleDescription, uploadedFiles, assignments,
+      estimate, labelList, requiredReviewers, requiredApprovers, stageId } = addInfo;
     const body = {
       name: investibleName,
       description: investibleDescription
