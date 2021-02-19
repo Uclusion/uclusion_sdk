@@ -20,17 +20,25 @@ export function FetchClient(passedConfig){
      * if the result is catch block
      */
     let retryingFetch = (url, opts) => {
+        const opStart = new Date();
         return fetch(url, createAbort(opts))
-          .then((response) => {
-                if (!response.ok) {
-                    return fetch(url, opts);
+            .then((response) => {
+                    const now = new Date();
+                    if (!response.ok) {
+                        // are we 500 series?
+                        const is5xx = response.status >= 500 && response.status < 600
+                        const responseMillis = now.getTime() - opStart.getTime();
+                        const probablyTimeout = responseMillis >= 3000; // a 3 second 5xx is likely a backend timeout
+                        // backend timeouts can be retried as problem may be lambda "warm up" that has now happened
+                        const retryable = is5xx && probablyTimeout;
+                        if (retryable) {
+                            // retry _once_ more only
+                            return fetch(url, opts);
+                        }
+                    }
+                    return response;
                 }
-                return response;
-            }
-          ).catch((error) => {
-            // have to retry here too
-            return fetch(url, createAbort(opts));
-          });
+            );
     };
 
 
