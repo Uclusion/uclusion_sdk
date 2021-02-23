@@ -270,10 +270,7 @@ export function Users(client) {
    * @returns {PromiseLike<T> | Promise<T>} the result of the delete
    */
   this.removeNotification = function(typeObjectId){
-    const path = 'removenotification';
-    const queryParams = {type_object_id: [typeObjectId]};
-    const removePromise = client.doDelete(SUBDOMAIN, path, queryParams);
-    return removePromise.then(dataResolver);
+    return this.removeNotifications([typeObjectId]);
   };
 
   /**
