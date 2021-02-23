@@ -266,12 +266,24 @@ export function Users(client) {
   };
 
   /**
-   * Use to remove notifications whose resolution depends on user presence
+   * Use to remove read notification or remove highlighting of persistent notification
    * @returns {PromiseLike<T> | Promise<T>} the result of the delete
    */
   this.removeNotification = function(typeObjectId){
-    const path = 'removenotification/' + typeObjectId;
-    const removePromise = client.doDelete(SUBDOMAIN, path);
+    const path = 'removenotification';
+    const queryParams = {type_object_id: [typeObjectId]};
+    const removePromise = client.doDelete(SUBDOMAIN, path, queryParams);
+    return removePromise.then(dataResolver);
+  };
+
+  /**
+   * Use to remove read notifications or remove highlighting of persistent notifications
+   * @returns {PromiseLike<T> | Promise<T>} the result of the delete
+   */
+  this.removeNotifications = function(typeObjectIds){
+    const path = 'removenotification';
+    const queryParams = {type_object_id: typeObjectIds};
+    const removePromise = client.doDelete(SUBDOMAIN, path, queryParams);
     return removePromise.then(dataResolver);
   };
 
