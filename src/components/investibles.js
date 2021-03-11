@@ -15,7 +15,7 @@ export function Investibles(client) {
    * description description of investible
    * uploadedFiles the metadata about files uploaded to this investible
    * assignments set of user IDs
-   * estimate days estimate
+   * estimate completion estimate Date
    * labelList list of labels to apply on create
    * requiredReviewers
    * requiredApprovers
@@ -38,7 +38,7 @@ export function Investibles(client) {
       body.assignments = assignments;
     }
     if (estimate) {
-      body.days_estimate = estimate;
+      body.completion_estimate = estimate.toISOString();
     }
     if (labelList) {
       body.label_list = labelList;
@@ -88,10 +88,13 @@ export function Investibles(client) {
    * @param investibleDescription description of investible
    * @param labelList list of labels
    * @param uploadedFiles the files to upload
-   * @param estimate days estimate
+   * @param estimate completion estimate Date
+   * @param requiredReviewers
+   * @param requiredApprovers
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
-  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate, requiredReviewers, requiredApprovers) {
+  this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate,
+                          requiredReviewers, requiredApprovers) {
     const body = {};
     if (investibleName) {
       body.name = investibleName;
@@ -112,7 +115,7 @@ export function Investibles(client) {
       body.required_approvers = requiredApprovers
     }
     if (estimate) {
-      body.days_estimate = estimate;
+      body.completion_estimate = estimate.toISOString();
     }
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
     return updatePromise.then(dataResolver);
