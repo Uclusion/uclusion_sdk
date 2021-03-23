@@ -24,7 +24,7 @@ export function Investibles(client) {
    */
   this.create = function (addInfo) {
     const { name, description, uploadedFiles, assignments, estimate, labelList, requiredReviewers, requiredApprovers,
-      stageId } = addInfo;
+      stageId, openForInvestment } = addInfo;
     const body = {
       name: name
     };
@@ -36,6 +36,9 @@ export function Investibles(client) {
     }
     if (assignments) {
       body.assignments = assignments;
+    }
+    if (openForInvestment) {
+      body.open_for_investment = openForInvestment;
     }
     if (estimate) {
       body.completion_estimate = estimate.toISOString();
@@ -70,18 +73,6 @@ export function Investibles(client) {
   };
 
   /**
-   * Copies an investible
-   * @param investibleId id of investible to copy
-   * @param marketId id of the market to copy into
-   * @returns {PromiseLike<T> | Promise<T>} id of created investible
-   */
-  this.copy = function (investibleId, marketId) {
-    const path = 'copy/' + investibleId + '/tomarket/' + marketId;
-    const copyPromise = client.doPost(SUBDOMAIN, path);
-    return copyPromise.then(dataResolver);
-  };
-
-  /**
    * Updates an investible with name, description, and categories - requires a lock
    * @param investibleId the id of the investible updated
    * @param investibleName name of investible
@@ -94,7 +85,7 @@ export function Investibles(client) {
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
   this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate,
-                          requiredReviewers, requiredApprovers) {
+                          requiredReviewers, requiredApprovers, openForInvestment) {
     const body = {};
     if (investibleName) {
       body.name = investibleName;
@@ -103,7 +94,7 @@ export function Investibles(client) {
       body.description = investibleDescription;
     }
     if (Array.isArray(labelList)) {
-        body.label_list = labelList;
+      body.label_list = labelList;
     }
     if (Array.isArray(uploadedFiles)) {
       body.uploaded_files = uploadedFiles;
@@ -113,6 +104,9 @@ export function Investibles(client) {
     }
     if (Array.isArray(requiredApprovers)) {
       body.required_approvers = requiredApprovers
+    }
+    if (openForInvestment) {
+      body.open_for_investment = openForInvestment;
     }
     if (estimate) {
       body.completion_estimate = estimate.toISOString();
