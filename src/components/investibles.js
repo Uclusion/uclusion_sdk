@@ -144,6 +144,20 @@ export function Investibles(client) {
   };
 
   /**
+   * Updates an investible's open for investments - does not require a lock
+   * @param investibleId the id of the investible updated
+   * @param openForInvestment boolean
+   * @returns {PromiseLike<T> | Promise<T>} result of updating investible
+   */
+  this.updateOpenForInvestment = function (investibleId, openForInvestment) {
+    const body = {
+      open_for_investment: openForInvestment,
+    };
+    const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
+    return updatePromise.then(dataResolver);
+  };
+
+  /**
    * Locks an investible for name and description
    * @param investibleId the id of the investible locked
    * @param breakLock whether or not to ignore the existing lock
