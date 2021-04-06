@@ -220,6 +220,18 @@ export function Investibles(client) {
   };
 
   /**
+   * Follows the given comment in the given market
+   * @param commentId the id of the investible to follow
+   * @returns {PromiseLike<T> | Promise<T>} the result of the follow
+   */
+  this.followComment = function (commentId) {
+    let body = {};
+    const path = 'follow/' + commentId;
+    const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+    return followPromise.then(dataResolver);
+  };
+
+  /**
    * Historically comments lived in the investible, so create and
    * get all comments in a market in this service.
    * Creates a comment for the
