@@ -38,17 +38,17 @@ export function SSO(client){
      * Logs in after a market holder Cognito identification. This method does not use an authorization header.
      * @param idToken Cognito ID token with user identity
      * @param marketId a market ID of the user
-     * @param isObserver whether or not is observer
+     * @param subscribeId object to subscribe to if any
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
      * automatically applied
      */
-    this.marketCognitoLogin = function(idToken, marketId, isObserver) {
+    this.marketCognitoLogin = function(idToken, marketId, subscribeId) {
         const body = {
             id_token: idToken,
             market_id: marketId
         };
-        if (isObserver !== undefined) {
-            body.is_participant = !isObserver;
+        if (subscribeId !== undefined) {
+            body.subscribe_id = subscribeId;
         }
         const cognitoLoginPromise = client.doPost(SUBDOMAIN, 'cognito', undefined, body);
         return cognitoLoginPromise.then(dataResolver);
@@ -58,17 +58,17 @@ export function SSO(client){
      * Logs in after a market holder Cognito identification on an invite.
      * @param idToken Cognito ID token with user identity
      * @param marketToken invite token being followed
-     * @param isObserver whether or not is observer
+     * @param subscribeId object to subscribe to if any
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
      * automatically applied
      */
-    this.marketInviteLogin = function(idToken, marketToken, isObserver) {
+    this.marketInviteLogin = function(idToken, marketToken, subscribeId) {
         const body = {
             id_token: idToken,
             market_token: marketToken
         };
-        if (isObserver !== undefined) {
-            body.is_participant = !isObserver;
+        if (subscribeId !== undefined) {
+            body.subscribe_id = subscribeId;
         }
         const cognitoLoginPromise = client.doPost(SUBDOMAIN, 'cognito', undefined, body);
         return cognitoLoginPromise.then(dataResolver);
