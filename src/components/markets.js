@@ -171,17 +171,18 @@ export function Markets(client){
 
     /**
      * Follows or unfollows the given stage
-     * @param stageId the stage id to follow/unfollow
+     * @param stageIds the stage ids to follow/unfollow
      * @param stopFollowing whether or not to STOP following the market.
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
-    this.followStage = function(stageId, stopFollowing){
-        const body = {};
-        if(stopFollowing){
+    this.followStage = function(stageIds, stopFollowing){
+        const body = {
+            stage_ids: stageIds
+        };
+        if (stopFollowing) {
             body.remove = true;
         }
-        const path = 'follow/stage/' + stageId;
-        const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        const followPromise = client.doPatch(SUBDOMAIN, 'follow_stage', undefined, body);
         return followPromise.then(dataResolver);
     };
 
