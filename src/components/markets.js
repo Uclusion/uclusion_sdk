@@ -70,6 +70,15 @@ export function Markets(client){
     };
 
     /**
+     * Creates a market from a template
+     * @returns {PromiseLike<T> | Promise<T>} the result of the create
+     */
+    this.createMarketFromTemplate = function(){
+        const createPromise = client.doPost(SUBDOMAIN, 'template');
+        return createPromise.then(dataResolver);
+    };
+
+    /**
      * Retrieves the market with the given Id.
      * @returns {PromiseLike<T> | Promise<T>} the result of the retrieval
      */
