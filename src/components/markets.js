@@ -121,30 +121,6 @@ export function Markets(client){
     };
 
     /**
-     * Hides a market for the current user
-     * @returns {PromiseLike<T> | Promise<T>} the result of the hide
-     */
-    this.hide = function () {
-        const body = {
-            hide: true,
-        };
-        const hidePromise = client.doPatch(SUBDOMAIN, 'hide', undefined, body);
-        return hidePromise.then(dataResolver);
-    };
-
-    /**
-     * Unhides a makret for the current user
-     * @returns {PromiseLike<T> | Promise<T>} the result of the unhide
-     */
-    this.unhide = function () {
-        const body = {
-            hide: false,
-        };
-        const unhidePromise = client.doPatch(SUBDOMAIN, 'hide', undefined, body);
-        return unhidePromise.then(dataResolver);
-    };
-
-    /**
      * Unlocks a market for name and description changes
      * @returns {PromiseLike<T> | Promise<T>} the result of unlocking
      */
