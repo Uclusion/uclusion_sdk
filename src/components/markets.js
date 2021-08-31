@@ -71,10 +71,15 @@ export function Markets(client){
 
     /**
      * Creates a market from a template
+     * @param name if non empty creates support market
      * @returns {PromiseLike<T> | Promise<T>} the result of the create
      */
-    this.createMarketFromTemplate = function(){
-        const createPromise = client.doPost(SUBDOMAIN, 'template');
+    this.createMarketFromTemplate = function(name){
+        const body = {};
+        if (name) {
+            body.name = name;
+        }
+        const createPromise = client.doPost(SUBDOMAIN, 'template', undefined, body);
         return createPromise.then(dataResolver);
     };
 
