@@ -298,21 +298,6 @@ export function Users(client) {
     const removePromise = client.doDelete(SUBDOMAIN, path, queryParams);
     return removePromise.then(dataResolver);
   };
-
-  /**
-   * Grants the given number of idea shares in the given market to the given user
-   * @param userId the user to grant them to
-   * @param ideaSharesQuantity the quantity of idea shares to grant
-   * @returns {PromiseLike<T> | Promise<T>} the result of the grant
-   */
-  this.grant = function (userId, ideaSharesQuantity) {
-    const body = {
-      quantity: ideaSharesQuantity
-    };
-    const path = userId + '/grant';
-    const grantPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-    return grantPromise.then(dataResolver);
-  };
 }
 
 export default Users;
