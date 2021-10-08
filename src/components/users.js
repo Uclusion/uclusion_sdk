@@ -98,6 +98,15 @@ export function Users(client) {
   };
 
   /**
+   * Integration testing API to remove referred users from an account
+   * @returns {PromiseLike<any> | Promise<any>}
+   */
+  this.cleanAccount = function() {
+    const cleanPromise = client.doPost(SUBDOMAIN, 'clean');
+    return cleanPromise.then(dataResolver);
+  };
+
+  /**
    * Changes a user to guest or back. A guest user is not assignable.
    * @param userId the user id to change
    * @param isGuest boolean if they are guest
