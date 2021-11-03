@@ -36,6 +36,13 @@ export function FetchClient(passedConfig){
                             return fetch(url, opts);
                         }
                     }
+                    if (response.status === 208) {
+                        // The API gateway has contacted a Lambda for us more than once with the same request ID
+                        // This response won't have the data we are looking for so upstream should
+                        // refresh versions and throw error but not in a user visible way as chances are very
+                        // high that the first Lambda processed the post or patch already and we don't want resubmit
+                        throw response;
+                    }
                     return response;
                 }
             );
