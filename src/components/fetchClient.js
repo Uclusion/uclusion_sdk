@@ -30,7 +30,8 @@ export function FetchClient(passedConfig){
                         const responseMillis = now.getTime() - opStart.getTime();
                         const probablyTimeout = responseMillis >= 3000; // a 3 second 5xx is likely a backend timeout
                         // backend timeouts can be retried as problem may be lambda "warm up" that has now happened
-                        const retryable = is5xx && probablyTimeout;
+                        // A 404 can be the result of an inconsistent read on DynamoDB so need to retry as well
+                        const retryable = (is5xx && probablyTimeout) || (response.status === 404);
                         if (retryable) {
                             // retry _once_ more only
                             return fetch(url, opts);
