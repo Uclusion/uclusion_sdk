@@ -107,21 +107,6 @@ export function Users(client) {
   };
 
   /**
-   * Changes a user to guest or back. A guest user is not assignable.
-   * @param userId the user id to change
-   * @param isGuest boolean if they are guest
-   * @returns {PromiseLike<T> | Promise<T>}
-   */
-  this.changeGuest = function(userId, isGuest) {
-    const path = 'guest/' + userId;
-    const body = {
-      is_guest: isGuest,
-    };
-    const guestPromise = client.doPost(SUBDOMAIN, path, undefined, body);
-    return guestPromise.then(dataResolver);
-  };
-
-  /**
   /**
    * Updates another user. Options is an object with the following form
    * <ul>
