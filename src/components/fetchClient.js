@@ -10,7 +10,8 @@ export function FetchClient(passedConfig){
      */
     function createAbort(opts) {
         const controller = new AbortController();
-        setTimeout(() => controller.abort(), 15000);
+        // Backend gives you 20s for a long operation
+        setTimeout(() => controller.abort(), 30000);
         return { ...opts, signal: controller.signal};
     }
 
