@@ -46,7 +46,12 @@ export function FetchClient(passedConfig){
                     }
                     return response;
                 }
-            );
+            ).catch((error) => {
+                // This could be a network error or permissions or anything
+                console.warn('There has been a problem with your fetch operation:', error);
+                // Since the error was inside the fetch let's give it another try
+                return fetch(url, opts);
+            });
     };
 
 
