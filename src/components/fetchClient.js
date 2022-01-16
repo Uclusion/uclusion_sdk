@@ -10,7 +10,7 @@ export function FetchClient(passedConfig){
      */
     function createAbort(opts) {
         const controller = new AbortController();
-        setTimeout(() => controller.abort(), 60000);
+        setTimeout(() => controller.abort(), 15000);
         return { ...opts, signal: controller.signal};
     }
 
@@ -34,7 +34,7 @@ export function FetchClient(passedConfig){
                         const retryable = (is5xx && probablyTimeout) || (response.status === 404);
                         if (retryable) {
                             // retry _once_ more only
-                            return fetch(url, opts);
+                            return fetch(url, createAbort(opts));
                         }
                     }
                     if (response.status === 208) {
@@ -50,7 +50,7 @@ export function FetchClient(passedConfig){
                 // This could be a network error or permissions or anything
                 console.warn('There has been a problem with your fetch operation:', error);
                 // Since the error was inside the fetch let's give it another try
-                return fetch(url, opts);
+                return fetch(url, createAbort(opts));
             });
     };
 
