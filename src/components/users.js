@@ -292,6 +292,17 @@ export function Users(client) {
     const removePromise = client.doDelete(SUBDOMAIN, path, queryParams);
     return removePromise.then(dataResolver);
   };
+
+  /**
+   * Use to dehighlight notifications
+   * @returns {PromiseLike<T> | Promise<T>} the result of the dehighlight
+   */
+  this.dehighlightNotifications = function(typeObjectIds){
+    const path = 'dehighlight';
+    const queryParams = {type_object_id: typeObjectIds};
+    const removePromise = client.doPatch(SUBDOMAIN, path, queryParams);
+    return removePromise.then(dataResolver);
+  };
 }
 
 export default Users;
