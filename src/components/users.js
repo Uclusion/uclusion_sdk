@@ -201,21 +201,6 @@ export function Users(client) {
   };
 
   /**
-   * Sends a small message to another user but cannot send again till that message is acknowledged
-   * @param userId user to poke
-   * @param text message the poked user receives - 235 character max
-   * @returns {PromiseLike<T> | Promise<T>} the result of the poke
-   */
-  this.poke = function(userId, text){
-    const body = {
-      text: text
-    };
-    const path = 'poke/' + userId;
-    const pokePromise = client.doPost(SUBDOMAIN, path, undefined, body);
-    return pokePromise.then(dataResolver);
-  };
-
-  /**
    * Associates a user with the Slack user with that nonce
    * @param nonce of the Slack user already stored
    * @returns {PromiseLike<T> | Promise<T>} the result of the registration

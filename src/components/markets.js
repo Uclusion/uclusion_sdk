@@ -37,6 +37,19 @@ export function Markets(client){
     };
 
     /**
+     * Abstains or not from a market
+     * @param isAbstain whether or not the user plans to vote in this market
+     * @returns {PromiseLike<T> | Promise<T>} the altered user capability
+     */
+    this.updateAbstain = function(isAbstain) {
+        const body = {
+            is_abstain: isAbstain,
+        };
+        const updatePromise = client.doPost(SUBDOMAIN, 'update_abstain', undefined, body);
+        return updatePromise.then(dataResolver);
+    };
+
+    /**
      * Removes an investment
      * @param investibleId of the investible to remove for the calling user
      * @returns {PromiseLike<T> | Promise<T>}
