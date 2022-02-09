@@ -45,7 +45,7 @@ export function Markets(client){
         const body = {
             is_abstain: isAbstain,
         };
-        const updatePromise = client.doPost(SUBDOMAIN, 'update_abstain', undefined, body);
+        const updatePromise = client.doPost(SUBDOMAIN, 'abstain', undefined, body);
         return updatePromise.then(dataResolver);
     };
 
