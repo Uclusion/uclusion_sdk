@@ -271,9 +271,11 @@ export function Investibles(client) {
    * @param uploadedFiles the file upload metadata
    * @param mentions list of people mentioned in the comment
    * @param notificationType over rides normal notification level
+   * @param marketType type of inline market to create
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles, mentions, notificationType) {
+  this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles, mentions, notificationType,
+                                 marketType) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
@@ -283,6 +285,9 @@ export function Investibles(client) {
     }
     if (notificationType) {
       msgBody.notification_type = notificationType;
+    }
+    if (marketType) {
+      msgBody.market_type = marketType;
     }
     if (replyId) {
       msgBody.comment_type = 'REPLY';
