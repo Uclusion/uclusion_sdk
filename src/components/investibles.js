@@ -255,6 +255,7 @@ export function Investibles(client) {
    * @param commentType QUESTION, ISSUE, SUGGEST, JUSTIFY
    * @param uploadedFiles the file upload metadata
    * @param list of people mentioned in the comment
+   * @param mentions
    * @returns {*}
    */
   this.createMarketComment = function (body, replyId, commentType, uploadedFiles, mentions) {
@@ -272,10 +273,11 @@ export function Investibles(client) {
    * @param mentions list of people mentioned in the comment
    * @param notificationType over rides normal notification level
    * @param marketType type of inline market to create
+   * @param isRestricted for inline initiative
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
   this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles, mentions, notificationType,
-                                 marketType) {
+                                 marketType, isRestricted) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
@@ -298,6 +300,9 @@ export function Investibles(client) {
     }
     if (Array.isArray(mentions)) {
       msgBody.mentions = mentions;
+    }
+    if (isRestricted !== undefined) {
+      msgBody.is_restricted = isRestricted;
     }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
