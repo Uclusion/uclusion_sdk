@@ -242,13 +242,10 @@ export function Users(client) {
   /**
    * Starts a subscription
    * @param paymentId optional id if the payment has already been made
-   * @param tier the tier we're upgrading to
    * @param promoCode any promo code we have
    */
-  this.startSubscription = function(tier, paymentId, promoCode) {
-    const body = {
-      tier,
-    };
+  this.startSubscription = function(paymentId, promoCode) {
+    const body = {};
     if (paymentId) {
       body.payment_id = paymentId;
     }
