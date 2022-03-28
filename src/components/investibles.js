@@ -276,8 +276,8 @@ export function Investibles(client) {
    * @param isRestricted for inline initiative
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function (investibleId, body, replyId, commentType, uploadedFiles, mentions, notificationType,
-                                 marketType, isRestricted) {
+  this.createComment = function(investibleId, body, replyId, commentType, uploadedFiles, mentions, notificationType,
+                                marketType, isRestricted, isSent) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       body: body
@@ -304,6 +304,9 @@ export function Investibles(client) {
     if (isRestricted !== undefined) {
       msgBody.is_restricted = isRestricted;
     }
+    if (isSent !== undefined) {
+      msgBody.is_sent = isSent;
+    }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
   };
@@ -314,11 +317,14 @@ export function Investibles(client) {
    * @param body html body of the comment
    * @param isResolved Whether to resolve comment or unresolve comment
    * @param uploadedFiles the file upload metadata
+   * @param mentions
    * @param commentType comment type
    * @param notificationType over rides normal notification level
+   * @param isSent whether comment visible to more than creator yet
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
-  this.updateComment = function (commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType) {
+  this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
+                                isSent) {
     const path = 'comment/' + commentId;
     const msgBody = {};
     if (body) {
@@ -339,6 +345,9 @@ export function Investibles(client) {
     }
     if (commentType) {
       msgBody.comment_type = commentType;
+    }
+    if (isSent !== undefined) {
+      msgBody.is_sent = isSent;
     }
     const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
