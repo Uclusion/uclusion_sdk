@@ -54,12 +54,16 @@ export function Users(client) {
    *  <li>is_observer: bool</li>
    * </ul>
    * @param participants list max 50 length
+   * @param marketSubType
    * @returns {PromiseLike<T> | Promise<T>} success or failure of users add
    */
-  this.addUsers = function (participants) {
+  this.addUsers = function(participants, marketSubType) {
     const body = {
       participants: participants
     };
+    if (marketSubType) {
+      body.market_sub_type = marketSubType;
+    }
     const addPromise = client.doPatch(SUBDOMAIN, 'add', undefined, body);
     return addPromise.then(dataResolver);
   };
@@ -71,12 +75,20 @@ export function Users(client) {
    *  <li>is_observer: bool</li>
    * </ul>
    * @param participants list max 50 length
+   * @param marketSubType
+   * @param name Name to use in the invite email for a market sub type
    * @returns {PromiseLike<T> | Promise<T>} success or failure of users invite
    */
-  this.inviteUsers = function (participants) {
+  this.inviteUsers = function (participants, marketSubType, name) {
     const body = {
       participants: participants
     };
+    if (marketSubType) {
+      body.market_sub_type = marketSubType;
+    }
+    if (name) {
+      body.name = name;
+    }
     const addPromise = client.doPost(SUBDOMAIN, 'invite', undefined, body);
     return addPromise.then(dataResolver);
   };
