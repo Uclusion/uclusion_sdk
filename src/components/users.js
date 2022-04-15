@@ -76,10 +76,9 @@ export function Users(client) {
    * </ul>
    * @param participants list max 50 length
    * @param marketSubType
-   * @param name Name to use in the invite email for a market sub type
    * @returns {PromiseLike<T> | Promise<T>} success or failure of users invite
    */
-  this.inviteUsers = function (participants, marketSubType, name) {
+  this.inviteUsers = function (participants, marketSubType) {
     const body = {
       participants: participants
     };
