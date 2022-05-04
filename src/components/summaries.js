@@ -26,14 +26,10 @@ export function Summaries(client){
    * Lists of dirty objects available to the identity in the idToken.
    * This method does not use an authorization header.
    * @param idToken Cognito ID token
-   * @param versionsString the version on to provide delta from
    * @returns {PromiseLike<T> | Promise<T>} {'global_version', 'background', 'foreground', 'account', 'banned'}
    */
-  this.idList = function(idToken, versionsString) {
+  this.idList = function(idToken) {
     const queryParams = {idToken};
-    if (versionsString) {
-      queryParams.versionsString = versionsString;
-    }
     const versionsPromise = client.doGet(SUBDOMAIN, 'versioned', queryParams);
     return versionsPromise.then(dataResolver);
   };
