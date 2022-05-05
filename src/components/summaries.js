@@ -35,17 +35,6 @@ export function Summaries(client){
   };
 
   /**
-   * Information about notifications available to the identity in the idToken.
-   * This method does not use an authorization header.
-   * @param idToken Cognito ID token
-   * @returns {PromiseLike<T> | Promise<T>} a dictionary of login info keyed by market IDs
-   */
-  this.notifications = function(idToken) {
-    const versionsPromise = client.doGet(SUBDOMAIN, 'notify', {idToken});
-    return versionsPromise.then(dataResolver);
-  };
-
-  /**
    * Lists all of the summary data for the last year
    * @returns {PromiseLike<T | never> | Promise<T | never>} the list of summaries
    */
