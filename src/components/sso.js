@@ -163,6 +163,16 @@ export function SSO(client){
     };
 
     /**
+     * Gets a user's app version for his deployment group
+     * @param idToken Cognito ID token
+     * @returns {PromiseLike<T> | Promise<T>} list of messages
+     */
+    this.getAppVersion = function (idToken) {
+        const getPromise = client.doGet(SUBDOMAIN, 'app', {idToken});
+        return getPromise.then(dataResolver);
+    };
+
+    /**
      * Gets market info without logging into market
      * @param idToken Cognito ID token
      * @param marketId ID of the market to get
