@@ -69,6 +69,7 @@ export function Investibles(client) {
    * @param estimate completion estimate Date
    * @param requiredReviewers
    * @param requiredApprovers
+   * @param openForInvestment ready or not
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
   this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate,
@@ -217,22 +218,6 @@ export function Investibles(client) {
     const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
     return followPromise.then(dataResolver);
   };
-
-  /**
-   * Historically comments lived in the investible, so create and
-   * get all comments in a market in this service.
-   * Creates a comment for the
-   * @param body the html body of the comment
-   * @param replyId comment id of the parent comment
-   * @param commentType QUESTION, ISSUE, SUGGEST, JUSTIFY
-   * @param uploadedFiles the file upload metadata
-   * @param mentions list of people mentioned in the comment
-   * @returns {*}
-   */
-  this.createMarketComment = function (body, replyId, commentType, uploadedFiles, mentions) {
-    return this.createComment(undefined, body, replyId, commentType, uploadedFiles, mentions);
-  };
-
 
   /**
    * Creates a comment for an investible
