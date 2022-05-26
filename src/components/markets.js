@@ -62,12 +62,6 @@ export function Markets(client){
     /**
      * Creates a market with the given options. Options is an object with the following form
      * <ul>
-     *  <li>name : string, <b>required</b></li>
-     *  <li>description: string, <b>required</b></li>
-     *  <li>expiration_minutes: number</li>
-     *  <li>manual_roi: boolean</li>
-     *  <li>new_user_grant: number of shares to grant to a new user entering the account</li>
-     *  <li>uploaded_files: list of uploaded files
      *  <li>market_type: one of PLANNING, DECISION, or INITIATIVE
      * </ul>
      * @param marketOptions the options for the market
@@ -75,6 +69,11 @@ export function Markets(client){
      */
     this.createMarket = function(marketOptions){
         const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, marketOptions);
+        return createPromise.then(dataResolver);
+    };
+
+    this.createGroup = function(groupOptions){
+        const createPromise = client.doPost(SUBDOMAIN, 'create_group', undefined, groupOptions);
         return createPromise.then(dataResolver);
     };
 
@@ -90,13 +89,8 @@ export function Markets(client){
     /**
      * Updates a market with the given options. Options is an object with the following form
      * <ul>
-     *  <li>name : string</li>
-     *  <li>description: string</li>
-     *  <li>expiration_minutes: number</li>
      *  <li>active: boolean</li>
-     *  <li>lock: boolean</li>
      *  <li>initial_stage_id: string: Id of the initial stage for the market</li>
-     *  <li>uploaded_files: list of uploaded files
      * </ul>
      * @param marketUpdateOptions the options for the market
      * @returns {PromiseLike<T> | Promise<T>} the result of the update
@@ -106,26 +100,33 @@ export function Markets(client){
         return updatePromise.then(dataResolver);
     };
 
+    this.updateGroup = function(groupId, groupUpdateOptions){
+        const updatePromise = client.doPatch(SUBDOMAIN, `update_group/${groupId}`, undefined,
+            groupUpdateOptions);
+        return updatePromise.then(dataResolver);
+    };
+
     /**
-     * Locks a market for name and description changes
+     * Locks a group for name and description changes
+     * @param groupId
      * @param breakLock whether or not to ignore the existing lock
      * @returns {PromiseLike<T> | Promise<T>} the base market
      */
-    this.lock = function (breakLock) {
+    this.lock = function(groupId, breakLock) {
         const body = {};
         if (breakLock) {
             body.break_lock = breakLock;
         }
-        const lockPromise = client.doPatch(SUBDOMAIN, 'lock', undefined, body);
+        const lockPromise = client.doPatch(SUBDOMAIN, `lock/${groupId}`, undefined, body);
         return lockPromise.then(dataResolver);
     };
 
     /**
-     * Unlocks a market for name and description changes
+     * Unlocks a group for name and description changes
      * @returns {PromiseLike<T> | Promise<T>} the result of unlocking
      */
-    this.unlock = function () {
-        const unlockPromise = client.doPatch(SUBDOMAIN, 'unlock');
+    this.unlock = function(groupId) {
+        const unlockPromise = client.doPatch(SUBDOMAIN, `unlock/${groupId}`);
         return unlockPromise.then(dataResolver);
     };
 
@@ -140,34 +141,17 @@ export function Markets(client){
     };
 
     /**
-     * Follows or unfollows the given market.
-     * @param stopFollowing whether or not to STOP following the market.
+     * Controls membership of a group.
+     * @param groupId
+     * @param addressed collection in the form of user_id, is_following
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
-    this.followMarket = function(stopFollowing){
-        let body = {};
-        if(stopFollowing){
-            body.remove = true;
-        }
-        const path = 'follow';
-        const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-        return followPromise.then(dataResolver);
-    };
-
-    /**
-     * Follows or unfollows the given stage
-     * @param stageIds the stage ids to follow/unfollow
-     * @param stopFollowing whether or not to STOP following the market.
-     * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
-     */
-    this.followStage = function(stageIds, stopFollowing){
-        const body = {
-            stage_ids: stageIds
+    this.followGroup = function(groupId, addressed){
+        let body = {
+            groupId,
+            addressed
         };
-        if (stopFollowing) {
-            body.remove = true;
-        }
-        const followPromise = client.doPatch(SUBDOMAIN, 'follow_stage', undefined, body);
+        const followPromise = client.doPatch(SUBDOMAIN, 'follow', undefined, body);
         return followPromise.then(dataResolver);
     };
 
@@ -218,14 +202,23 @@ export function Markets(client){
      * @returns {PromiseLike<T> | Promise<T>} list of users including name and email
      */
     this.listUsers = function () {
-        const path = 'list';
-        let queryParams = {type: 'users'};
-        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
+        const queryParams = {type: 'users'};
+        const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
         return getPromise.then(dataResolver);
     };
 
-    this.deleteAttachments = function(files) {
-        const path = 'delete_attachments';
+    /**
+     * Lists groups in a market
+     * @returns {PromiseLike<T> | Promise<T>} list of groups including member userIds
+     */
+    this.listGroups = function () {
+        const queryParams = {type: 'groups'};
+        const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
+        return getPromise.then(dataResolver);
+    };
+
+    this.deleteAttachments = function(groupId, files) {
+        const path = `delete_attachments/${groupId}`;
         const body = {
             files,
         };
@@ -235,10 +228,11 @@ export function Markets(client){
 
     /**
      * Attaches files to the market
-     * @param attachments
+     * @param groupId
+     * @param files
      */
-    this.addAttachments = function(files) {
-        const path = 'add_attachments';
+    this.addAttachments = function(groupId, files) {
+        const path = `add_attachments/${groupId}`;
         const body = {
             files,
         };

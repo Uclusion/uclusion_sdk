@@ -60,19 +60,6 @@ export function Investibles(client) {
   };
 
   /**
-   * Shares an investible from another dialog
-   * @param investibleId ID of the investible to share with another dialog
-   * @returns {PromiseLike<T> | Promise<T>} result of creating an investible in this dialog
-   */
-  this.share = function (investibleId) {
-    const body = {
-      investible_id: investibleId
-    };
-    const sharePromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
-    return sharePromise.then(dataResolver);
-  };
-
-  /**
    * Updates an investible with name, description, and categories - requires a lock
    * @param investibleId the id of the investible updated
    * @param investibleName name of investible
@@ -221,27 +208,12 @@ export function Investibles(client) {
   /**
    * Follows or unfollows the given investible in the given market
    * @param investibleId the id of the investible to follow/unfollow
-   * @param stopFollowing whether or not to STOP following the investible.
+   * @param addressed collection in the form of user_id, is_following
    * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
    */
-  this.follow = function (investibleId, stopFollowing) {
-    let body = {};
-    if (stopFollowing) {
-      body.remove = true;
-    }
+  this.follow = function (investibleId, addressed) {
+    let body = { addressed };
     const path = 'follow/' + investibleId;
-    const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-    return followPromise.then(dataResolver);
-  };
-
-  /**
-   * Follows the given comment in the given market
-   * @param commentId the id of the investible to follow
-   * @returns {PromiseLike<T> | Promise<T>} the result of the follow
-   */
-  this.followComment = function (commentId) {
-    let body = {};
-    const path = 'follow/' + commentId;
     const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
     return followPromise.then(dataResolver);
   };
@@ -254,8 +226,7 @@ export function Investibles(client) {
    * @param replyId comment id of the parent comment
    * @param commentType QUESTION, ISSUE, SUGGEST, JUSTIFY
    * @param uploadedFiles the file upload metadata
-   * @param list of people mentioned in the comment
-   * @param mentions
+   * @param mentions list of people mentioned in the comment
    * @returns {*}
    */
   this.createMarketComment = function (body, replyId, commentType, uploadedFiles, mentions) {
