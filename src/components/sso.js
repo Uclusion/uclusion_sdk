@@ -35,7 +35,7 @@ export function SSO(client){
     };
 
     /**
-     * Logs in after a market holder Cognito identification. This method does not use an authorization header.
+     * Logs in to a market after account user already created. This method does not use an authorization header.
      * @param idToken Cognito ID token with user identity
      * @param marketId a market ID of the user
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
