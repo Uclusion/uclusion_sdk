@@ -75,19 +75,12 @@ export function Users(client) {
    *  <li>is_observer: bool</li>
    * </ul>
    * @param participants list max 50 length
-   * @param marketSubType
    * @returns {PromiseLike<T> | Promise<T>} success or failure of users invite
    */
-  this.inviteUsers = function (participants, marketSubType) {
+  this.inviteUsers = function (participants) {
     const body = {
       participants: participants
     };
-    if (marketSubType) {
-      body.market_sub_type = marketSubType;
-    }
-    if (name) {
-      body.name = name;
-    }
     const addPromise = client.doPost(SUBDOMAIN, 'invite', undefined, body);
     return addPromise.then(dataResolver);
   };
