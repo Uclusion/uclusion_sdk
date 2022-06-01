@@ -24,7 +24,7 @@ export function Investibles(client) {
    */
   this.create = function (addInfo) {
     const { name, description, uploadedFiles, assignments, estimate, labelList, requiredReviewers, requiredApprovers,
-      stageId, openForInvestment } = addInfo;
+      stageId, openForInvestment, groupId } = addInfo;
     const body = {
       name: name
     };
@@ -54,6 +54,9 @@ export function Investibles(client) {
     }
     if (stageId) {
       body.stage_id = stageId;
+    }
+    if (groupId) {
+      body.group_id = groupId;
     }
     const createPromise = client.doPost(SUBDOMAIN, 'create', undefined, body);
     return createPromise.then(dataResolver);
