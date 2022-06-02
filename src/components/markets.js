@@ -147,11 +147,11 @@ export function Markets(client){
      * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
      */
     this.followGroup = function(groupId, addressed){
+        const path = 'follow/' + groupId;
         let body = {
-            groupId,
             addressed
         };
-        const followPromise = client.doPatch(SUBDOMAIN, 'follow', undefined, body);
+        const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
         return followPromise.then(dataResolver);
     };
 
