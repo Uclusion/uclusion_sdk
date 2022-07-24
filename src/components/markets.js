@@ -217,6 +217,17 @@ export function Markets(client){
         return getPromise.then(dataResolver);
     };
 
+    /**
+     * Lists group members
+     * @returns {PromiseLike<T> | Promise<T>} list of members including userId, version and deleted
+     */
+    this.listGroupMembers = function(groupId) {
+        const queryParams = {type: 'group_members', groupId};
+        const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
+        return getPromise.then(dataResolver);
+    };
+
+
     this.deleteAttachments = function(groupId, files) {
         const path = `delete_attachments/${groupId}`;
         const body = {
