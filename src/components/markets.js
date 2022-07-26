@@ -221,8 +221,8 @@ export function Markets(client){
      * Lists group members
      * @returns {PromiseLike<T> | Promise<T>} list of members including userId, version and deleted
      */
-    this.listGroupMembers = function(groupId) {
-        const queryParams = {type: 'group_members', groupId};
+    this.listGroupMembers = function(groupIds) {
+        const queryParams = {type: 'group_members', id: groupIds};
         const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
         return getPromise.then(dataResolver);
     };
