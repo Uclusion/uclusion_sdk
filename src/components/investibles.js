@@ -225,6 +225,7 @@ export function Investibles(client) {
   /**
    * Creates a comment for an investible
    * @param investibleId the id of the investible to create the comment for or null for market level
+   * @param groupId the id of the group to which the comment belongs. May not be null
    * @param body html body of the comment
    * @param replyId comment_id of the parent comment
    * @param commentType QUESTION, ISSUE, SUGGEST, JUSTIFY
@@ -235,10 +236,11 @@ export function Investibles(client) {
    * @param isRestricted for inline initiative
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
-  this.createComment = function(investibleId, body, replyId, commentType, uploadedFiles, mentions, notificationType,
+  this.createComment = function(investibleId, groupId, body, replyId, commentType, uploadedFiles, mentions, notificationType,
                                 marketType, isRestricted, isSent) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
+      groupId,
       body: body
     };
     if (commentType) {
