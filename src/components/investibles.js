@@ -240,7 +240,7 @@ export function Investibles(client) {
                                 marketType, isRestricted, isSent) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
-      groupId,
+      group_id: groupId,
       body: body
     };
     if (commentType) {
