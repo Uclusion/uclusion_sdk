@@ -24,7 +24,7 @@ export function Investibles(client) {
    */
   this.create = function (addInfo) {
     const { name, description, uploadedFiles, assignments, estimate, labelList, requiredReviewers, requiredApprovers,
-      stageId, openForInvestment, groupId } = addInfo;
+      stageId, openForInvestment, groupId, addressed } = addInfo;
     const body = {
       name: name
     };
@@ -34,7 +34,10 @@ export function Investibles(client) {
     if (Array.isArray(uploadedFiles)) {
       body.uploaded_files = uploadedFiles;
     }
-    if (assignments) {
+    if (Array.isArray(addressed)) {
+      body.addressed = addressed;
+    }
+    if (Array.isArray(assignments)) {
       body.assignments = assignments;
     }
     if (openForInvestment) {
