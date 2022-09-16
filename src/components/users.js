@@ -75,12 +75,16 @@ export function Users(client) {
    *  <li>is_observer: bool</li>
    * </ul>
    * @param participants list max 50 length
+   * @param groupId Optional group to put the new users in
    * @returns {PromiseLike<T> | Promise<T>} success or failure of users invite
    */
-  this.inviteUsers = function (participants) {
+  this.inviteUsers = function(participants, groupId) {
     const body = {
       participants: participants
     };
+    if (groupId) {
+      body.group_id = groupId;
+    }
     const addPromise = client.doPost(SUBDOMAIN, 'invite', undefined, body);
     return addPromise.then(dataResolver);
   };
