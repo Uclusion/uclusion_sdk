@@ -171,17 +171,6 @@ export function Investibles(client) {
   };
 
   /**
-   * Accepts the assignment of an investible
-   * @param investibleId the id of the investible accepted
-   * @returns {PromiseLike<T> | Promise<T>} the investible info
-   */
-  this.accept = function (investibleId) {
-    const body = {};
-    const acceptPromise = client.doPatch(SUBDOMAIN, 'accept/'+investibleId, undefined, body);
-    return acceptPromise.then(dataResolver);
-  };
-
-  /**
    * Unlocks an investible
    * @param investibleId the id of the investible unlocked
    * @returns {PromiseLike<T> | Promise<T>} the result of unlocking
