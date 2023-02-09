@@ -283,7 +283,7 @@ export function Investibles(client) {
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
-                                isSent, investibleLabel) {
+                                isSent, investibleLabel, allowMulti, isRestricted) {
     const path = 'comment/' + commentId;
     const msgBody = {};
     if (body) {
@@ -310,6 +310,12 @@ export function Investibles(client) {
     }
     if (investibleLabel !== undefined) {
       msgBody.investible_label = investibleLabel;
+    }
+    if (allowMulti !== undefined) {
+      msgBody.allow_multi_vote = allowMulti;
+    }
+    if (isRestricted !== undefined) {
+      msgBody.is_restricted = isRestricted;
     }
     const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
