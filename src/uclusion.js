@@ -4,6 +4,7 @@ import {Investibles} from './components/investibles.js';
 import {FetchClient} from './components/fetchClient.js';
 import {Summaries} from './components/summaries';
 import {SSO} from './components/sso';
+import {Demo} from "./components/demo";
 
 function Uclusion() {
 
@@ -20,6 +21,7 @@ function Uclusion() {
             markets: new Markets(transportClient),
             investibles: new Investibles(transportClient),
             summaries: new Summaries(transportClient),
+            demo: new Demo(transportClient),
         });
     };
 
