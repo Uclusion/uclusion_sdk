@@ -4,7 +4,6 @@ import {Investibles} from './components/investibles.js';
 import {FetchClient} from './components/fetchClient.js';
 import {Summaries} from './components/summaries';
 import {SSO} from './components/sso';
-import {Demo} from "./components/demo";
 
 function Uclusion() {
 
