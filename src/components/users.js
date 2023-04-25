@@ -166,15 +166,6 @@ export function Users(client) {
   };
 
   /**
-   * Creates a working demo workspace for the current user
-   * @returns {*}
-   */
-  this.createDemo = function() {
-    const getPromise = client.doGet(SUBDOMAIN, 'create_demo');
-    return getPromise.then(dataResolver);
-  };
-
-  /**
    * Cancels a user's subscription. If you are a member of an organization
    * and your account is _not_ the billing account for an organization,
    * then bad things will happen (at best an exception).
