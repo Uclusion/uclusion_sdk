@@ -128,6 +128,20 @@ export function Investibles(client) {
   };
 
   /**
+   * @param commentId to remove investible id from
+   * @param notificationType of the created bug
+   * @returns altered comment - replies will be changed async
+   */
+  this.alterComment = function (commentId, notificationType) {
+    const path = 'alter/' + commentId;
+    const body = {
+      notification_type: notificationType
+    };
+    const alterPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+    return alterPromise.then(dataResolver);
+  };
+
+  /**
    * Updates an investible's assignments - does not require a lock
    * @param investibleId the id of the investible updated
    * @param assignments set of user IDs
