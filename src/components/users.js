@@ -297,6 +297,17 @@ export function Users(client) {
     const removePromise = client.doPatch(SUBDOMAIN, path, queryParams);
     return removePromise.then(dataResolver);
   };
+
+  /**
+   * Use to highlight notifications
+   * @returns {PromiseLike<T> | Promise<T>} the result of the highlighting
+   */
+  this.highlightNotifications = function(commentId, userIds){
+    const path = 'highlight';
+    const queryParams = {user_id: userIds};
+    const highlightPromise = client.doPatch(SUBDOMAIN, path, queryParams);
+    return highlightPromise.then(dataResolver);
+  };
 }
 
 export default Users;
