@@ -303,7 +303,7 @@ export function Users(client) {
    * @returns {PromiseLike<T> | Promise<T>} the result of the highlighting
    */
   this.highlightNotifications = function(commentId, userIds){
-    const path = 'highlight';
+    const path = 'highlight/' + commentId;
     const queryParams = {user_id: userIds};
     const highlightPromise = client.doPatch(SUBDOMAIN, path, queryParams);
     return highlightPromise.then(dataResolver);
