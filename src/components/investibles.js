@@ -17,13 +17,12 @@ export function Investibles(client) {
    * assignments set of user IDs
    * estimate completion estimate Date
    * labelList list of labels to apply on create
-   * requiredReviewers
    * requiredApprovers
    * stageId - initial stage to create the investible in
    * @returns {PromiseLike<T> | Promise<T>} result of creating an investible
    */
   this.create = function (addInfo) {
-    const { name, description, uploadedFiles, assignments, estimate, labelList, requiredReviewers, requiredApprovers,
+    const { name, description, uploadedFiles, assignments, estimate, labelList, requiredApprovers,
       stageId, openForInvestment, groupId, addressed } = addInfo;
     const body = {
       name: name
@@ -49,9 +48,6 @@ export function Investibles(client) {
     if (labelList) {
       body.label_list = labelList;
     }
-    if (Array.isArray(requiredReviewers)) {
-      body.required_reviewers = requiredReviewers;
-    }
     if (Array.isArray(requiredApprovers)) {
       body.required_approvers = requiredApprovers;
     }
@@ -73,13 +69,12 @@ export function Investibles(client) {
    * @param labelList list of labels
    * @param uploadedFiles the files to upload
    * @param estimate completion estimate Date
-   * @param requiredReviewers
    * @param requiredApprovers
    * @param openForInvestment ready or not
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
   this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate,
-                          requiredReviewers, requiredApprovers, openForInvestment) {
+                          requiredApprovers, openForInvestment) {
     const body = {};
     if (investibleName) {
       body.name = investibleName;
@@ -92,9 +87,6 @@ export function Investibles(client) {
     }
     if (Array.isArray(uploadedFiles)) {
       body.uploaded_files = uploadedFiles;
-    }
-    if (Array.isArray(requiredReviewers)) {
-      body.required_reviewers = requiredReviewers;
     }
     if (Array.isArray(requiredApprovers)) {
       body.required_approvers = requiredApprovers
