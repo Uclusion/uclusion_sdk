@@ -27,6 +27,9 @@ export function Users(client) {
     if (userOptions.name) {
       body.name = userOptions.name;
     }
+    if (userOptions.marketId) {
+      body.market_id = userOptions.marketId;
+    }
     if (userOptions.uiPreferences) {
       body.ui_preferences = userOptions.uiPreferences;
     }
