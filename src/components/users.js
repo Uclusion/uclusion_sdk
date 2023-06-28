@@ -307,7 +307,10 @@ export function Users(client) {
    */
   this.highlightNotifications = function(commentId, userIds){
     const path = 'highlight/' + commentId;
-    const queryParams = {user_id: userIds};
+    const queryParams = {};
+    if (userIds) {
+      queryParams['user_id'] = userIds;
+    }
     const highlightPromise = client.doPatch(SUBDOMAIN, path, queryParams);
     return highlightPromise.then(dataResolver);
   };
