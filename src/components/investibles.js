@@ -286,10 +286,13 @@ export function Investibles(client) {
    * @param notificationType over rides normal notification level
    * @param isSent whether comment visible to more than creator yet
    * @param investibleLabel label to apply to parent investible - wipes out any other label present
+   * @param allowMulti
+   * @param isRestricted
+   * @param inProgress for tasks only
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
-                                isSent, investibleLabel, allowMulti, isRestricted) {
+                                isSent, investibleLabel, allowMulti, isRestricted, inProgress) {
     const path = 'comment/' + commentId;
     const msgBody = {};
     if (body) {
@@ -304,7 +307,9 @@ export function Investibles(client) {
     if (Array.isArray(uploadedFiles)) {
       msgBody.uploaded_files = uploadedFiles;
     }
-
+    if (inProgress !== undefined) {
+      msgBody.in_progress = inProgress;
+    }
     if (Array.isArray(mentions)) {
       msgBody.mentions = mentions;
     }
