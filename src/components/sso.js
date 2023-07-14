@@ -23,13 +23,17 @@ export function SSO(client){
     /**
      * Logs in after an account holder Cognito identification. This method does not use an authorization header.
      * @param idToken Cognito ID token with user identity
+     * @param isInvited True if we know this user is already invited to a workspace
      * @returns {PromiseLike<T> | Promise<T>} a user object and a Uclusion token login capability that is
      * automatically applied
      */
-    this.accountCognitoLogin = function(idToken) {
+    this.accountCognitoLogin = function(idToken, isInvited) {
         const body = {
             id_token: idToken,
         };
+        if (isInvited !== undefined) {
+            body.is_invited = isInvited;
+        }
         const cognitoLoginPromise = client.doPost(SUBDOMAIN, 'cognito', undefined, body);
         return cognitoLoginPromise.then(dataResolver);
     };
