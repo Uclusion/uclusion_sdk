@@ -31,7 +31,7 @@ export function SSO(client){
         const body = {
             id_token: idToken,
         };
-        if (isInvited !== undefined) {
+        if (isInvited !== undefined && isInvited != null) {
             body.is_invited = isInvited;
         }
         const cognitoLoginPromise = client.doPost(SUBDOMAIN, 'cognito', undefined, body);
