@@ -29,6 +29,15 @@ function Uclusion() {
         return Promise.resolve(new SSO(transportClient));
     };
 
+    /**
+     * This version of SSO gives you back a client that is not a promise
+     * @param configuration
+     */
+    this.getResolvedSSOClient = (configuration) => {
+        const transportClient = new FetchClient({...configuration, tokenManager: null});
+        return new SSO(transportClient);
+    }
+
     this.constructSummariesClient = (configuration) => {
         //we don't use tokens for versions, so just zero it out
         const transportClient = new FetchClient({...configuration, tokenManager: null});
