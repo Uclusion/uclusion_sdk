@@ -72,6 +72,11 @@ export function Markets(client){
         return createPromise.then(dataResolver);
     };
 
+    this.getDemo = function(){
+        const createPromise = client.doPost(SUBDOMAIN, 'demo');
+        return createPromise.then(dataResolver);
+    };
+
     this.createGroup = function(groupOptions){
         const createPromise = client.doPost(SUBDOMAIN, 'create_group', undefined, groupOptions);
         return createPromise.then(dataResolver);
