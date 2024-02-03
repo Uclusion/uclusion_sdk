@@ -302,16 +302,22 @@ export function Users(client) {
   };
 
   /**
-   * Use to highlight notifications
+   * Use to poke responders of comment
    * @returns {PromiseLike<T> | Promise<T>} the result of the highlighting
    */
-  this.highlightNotifications = function(commentId, userIds){
-    const path = 'highlight/' + commentId;
-    const queryParams = {};
-    if (userIds) {
-      queryParams['user_id'] = userIds;
-    }
-    const highlightPromise = client.doPatch(SUBDOMAIN, path, queryParams);
+  this.pokeComment = function(commentId){
+    const path = 'pokecomment/' + commentId;
+    const highlightPromise = client.doPatch(SUBDOMAIN, path, {});
+    return highlightPromise.then(dataResolver);
+  };
+
+  /**
+   * Use to poke approvers or assignees of investible
+   * @returns {PromiseLike<T> | Promise<T>} the result of the highlighting
+   */
+  this.pokeInvestible = function(investibleId){
+    const path = 'pokeinvestible/' + investibleId;
+    const highlightPromise = client.doPatch(SUBDOMAIN, path, {});
     return highlightPromise.then(dataResolver);
   };
 }
