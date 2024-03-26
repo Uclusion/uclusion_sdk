@@ -45,6 +45,9 @@ export function Users(client) {
     if (userOptions.emailEnabled !== undefined) {
       body.email_enabled = userOptions.emailEnabled;
     }
+    if (userOptions.clearNotificationConfigs !== undefined) {
+      body.clear_notification_configs = userOptions.clearNotificationConfigs;
+    }
     const updatePromise = client.doPatch(SUBDOMAIN, 'update', undefined, body);
     return updatePromise.then(dataResolver);
   };
