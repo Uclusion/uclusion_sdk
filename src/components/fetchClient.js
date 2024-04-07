@@ -29,11 +29,18 @@ export function FetchClient(passedConfig){
                         // are we 500 series?
                         const is5xx = response.status >= 500 && response.status < 600
                         const responseMillis = now.getTime() - opStart.getTime();
-                        const probablyTimeout = responseMillis >= 3000; // a 3 second 5xx is likely a backend timeout
+                        const probablyTimeout = responseMillis >= 3000;
+                        // a 3 second 5xx is likely a backend timeout
                         // backend timeouts can be retried as problem may be lambda "warm up" that has now happened
                         // A 404 can be the result of an inconsistent read on DynamoDB so need to retry as well
-                        const retryable = (is5xx && probablyTimeout) || (response.status === 404);
+                        const likelyInconsistent = response.status === 404;
+                        const retryable = (is5xx && probablyTimeout) || likelyInconsistent;
                         if (retryable) {
+                            if (likelyInconsistent) {
+                                // An immediate retry is too optimistic after a 404
+                                return new Promise((resolve) => setTimeout(resolve, 2000))
+                                    .then(() => fetch(url, createAbort(opts)));
+                            }
                             // retry _once_ more only
                             return fetch(url, createAbort(opts));
                         }
