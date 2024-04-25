@@ -186,6 +186,21 @@ export function Markets(client){
     };
 
     /**
+     * Lists investments for a user in a market
+     * @param userId of the user to retrieve investments for
+     * @param signatures id and versions to retrieve
+     * @returns {PromiseLike<T> | Promise<T>} list of users including name and email
+     */
+    this.listInvestments = function(userId, signatures) {
+        const body = {
+            investments: signatures,
+            user_id: userId
+        }
+        const getPromise = client.doPost(SUBDOMAIN, 'investments', undefined, body);
+        return getPromise.then(dataResolver);
+    };
+
+    /**
      * Lists groups in a market
      * @param signatures id and versions to retrieve
      * @returns {PromiseLike<T> | Promise<T>} list of groups including member userIds
