@@ -367,17 +367,16 @@ export function Investibles(client) {
   };
 
   /**
-   * Historically comments lived in the investible services, so we create and fetch all comments
-   * in this service.
-   * Fetches the given comments present in on an object of the given market. The maximum number of comments
-   * that can be requested at one time is 100.
-   * @param commentIds list of the comment ids to retrieve. Max length of 100
+   * Falls back to a consistent read so if an id version not available it never will be - do not retry.
+   * @param signatures list of the comment ids and versions. Max length of 100
    * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
    */
-  this.getMarketComments = function(commentIds){
+  this.getMarketComments = function(signatures){
     let path = 'comments';
-    let queryParams = {id: commentIds};
-    const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
+    const body = {
+      versions: signatures
+    }
+    const getPromise = client.doPost(SUBDOMAIN, path, undefined, body);
     return getPromise.then(dataResolver);
   };
 

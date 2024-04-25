@@ -112,30 +112,6 @@ export function Markets(client){
     };
 
     /**
-     * Locks a group for name and description changes
-     * @param groupId
-     * @param breakLock whether or not to ignore the existing lock
-     * @returns {PromiseLike<T> | Promise<T>} the base market
-     */
-    this.lock = function(groupId, breakLock) {
-        const body = {};
-        if (breakLock) {
-            body.break_lock = breakLock;
-        }
-        const lockPromise = client.doPatch(SUBDOMAIN, `lock/${groupId}`, undefined, body);
-        return lockPromise.then(dataResolver);
-    };
-
-    /**
-     * Unlocks a group for name and description changes
-     * @returns {PromiseLike<T> | Promise<T>} the result of unlocking
-     */
-    this.unlock = function(groupId) {
-        const unlockPromise = client.doPatch(SUBDOMAIN, `unlock/${groupId}`);
-        return unlockPromise.then(dataResolver);
-    };
-
-    /**
      * Deletes the given market from the system
      * @returns {PromiseLike<T | never> | Promise<T | never>} when resolved gives the result of the deletion
      *
@@ -145,20 +121,6 @@ export function Markets(client){
         return getPromise.then(dataResolver);
     };
 
-    /**
-     * Controls membership of a group.
-     * @param groupId
-     * @param addressed collection in the form of user_id, is_following
-     * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
-     */
-    this.followGroup = function(groupId, addressed){
-        const path = 'follow/' + groupId;
-        let body = {
-            addressed
-        };
-        const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
-        return followPromise.then(dataResolver);
-    };
 
     /**
      * Updates stage properties
@@ -181,54 +143,73 @@ export function Markets(client){
     };
 
     /**
-    * Lists all of the stages present in the market that the user has access too
-    * @returns {PromiseLike<T | never> | Promise<T | never>} the list of stages
+     * Lists all of the stages present in the market that the user has access to
+     * @param signatures id and versions to retrieve
+     * @returns {PromiseLike<T | never> | Promise<T | never>} the list of stages
     */
-    this.listStages = function() {
+    this.listStages = function(signatures) {
       let path = 'stages';
-      const getPromise = client.doGet(SUBDOMAIN, path);
+        const body = {
+            versions: signatures,
+            list_type: 'stages'
+        }
+      const getPromise = client.doPost(SUBDOMAIN, path, undefined, body);
       return getPromise.then(dataResolver);
     };
 
     /**
      * Fetches requested market investibles from the given market
-     * @param investibleIds list of the investible id to retrieve
+     * @param signatures list of the investible and market infos id and versions to retrieve
      * @returns {PromiseLike<T> | Promise<T>} the result of the fetch
      */
-    this.getMarketInvestibles = function(investibleIds){
+    this.getMarketInvestibles = function(signatures){
         let path = 'investibles';
-        let queryParams = {id: investibleIds};
-        const getPromise = client.doGet(SUBDOMAIN, path, queryParams);
+        const body = {
+            versions: signatures
+        }
+        const getPromise = client.doPost(SUBDOMAIN, path, undefined, body);
         return getPromise.then(dataResolver);
     };
 
     /**
      * Lists users in a market
+     * @param signatures id and versions to retrieve
      * @returns {PromiseLike<T> | Promise<T>} list of users including name and email
      */
-    this.listUsers = function () {
-        const queryParams = {type: 'users'};
-        const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
+    this.listUsers = function(signatures) {
+        const body = {
+            versions: signatures,
+            list_type: 'users'
+        }
+        const getPromise = client.doPost(SUBDOMAIN, 'list', undefined, body);
         return getPromise.then(dataResolver);
     };
 
     /**
      * Lists groups in a market
+     * @param signatures id and versions to retrieve
      * @returns {PromiseLike<T> | Promise<T>} list of groups including member userIds
      */
-    this.listGroups = function () {
-        const queryParams = {type: 'groups'};
-        const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
+    this.listGroups = function(signatures) {
+        const body = {
+            versions: signatures,
+            list_type: 'groups'
+        }
+        const getPromise = client.doPost(SUBDOMAIN, 'list', undefined, body);
         return getPromise.then(dataResolver);
     };
 
     /**
      * Lists group members
+     * @param signatures id and versions to retrieve
      * @returns {PromiseLike<T> | Promise<T>} list of members including userId, version and deleted
      */
-    this.listGroupMembers = function(groupIds) {
-        const queryParams = {type: 'group_members', id: groupIds};
-        const getPromise = client.doGet(SUBDOMAIN, 'list', queryParams);
+    this.listGroupMembers = function(signatures) {
+        const body = {
+            versions: signatures,
+            list_type: 'group_members'
+        }
+        const getPromise = client.doPost(SUBDOMAIN, 'list', undefined, body);
         return getPromise.then(dataResolver);
     };
 
