@@ -216,12 +216,14 @@ export function Markets(client){
 
     /**
      * Lists group members
+     * @param groupId of the group to list members of
      * @param signatures id and versions to retrieve
      * @returns {PromiseLike<T> | Promise<T>} list of members including userId, version and deleted
      */
-    this.listGroupMembers = function(signatures) {
+    this.listGroupMembers = function(groupId, signatures) {
         const body = {
             versions: signatures,
+            group_id: groupId,
             list_type: 'group_members'
         }
         const getPromise = client.doPost(SUBDOMAIN, 'list', undefined, body);
