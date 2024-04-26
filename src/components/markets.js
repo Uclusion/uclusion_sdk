@@ -121,6 +121,20 @@ export function Markets(client){
         return getPromise.then(dataResolver);
     };
 
+    /**
+     * Controls membership of a group.
+     * @param groupId
+     * @param addressed collection in the form of user_id, is_following
+     * @returns {PromiseLike<T> | Promise<T>} the result of the follow/unfollow
+     */
+    this.followGroup = function(groupId, addressed){
+        const path = 'follow/' + groupId;
+        let body = {
+            addressed
+        };
+        const followPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
+        return followPromise.then(dataResolver);
+    };
 
     /**
      * Updates stage properties
