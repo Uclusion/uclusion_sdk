@@ -162,12 +162,11 @@ export function Markets(client){
      * @returns {PromiseLike<T | never> | Promise<T | never>} the list of stages
     */
     this.listStages = function(signatures) {
-      let path = 'stages';
         const body = {
             versions: signatures,
             list_type: 'stages'
         }
-      const getPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+      const getPromise = client.doPost(SUBDOMAIN, 'list', undefined, body);
       return getPromise.then(dataResolver);
     };
 
