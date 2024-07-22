@@ -42,6 +42,9 @@ export function Users(client) {
     if (userOptions.emailDelay !== undefined) {
       body.email_delay = userOptions.emailDelay;
     }
+    if (userOptions.emailDelayYellow !== undefined) {
+      body.email_delay_yellow = userOptions.emailDelayYellow;
+    }
     if (userOptions.emailEnabled !== undefined) {
       body.email_enabled = userOptions.emailEnabled;
     }
