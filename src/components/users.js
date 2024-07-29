@@ -157,11 +157,11 @@ export function Users(client) {
   };
 
   /**
-   * Gets a user's payment info
-   * @returns {PromiseLike<T> | Promise<T>} the user's payment information
+   * Gets a user's subscription and payment info
+   * @returns {PromiseLike<T> | Promise<T>} the user's subscription and payment information
    */
-  this.getPaymentInfo = function () {
-    const getPromise = client.doGet(SUBDOMAIN, 'current_payment');
+  this.getSubscriptionInfo = function () {
+    const getPromise = client.doGet(SUBDOMAIN, 'subscription_info');
     return getPromise.then(dataResolver);
   };
 
@@ -254,27 +254,6 @@ export function Users(client) {
     };
     const updatePromise = client.doPost(SUBDOMAIN, 'update_payment', undefined, body);
     return updatePromise.then(dataResolver);
-  };
-
-  /**
-   * Starts a subscription
-   * @param paymentId optional id if the payment has already been made
-   * @param promoCode any promo code we have
-   * @param isTest Used by integration tests to clear existing subscription
-   */
-  this.startSubscription = function(paymentId, promoCode, isTest) {
-    const body = {};
-    if (paymentId) {
-      body.payment_id = paymentId;
-    }
-    if (promoCode) {
-      body.promo_code = promoCode;
-    }
-    if (isTest) {
-      body.is_test = isTest;
-    }
-    const subscribePromise = client.doPost(SUBDOMAIN, 'start_subscription', undefined, body);
-    return subscribePromise.then(dataResolver);
   };
 
   /**
