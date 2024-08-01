@@ -201,6 +201,15 @@ export function Users(client) {
   };
 
   /**
+   * Gets account (which is not pushed) with Stripe enhanced promo data
+   * @returns {PromiseLike<T> | Promise<T>}
+   */
+  this.getAccount = function () {
+    const getPromise = client.doGet(SUBDOMAIN, 'get_account');
+    return getPromise.then(dataResolver);
+  };
+
+  /**
    * Restarts a subscription
    * @param paymentId the id returned from the payment processor
    * @param promoCode any promo code we have
