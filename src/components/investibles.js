@@ -106,9 +106,10 @@ export function Investibles(client) {
    * @param commentIds
    * @param resolveCommentIds
    * @param taskCommentIds These IDs converted to to-do type comment
+   * @param suggestCommentIds
    * @returns list of comments
    */
-  this.moveComments = function (investibleId, commentIds, resolveCommentIds, taskCommentIds) {
+  this.moveComments = function (investibleId, commentIds, resolveCommentIds, taskCommentIds, suggestCommentIds) {
     const path = 'move/' + investibleId;
     const body = {
       comment_ids: commentIds
@@ -118,6 +119,9 @@ export function Investibles(client) {
     }
     if (taskCommentIds) {
       body['task_comment_ids'] = taskCommentIds;
+    }
+    if (suggestCommentIds) {
+      body['suggestion_comment_ids'] = suggestCommentIds;
     }
     const movePromise = client.doPatch(SUBDOMAIN, path, undefined, body);
     return movePromise.then(dataResolver);
