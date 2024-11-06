@@ -298,10 +298,12 @@ export function Investibles(client) {
    * @param allowMulti
    * @param isRestricted
    * @param inProgress for tasks only
+   * @param marketType for question update of is_sent
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
-                                isSent, investibleLabel, allowMulti, isRestricted, inProgress) {
+                                isSent, investibleLabel, allowMulti, isRestricted, inProgress, marketType)
+  {
     const path = 'comment/' + commentId;
     const msgBody = {};
     if (body) {
@@ -336,6 +338,9 @@ export function Investibles(client) {
     }
     if (isRestricted !== undefined) {
       msgBody.is_restricted = isRestricted;
+    }
+    if (marketType) {
+      msgBody.market_type = marketType;
     }
     const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
