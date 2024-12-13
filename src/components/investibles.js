@@ -23,7 +23,7 @@ export function Investibles(client) {
    */
   this.create = function (addInfo) {
     const { name, description, uploadedFiles, assignments, estimate, labelList, requiredApprovers,
-      stageId, openForInvestment, groupId, addressed } = addInfo;
+      stageId, openForInvestment, groupId, addressed, todos } = addInfo;
     const body = {
       name: name
     };
@@ -47,6 +47,9 @@ export function Investibles(client) {
     }
     if (labelList) {
       body.label_list = labelList;
+    }
+    if (todos) {
+      body.todo_list = todos;
     }
     if (Array.isArray(requiredApprovers)) {
       body.required_approvers = requiredApprovers;
