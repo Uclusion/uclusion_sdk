@@ -16,11 +16,9 @@ export function Markets(client){
       * @param ideaSharesQuantity the number of idea shares for this user to be invested total in the investible
       * @param currentIdeaSharesQuantity the number of idea shares this user currently has invested in this investible
       * @param reasonCommentId the comment ID of the reason given - if any
-      * @param maxBudget value of the planning investible
       * @returns {PromiseLike<T> | Promise<T>} the result of the investment
       */
-    this.updateInvestment = function(investibleId, ideaSharesQuantity, currentIdeaSharesQuantity, reasonCommentId,
-                                     maxBudget) {
+    this.updateInvestment = function(investibleId, ideaSharesQuantity, currentIdeaSharesQuantity, reasonCommentId) {
         const body = {
             quantity: ideaSharesQuantity,
             former_quantity: currentIdeaSharesQuantity,
@@ -28,9 +26,6 @@ export function Markets(client){
         };
         if (reasonCommentId) {
             body.comment_id = reasonCommentId;
-        }
-        if (maxBudget) {
-            body.max_budget = maxBudget;
         }
         const updatePromise = client.doPost(SUBDOMAIN, 'invest', undefined, body);
         return updatePromise.then(dataResolver);
