@@ -74,10 +74,11 @@ export function Investibles(client) {
    * @param estimate completion estimate Date
    * @param requiredApprovers
    * @param openForInvestment ready or not
+   * @param groupId controls the view
    * @returns {PromiseLike<T> | Promise<T>} result of updating investible
    */
   this.update = function (investibleId, investibleName, investibleDescription, labelList, uploadedFiles, estimate,
-                          requiredApprovers, openForInvestment) {
+                          requiredApprovers, openForInvestment, groupId) {
     const body = {};
     if (investibleName) {
       body.name = investibleName;
@@ -99,6 +100,9 @@ export function Investibles(client) {
     }
     if (estimate) {
       body.completion_estimate = estimate.toISOString();
+    }
+    if (groupId) {
+      body.group_id = groupId;
     }
     const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
     return updatePromise.then(dataResolver);
