@@ -149,6 +149,15 @@ export function Investibles(client) {
     return alterPromise.then(dataResolver);
   };
 
+  this.alterComments = function (commentIds, notificationType) {
+    const body = { comment_ids: commentIds };
+    if (notificationType) {
+      body.notification_type = notificationType;
+    }
+    const alterPromise = client.doPatch(SUBDOMAIN, 'alters', undefined, body);
+    return alterPromise.then(dataResolver);
+  };
+
   /**
    * Updates an investible's assignments - does not require a lock
    * @param investibleId the id of the investible updated
