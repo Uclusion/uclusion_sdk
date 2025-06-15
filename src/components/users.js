@@ -157,6 +157,15 @@ export function Users(client) {
   };
 
   /**
+   * Gets a user's cli secret
+   * @returns {PromiseLike<T> | Promise<T>} the user's secret
+   */
+  this.getSecret = function() {
+    const getPromise = client.doGet(SUBDOMAIN, 'secret');
+    return getPromise.then(dataResolver);
+  };
+
+  /**
    * Gets a user's subscription and payment info
    * @returns {PromiseLike<T> | Promise<T>} the user's subscription and payment information
    */
