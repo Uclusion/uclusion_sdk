@@ -315,6 +315,7 @@ export function Investibles(client) {
    * @param isRestricted
    * @param inProgress for tasks only
    * @param marketType for question update of is_sent
+   * @param version if body updated is required
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
