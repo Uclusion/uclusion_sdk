@@ -318,7 +318,7 @@ export function Investibles(client) {
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
-                                isSent, investibleLabel, allowMulti, isRestricted, inProgress, marketType)
+                                isSent, investibleLabel, allowMulti, isRestricted, inProgress, marketType, version)
   {
     const path = 'comment/' + commentId;
     const msgBody = {};
@@ -357,6 +357,9 @@ export function Investibles(client) {
     }
     if (marketType) {
       msgBody.market_type = marketType;
+    }
+    if (version) {
+      msgBody.version = version;
     }
     const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
