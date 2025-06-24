@@ -67,8 +67,11 @@ export function Markets(client){
         return createPromise.then(dataResolver);
     };
 
-    this.getDemo = function(){
-        const createPromise = client.doPost(SUBDOMAIN, 'demo');
+    this.getDemo = function(isTeam){
+        const body = {
+            is_team: isTeam
+        };
+        const createPromise = client.doPost(SUBDOMAIN, 'demo', undefined, body);
         return createPromise.then(dataResolver);
     };
 
