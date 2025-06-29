@@ -166,6 +166,15 @@ export function Users(client) {
   };
 
   /**
+   * Changes a user's cli secret
+   * @returns {PromiseLike<T> | Promise<T>} the user's new secret
+   */
+  this.newSecret = function() {
+    const newPromise = client.doPost(SUBDOMAIN, 'secret');
+    return newPromise.then(dataResolver);
+  };
+
+  /**
    * Gets a user's subscription and payment info
    * @returns {PromiseLike<T> | Promise<T>} the user's subscription and payment information
    */
