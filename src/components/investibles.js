@@ -262,11 +262,10 @@ export function Investibles(client) {
    * @param marketType type of inline market to create
    * @param isRestricted for inline initiative
    * @param isSent false is draft mode
-   * @param investibleLabel label to apply to the parent investible
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
   this.createComment = function(investibleId, groupId, body, replyId, commentType, uploadedFiles, mentions, notificationType,
-                                marketType, isRestricted, isSent, investibleLabel) {
+                                marketType, isRestricted, isSent) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       group_id: groupId,
@@ -297,9 +296,6 @@ export function Investibles(client) {
     if (isSent !== undefined) {
       msgBody.is_sent = isSent;
     }
-    if (investibleLabel !== undefined) {
-      msgBody.investible_label = investibleLabel;
-    }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
   };
@@ -314,7 +310,6 @@ export function Investibles(client) {
    * @param commentType comment type
    * @param notificationType over rides normal notification level
    * @param isSent whether comment visible to more than creator yet
-   * @param investibleLabel label to apply to parent investible - wipes out any other label present
    * @param allowMulti
    * @param isRestricted
    * @param inProgress for tasks only
@@ -323,7 +318,7 @@ export function Investibles(client) {
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
-                                isSent, investibleLabel, allowMulti, isRestricted, inProgress, marketType, version)
+                                isSent, allowMulti, isRestricted, inProgress, marketType, version)
   {
     const path = 'comment/' + commentId;
     const msgBody = {};
@@ -350,9 +345,6 @@ export function Investibles(client) {
     }
     if (isSent !== undefined) {
       msgBody.is_sent = isSent;
-    }
-    if (investibleLabel !== undefined) {
-      msgBody.investible_label = investibleLabel;
     }
     if (allowMulti !== undefined) {
       msgBody.allow_multi_vote = allowMulti;
