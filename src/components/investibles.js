@@ -191,6 +191,20 @@ export function Investibles(client) {
   };
 
   /**
+   * Updates an investible's is public - does not require a lock
+   * @param investibleId the id of the investible updated
+   * @param isPublic boolean
+   * @returns {PromiseLike<T> | Promise<T>} result of updating investible
+   */
+  this.updateIsVisible = function (investibleId, is_visible) {
+    const body = {
+      is_visible: is_visible
+    };
+    const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
+    return updatePromise.then(dataResolver);
+  };
+
+  /**
    * Locks an investible for name and description
    * @param investibleId the id of the investible locked
    * @param breakLock whether or not to ignore the existing lock
@@ -314,11 +328,12 @@ export function Investibles(client) {
    * @param isRestricted
    * @param inProgress for tasks only
    * @param marketType for question update of is_sent
+   * @param isVisible whether comment visible in reports
    * @param version if body updated is required
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
-                                isSent, allowMulti, isRestricted, inProgress, marketType, version)
+                                isSent, allowMulti, isRestricted, inProgress, marketType, isVisible, version)
   {
     const path = 'comment/' + commentId;
     const msgBody = {};
@@ -354,6 +369,9 @@ export function Investibles(client) {
     }
     if (marketType) {
       msgBody.market_type = marketType;
+    }
+    if (isVisible !== undefined) {
+      msgBody.is_visible = isVisible;
     }
     if (version) {
       msgBody.version = version;
