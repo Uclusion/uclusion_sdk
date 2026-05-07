@@ -279,7 +279,7 @@ export function Investibles(client) {
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
   this.createComment = function(investibleId, groupId, body, replyId, commentType, uploadedFiles, mentions, notificationType,
-                                marketType, isRestricted, isSent) {
+                                marketType, isRestricted, isSent, associatedCommentId) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       group_id: groupId,
@@ -309,6 +309,9 @@ export function Investibles(client) {
     }
     if (isSent !== undefined) {
       msgBody.is_sent = isSent;
+    }
+    if (associatedCommentId) {
+      msgBody.associated_comment_id = associatedCommentId;
     }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
