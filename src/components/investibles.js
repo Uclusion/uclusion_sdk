@@ -276,10 +276,12 @@ export function Investibles(client) {
    * @param marketType type of inline market to create
    * @param isRestricted for inline initiative
    * @param isSent false is draft mode
+   * @param associatedCommentId comment id this comment is associated with (notes link to a task)
+   * @param tz IANA timezone name of the creator (e.g. "America/Los_Angeles") used by notes for day grouping
    * @returns {PromiseLike<T> | Promise<T>} resolution_id result
    */
   this.createComment = function(investibleId, groupId, body, replyId, commentType, uploadedFiles, mentions, notificationType,
-                                marketType, isRestricted, isSent, associatedCommentId) {
+                                marketType, isRestricted, isSent, associatedCommentId, tz) {
     const path = investibleId ? investibleId + '/comment' : 'comment';
     const msgBody = {
       group_id: groupId,
@@ -313,6 +315,9 @@ export function Investibles(client) {
     if (associatedCommentId) {
       msgBody.associated_comment_id = associatedCommentId;
     }
+    if (tz) {
+      msgBody.tz = tz;
+    }
     const commentPromise = client.doPost(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
   };
@@ -333,10 +338,11 @@ export function Investibles(client) {
    * @param marketType for question update of is_sent
    * @param isVisible whether comment visible in reports
    * @param version if body updated is required
+   * @param tz IANA timezone name of the updater (e.g. "America/Los_Angeles") used by notes for day grouping
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
-                                isSent, allowMulti, isRestricted, inProgress, marketType, isVisible, version)
+                                isSent, allowMulti, isRestricted, inProgress, marketType, isVisible, version, tz)
   {
     const path = 'comment/' + commentId;
     const msgBody = {};
@@ -378,6 +384,9 @@ export function Investibles(client) {
     }
     if (version) {
       msgBody.version = version;
+    }
+    if (tz) {
+      msgBody.tz = tz;
     }
     const commentPromise = client.doPatch(SUBDOMAIN, path, undefined, msgBody);
     return commentPromise.then(dataResolver);
