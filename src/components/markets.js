@@ -55,6 +55,17 @@ export function Markets(client){
     };
 
     /**
+     * Removes an investment by someone else
+     * @param investibleId
+     * @param userId of the investible to remove for the calling user
+     * @returns {PromiseLike<T> | Promise<T>}
+     */
+        this.removeOthersInvestment = function(investibleId, userId) {
+            const deletePromise = client.doDelete(SUBDOMAIN, 'other_invest/' + investibleId + '/' + userId);
+            return deletePromise.then(dataResolver);
+        };
+
+    /**
      * Creates a market with the given options. Options is an object with the following form
      * <ul>
      *  <li>market_type: one of PLANNING, DECISION, or INITIATIVE
