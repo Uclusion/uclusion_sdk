@@ -141,13 +141,17 @@ export function Investibles(client) {
   /**
    * @param commentId to remove investible id from
    * @param notificationType if creating a bug
+   * @param groupId the id of the group to move the comment to. May be null
    * @returns altered comment - replies will be changed async
    */
-  this.alterComment = function (commentId, notificationType) {
+  this.alterComment = function (commentId, notificationType, groupId) {
     const path = 'alter/' + commentId;
     const body = {};
     if (notificationType) {
       body.notification_type = notificationType;
+    }
+    if (groupId) {
+      body.group_id = groupId;
     }
     const alterPromise = client.doPatch(SUBDOMAIN, path, undefined, body);
     return alterPromise.then(dataResolver);
