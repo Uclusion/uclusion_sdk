@@ -236,14 +236,18 @@ export function SSO(client){
      * Resends the verification email to the user.
      * @param email The email of the user
      * @param redirect an optional param of where the user wants to go after the signup process is complete
+     * @param testObject whether the account created after verification is synthetic test data
      * @returns {PromiseLike<T> | Promise<T>}
      */
-    this.resendVerification = function(email, redirect) {
+    this.resendVerification = function(email, redirect, testObject = false) {
         const body = {
             email,
         };
         if (redirect) {
             body['redirect'] = redirect;
+        }
+        if (testObject) {
+            body['test_object'] = true;
         }
         const resendPromise = client.doPost(SUBDOMAIN, 'resendVerification', undefined, body);
         return resendPromise.then(dataResolver);
