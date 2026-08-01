@@ -441,6 +441,21 @@ export function Investibles(client) {
   };
 
   /**
+   * Fetches all comments of an investible directly instead of by signature, including
+   * comments the versions call screens as archived
+   * @param investibleId the id of the investible to fetch comments for
+   * @returns {PromiseLike<T> | Promise<T>} the investible's comments
+   */
+  this.getInvestibleComments = function(investibleId){
+    let path = 'comments';
+    const body = {
+      investible_id: investibleId
+    }
+    const getPromise = client.doPost(SUBDOMAIN, path, undefined, body);
+    return getPromise.then(dataResolver);
+  };
+
+  /**
    * Adds attachments to the given investible
    * @param investibleId the id of the investible to add attachments to
    * @param files the files to add (represented as a browser file object such
