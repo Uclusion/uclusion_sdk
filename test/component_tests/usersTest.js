@@ -7,6 +7,10 @@ app.delete('/leave', (request, response) => {
   response.json({success_message: 'Left'});
 });
 
+app.delete('/removenotification', (request, response) => {
+  response.json({success_message: 'Removed', test_query: request.query});
+});
+
 app.get('/get/1234', (request, response) => {
   response.json({ id: '1234' });
 });
@@ -52,6 +56,16 @@ describe('Users', () => {
         }).catch((error) => {
         console.error(error);
       });
+    });
+  });
+
+  describe('#removeNotifications', () => {
+    it('only sends the AI-dismissal intent when requested', async () => {
+      const ordinary = await users.removeNotifications(['NOTICE_one']);
+      assert.strictEqual(ordinary.test_query.dismiss_ai_generated, undefined);
+
+      const jobSweep = await users.removeNotifications(['NOTICE_two'], true);
+      assert.strictEqual(jobSweep.test_query.dismiss_ai_generated, 'true');
     });
   });
 

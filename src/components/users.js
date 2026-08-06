@@ -283,12 +283,17 @@ export function Users(client) {
   };
 
   /**
-   * Use to remove read notifications or remove highlighting of persistent notifications
+   * Use to remove read notifications or remove highlighting of persistent notifications.
+   * A job sweep can also request dismissal of notifications stored as AI_GENERATED; the
+   * backend verifies that marker before deleting a persistent row.
    * @returns {PromiseLike<T> | Promise<T>} the result of the delete
    */
-  this.removeNotifications = function(typeObjectIds){
+  this.removeNotifications = function(typeObjectIds, dismissAIGenerated=false){
     const path = 'removenotification';
     const queryParams = {type_object_id: typeObjectIds};
+    if (dismissAIGenerated) {
+      queryParams.dismiss_ai_generated = true;
+    }
     const removePromise = client.doDelete(SUBDOMAIN, path, queryParams);
     return removePromise.then(dataResolver);
   };
