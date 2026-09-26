@@ -35,6 +35,23 @@ export function Summaries(client){
   };
 
   /**
+   * Markdown export of a batch of jobs or comments, as the CLI's workspace export requests it.
+   * Use the market's client, since the export is authorized by the market token.
+   * @param idType 'marketInvestible' for jobs by market investible id, or 'comment'
+   * @param idList the ids to export
+   * @param asSections when true, one {id, stamp, markdown} section per object instead of one document
+   * @returns {PromiseLike<T> | Promise<T>} the markdown, or the list of sections
+   */
+  this.export = function(idType, idList, asSections) {
+    const queryParams = {idType, id: idList};
+    if (asSections) {
+      queryParams.format = 'json';
+    }
+    const exportPromise = client.doGet(SUBDOMAIN, 'export', queryParams);
+    return exportPromise.then(dataResolver);
+  };
+
+  /**
    * Lists all of the summary data for the last year
    * @returns {PromiseLike<T | never> | Promise<T | never>} the list of summaries
    */
