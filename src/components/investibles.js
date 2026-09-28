@@ -195,6 +195,20 @@ export function Investibles(client) {
   };
 
   /**
+   * Sets where a Debatable job returns once everything open on it is resolved
+   * @param investibleId
+   * @param formerStageId the Approvable or Doable stage
+   * @returns {PromiseLike<T> | Promise<T>} the updated investible
+   */
+  this.updateFormerStage = function (investibleId, formerStageId) {
+    const body = {
+      former_stage_id: formerStageId,
+    };
+    const updatePromise = client.doPatch(SUBDOMAIN, investibleId, undefined, body);
+    return updatePromise.then(dataResolver);
+  };
+
+  /**
    * Updates an investible's is public - does not require a lock
    * @param investibleId the id of the investible updated
    * @param isPublic boolean
