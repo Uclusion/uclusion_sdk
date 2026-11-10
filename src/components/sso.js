@@ -208,7 +208,8 @@ export function SSO(client){
 
     /**
      * Signs the user up to the service.
-     * @param signupData, the name, email, password, and phone number of the user
+     * @param signupData, the name, email, password, and phone number of the user, plus the "I am human" check's
+     * human_check_token, which the server requires before it creates a user or sends an email
      * @param redirect an optional param of where the user wants to go after the signup process is complete
      * @returns if send code get back login data
      */
@@ -237,9 +238,11 @@ export function SSO(client){
      * @param email The email of the user
      * @param redirect an optional param of where the user wants to go after the signup process is complete
      * @param testObject whether the account created after verification is synthetic test data
+     * @param humanCheckToken single-use token from the "I am human" check, which the server requires before it
+     * sends the email
      * @returns {PromiseLike<T> | Promise<T>}
      */
-    this.resendVerification = function(email, redirect, testObject = false) {
+    this.resendVerification = function(email, redirect, testObject = false, humanCheckToken) {
         const body = {
             email,
         };
@@ -248,6 +251,9 @@ export function SSO(client){
         }
         if (testObject) {
             body['test_object'] = true;
+        }
+        if (humanCheckToken) {
+            body['human_check_token'] = humanCheckToken;
         }
         const resendPromise = client.doPost(SUBDOMAIN, 'resendVerification', undefined, body);
         return resendPromise.then(dataResolver);
