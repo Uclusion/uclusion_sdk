@@ -357,11 +357,12 @@ export function Investibles(client) {
    * @param isVisible whether comment visible in reports
    * @param version if body updated is required
    * @param tz IANA timezone name of the updater (e.g. "America/Los_Angeles") used by notes for day grouping
+   * @param withdraw close a question without delegating it
    * @returns {PromiseLike<T> | Promise<T>} resulting comment
    */
   this.updateComment = function(commentId, body, isResolved, uploadedFiles, mentions, commentType, notificationType,
                                 isSent, allowMulti, isRestricted, inProgress, marketType, isVisible, version, tz,
-                                creationStageId)
+                                creationStageId, withdraw)
   {
     const path = 'comment/' + commentId;
     const msgBody = {};
@@ -370,6 +371,9 @@ export function Investibles(client) {
     }
     if (isResolved !== undefined) {
       msgBody.is_resolved = isResolved;
+    }
+    if (withdraw) {
+      msgBody.withdraw = true;
     }
     if (notificationType) {
       msgBody.notification_type = notificationType;
